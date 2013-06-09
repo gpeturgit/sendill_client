@@ -1,0 +1,41 @@
+﻿<Window x:Class="sendill_client.winCustomer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="winCustomer" Height="600" Width="900">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="260*" />
+        </Grid.RowDefinitions>
+<!--Haus-->
+        <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
+            <Image Source="/sendill_client;component/Images/UserDarkBlue1281.png"></Image>
+            <TextBlock Text="Viðskiptavinir" TextAlignment="Left" VerticalAlignment="Center" Width="162" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
+            <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
+            <Button Name="comNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comNew_Click">
+                <Image Source="/sendill_client;component/Images/newDarkBlue32.png" ImageFailed="Image_ImageFailed"></Image>
+            </Button>
+            <Button Name="comPrev" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comPrev_Click_1">
+                <Image Source="/sendill_client;component/Images/saveDarkBlue32.png" ></Image>
+            </Button>
+            <Button Name="comNext" BorderBrush="{x:Null}" Foreground="DarkBlue" Margin="0,0,0,0" Width="35" BorderThickness="0" FontSize="16" Background="#FFB9C9DA" Click="comNext_Click">
+                <Image Source="/sendill_client;component/Images/deleteDarkBlue32.png"></Image>
+            </Button>
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False" Grid.Row="2" Name="datagridvskm" RowBackground="FloralWhite" AlternatingRowBackground="Wheat" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Númer" Binding="{Binding id}" />
+                <DataGridTextColumn Header="Heimili" Binding="{Binding address}" />
+                <DataGridTextColumn Header="Nafn" Binding="{Binding name}" />
+                <DataGridTextColumn Header="Gata" Binding="{Binding streetnr }" />
+                <DataGridTextColumn Header="Póstnúmer" Binding="{Binding areacode}" />
+                <DataGridTextColumn Header="Sími" Binding="{Binding phone1}" />
+                <DataGridTextColumn Header="Farsími" Binding="{Binding mobile}" />
+                <DataGridTextColumn Header="Kennitala" Binding="{Binding kt}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

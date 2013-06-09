@@ -1,0 +1,16 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ledgerlines.aspx.cs" Inherits="sendil_mobile_web.ledgerlines" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head id="Head1" runat="server">
+    <title>Dagbókarærslur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+	<link rel="stylesheet" href="jqm/jquery.mobile-1.1.1.css" /> 
+	<script src="jq/jquery-1.7.1.js" type="text/javascript" ></script>
+	<script src="jqm/jquery.mobile-1.1.1.js" type="text/javascript"></script>
+</head>
+<body>
+
+</body>
+</html>
