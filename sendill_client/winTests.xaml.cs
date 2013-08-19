@@ -41,5 +41,11 @@ namespace sendill_client
             frmPinReorder winPinReorder = new frmPinReorder();
             winPinReorder.Show();
         }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            winNewTour wt= new winNewTour();
+            wt.Show();
+        }
     }
 }

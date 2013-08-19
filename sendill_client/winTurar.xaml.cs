@@ -76,20 +76,27 @@ namespace sendill_client
 
             try
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
+                //using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                //{
+                //    BinaryFormatter bin = new BinaryFormatter();
 
-                    _ltour = (List<dtoTour>)bin.Deserialize(stream);
-                    dtnow = DateTime.Now;
-                    var isource = from c in _ltour
-                                  orderby c.tdatetime
-                                  select c;
+                //    _ltour = (List<dtoTour>)bin.Deserialize(stream);
+                //    dtnow = DateTime.Now;
+                //    var isource = from c in _ltour
+                //                  orderby c.tdatetime
+                //                  select c; 
 
-                    dataGridTurar.ItemsSource = isource;
+                //    dataGridTurar.ItemsSource = isource;
 
 
-                }
+                //}
+
+                var window2 = Application.Current.Windows
+                .Cast<Window>()
+                .FirstOrDefault(window => window is MainWindow) as MainWindow;
+                List<dtoTour> ltour = new List<dtoTour>();
+                ltour = window2.memListTour;
+                dataGridTurar.ItemsSource = ltour;
             }
             catch (IOException)
             {

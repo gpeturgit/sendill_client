@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Configuration;
@@ -36,14 +37,14 @@ namespace sendill_client
         }
         public bool UpdateCarsFromFile(List<dtoCars> lcars)
         {
-            using(var db = new dbsendillEntities())
+            using (var db = new dbsendillEntities())
             {
-                foreach(var icar in lcars)
+                foreach (var icar in lcars)
                 {
-                    
+
                 }
-            
-            return true;
+
+                return true;
             }
         }
 
@@ -60,6 +61,8 @@ namespace sendill_client
             }
         }
 
+
+
         public IEnumerable<dtoTour> GetToursPar_CarId_Date(int pid, DateTime dfrom, DateTime dto)
         {
             using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
@@ -67,11 +70,13 @@ namespace sendill_client
                 BinaryFormatter bin = new BinaryFormatter();
                 memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 var parlist = from fl in memListTour
-                              where fl.idcar == pid ||fl.tdatetime>=dfrom||fl.tdatetime<=dto
+                              where fl.idcar == pid || fl.tdatetime >= dfrom || fl.tdatetime <= dto
                               select fl;
                 return parlist;
             }
         }
+
+
 
         public dtoCars GetSingleCarPar_CarId(int pid)
         {
@@ -85,16 +90,29 @@ namespace sendill_client
 
         }
 
+
+        public List<dtoTour> GetAllToursFromFile()
+        {
+            using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListTour = (List<dtoTour>)bin.Deserialize(stream);
+                var parlist = from fl in memListTour
+                              select fl;
+                return parlist.ToList();
+            }
+        }
+
         public string CreateMemFileFromDatabase(int fileid)
         {
-            
+
             List<dtoCars> listcar = new List<dtoCars>();
-            
+
 
             var context = from ccar in ent.tbl_cars
                           select ccar;
 
-            foreach(var oc in context)
+            foreach (var oc in context)
             {
                 dtoCars car = new dtoCars();
                 car.id = oc.ID;
@@ -103,7 +121,7 @@ namespace sendill_client
                 car.length = oc.length;
                 car.liftsize = oc.lift_size;
                 car.address = oc.address;
-                car.backdoorheight=oc.back_door_height;
+                car.backdoorheight = oc.back_door_height;
                 car.backdoorlength = oc.back_door_width;
                 car.car1 = oc.car1;
                 car.car2 = oc.car2;
@@ -142,20 +160,14 @@ namespace sendill_client
                 car.width = oc.width;
                 listcar.Add(car);
             }
-            
-
             FileStream fs = new FileStream(@"C:\dbsendill\carfile.bin", FileMode.Create);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, listcar);
             fs.Close();
             return "Bílalisti uppfærður 21.05.2013-1230";
-
-
         }
 
 
-
-        
+    }
 
     }
-}

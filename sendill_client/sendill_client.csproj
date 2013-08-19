@@ -141,6 +141,9 @@
     <Compile Include="winDesighn.xaml.cs">
       <DependentUpon>winDesighn.xaml</DependentUpon>
     </Compile>
+    <Compile Include="winNewTour.xaml.cs">
+      <DependentUpon>winNewTour.xaml</DependentUpon>
+    </Compile>
     <Compile Include="winPinLog.xaml.cs">
       <DependentUpon>winPinLog.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="winNewTour.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="winPinLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +226,7 @@
     </Compile>
     <EmbeddedResource Include="Reports\custReport.rdlc" />
     <EmbeddedResource Include="Reports\repCustomerList.rdlc" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="clsDiagram.cd" />
     <None Include="DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
@@ -236,7 +244,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\dbsendillEntities.datasource" />
     <None Include="Properties\DataSources\dtoCustomer.datasource" />
+    <None Include="Properties\DataSources\dtoTour.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -308,6 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DbSendill\" />
+    <Folder Include="LocaData\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\tours_128_over.png" />
@@ -491,6 +502,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ToolbarRecSave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SendillContext.edmx.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

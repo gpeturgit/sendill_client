@@ -32,13 +32,13 @@ namespace sendill_client
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
-        public List<dtoPin> memListPin1 = new List<dtoPin>();
-        public List<dtoPin> memListPin2 = new List<dtoPin>();
-        public List<dtoPin> memListPin3 = new List<dtoPin>();
-        public List<dtoPin> memListPin4 = new List<dtoPin>();
-        public List<dtoPin> memListPin5 = new List<dtoPin>();
-        public List<dtoCars> memListCar = new List<dtoCars>();
-        public List<dtoTour> memListTour = new List<dtoTour>();
+        public List<dtoPin>   memListPin1  =  new List<dtoPin>();
+        public List<dtoPin>   memListPin2  =  new List<dtoPin>();
+        public List<dtoPin>   memListPin3  =  new List<dtoPin>();
+        public List<dtoPin>   memListPin4  =  new List<dtoPin>();
+        public List<dtoPin>   memListPin5  =  new List<dtoPin>();
+        public List<dtoCars>  memListCar   =  new List<dtoCars>();
+        public List<dtoTour>  memListTour  =  new List<dtoTour>();
         public List<dtoPinStatus> memListPinStatus = new List<dtoPinStatus>();
         public int pin1_id = 0;
         public int pin2_id = 0;
@@ -51,19 +51,19 @@ namespace sendill_client
         public MainWindow()
         {
             InitializeComponent();
+            
             LoadCarsToMem();
-            MessageBox.Show("Load cars to mem lokið");
             LoadCustomersToMem();
-            MessageBox.Show("Load customers to mem lokið");
             LoadCarsToList();
                                                                   
             ContextMenu mnuNightService = new ContextMenu();
             MenuItem mitem01 = new MenuItem();
-            mitem01.Header = "Ræsa næturþjónustu";
+            
             mitem01.Click += new RoutedEventHandler(mitem01_Click);
             mnuNightService.Items.Add(mitem01);            
             isStartup=true;
             LoadToursToList();
+            funcFillToursOnPin();
         }
 
 
@@ -219,6 +219,8 @@ namespace sendill_client
 
         #region Nálar - Stöðvarlistar fyrir bíla
 
+
+
             #region Nálar - Svæði1 - Stöðin
 
         private void comA1_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -236,8 +238,9 @@ namespace sendill_client
                 MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
        
-                // Setja bíl á nál
+        // Setja bíl á nál
 
         private void txtArea01_KeyDown(object sender, KeyEventArgs e)
         {
@@ -257,38 +260,51 @@ namespace sendill_client
                     int lcar = (from lc in memListCar
                                 where lc.stationid == Convert.ToInt32(_carnum)
                                 select lc).Count();
-                    if (lcar == 1)
+                    int caronpin=(from lps in memListPinStatus
+                                where lps.carid == Convert.ToInt32(_carnum)
+                                select lps).Count();
+                    if (caronpin == 0)
                     {
-                        var carlist = from vlcar in memListCar
-                                      where vlcar.stationid == Convert.ToInt32(_carnum)
-                                      select vlcar;
-                        pin1_id = pin1_id + 1;
-                        dtoPin pin1 = new dtoPin();
-                        pin1.id = pin1_id;
-                        pin1.idcar = Convert.ToInt32(_carnum);
-                        pin1.idpin = 0;
-                        pin1.pbreak = false;
-                        pin1.pcarcode = carlist.FirstOrDefault().code;
-                        pin1.owner = carlist.FirstOrDefault().owner;
-                        pin1.carsize = carlist.FirstOrDefault().size;
-                        pin1.car1 = carlist.FirstOrDefault().car1;
-                        pin1.car2 = carlist.FirstOrDefault().car2;
-                        pin1.car3 = carlist.FirstOrDefault().car3;
-                        pin1.car4 = carlist.FirstOrDefault().car4;
-                        pin1.car5 = carlist.FirstOrDefault().car5;
-                        memListPin1.Add(pin1);
-                        dtoPinStatus pinStatus = new dtoPinStatus();
-                        pinStatus.carid = pin1.idcar;
-                        pinStatus.pinid = pin1.idpin;
-                        memListPinStatus.Add(pinStatus);
-                        //var list = from c in memListPin1
-                        //           select c;
-                        lboxPin1.DataContext = memListPin1;
-                        lboxPin1.Items.Refresh();
+                        if (lcar == 1)
+                        {
+                            var carlist = from vlcar in memListCar
+                                          where vlcar.stationid == Convert.ToInt32(_carnum)
+                                          select vlcar;
+                            pin1_id = pin1_id + 1;
+                            dtoPin pin1 = new dtoPin();
+                            pin1.id = pin1_id;
+                            pin1.idcar = Convert.ToInt32(_carnum);
+                            pin1.idpin = 0;
+                            pin1.pbreak = false;
+                            pin1.pcarcode = carlist.FirstOrDefault().code;
+                            pin1.owner = carlist.FirstOrDefault().owner;
+                            pin1.carsize = carlist.FirstOrDefault().size;
+                            pin1.car1 = carlist.FirstOrDefault().car1;
+                            pin1.car2 = carlist.FirstOrDefault().car2;
+                            pin1.car3 = carlist.FirstOrDefault().car3;
+                            pin1.car4 = carlist.FirstOrDefault().car4;
+                            pin1.car5 = carlist.FirstOrDefault().car5;
+                            memListPin1.Add(pin1);
+
+                            //Settur status inní lista yfir status
+
+                            dtoPinStatus pinStatus = new dtoPinStatus();
+                            pinStatus.carid = pin1.idcar;
+                            pinStatus.pinid = pin1.idpin;
+                            memListPinStatus.Add(pinStatus);
+                            //var list = from c in memListPin1
+                            //           select c;
+                            lboxPin1.DataContext = memListPin1;
+                            lboxPin1.Items.Refresh();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                        MessageBox.Show("Þessi bíll er á nál.");
                     }
                 }
             }
@@ -298,6 +314,7 @@ namespace sendill_client
         
         // Svæði1 - ListItem events
 
+
         private void btnSendToTour_Click(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
@@ -305,44 +322,13 @@ namespace sendill_client
             MessageBox.Show("Senda þetta bílnúmer í túr " + id.ToString());
         }
 
+
+
+
         private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
         {
-            //Button b = sender as Button;
-            //int id = (int)b.CommandParameter;
-            //int pin = 1;
-            //MessageBox.Show("Senda þetta bílnúmer í túr " + id.ToString());
-            //switch (pin)
-            //{
-            //    case 0:
-            //        {
-            //            var found = memListPin1.FirstOrDefault(c => c.idcar == id);
-            //        }
-            //    case 1:
-            //        {
-            //            var found = memListPin2.FirstOrDefault(c => c.idcar == id);
-            //        }
-            //    case 2:
-            //        {
-            //            var found = memListPin3.FirstOrDefault(c => c.idcar == id);
-            //        }
-            //    case 3:
-            //        {
-            //            var found = memListPin4.FirstOrDefault(c => c.idcar == id);
-            //        }
-            //    case 4:
-            //        {
-            //            var found = memListPin5.FirstOrDefault(c => c.idcar == id);
-            //        }
-            //}
-            //if (found.pbreak == true)
-            //{
-            //    found.pbreak = false;
-            //}
-            //else
-            //{
-            //    found.pbreak = true;
-            //}
-            //lboxPin1.Items.Refresh();
+
+
         }
 
         private void btnCarOnPin_Click(object sender, RoutedEventArgs e)
@@ -440,6 +426,7 @@ namespace sendill_client
             
             #endregion
 
+
             #region Nálar - Svæði2 - Miðbær
 
                 //Svæði 2 Byrjar 
@@ -455,40 +442,48 @@ namespace sendill_client
                         int lcar = (from lc in memListCar
                         where lc.stationid == Convert.ToInt32(_carnum)
                         select lc).Count();
-
-                        if (lcar == 1)
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+                        if (caronpin == 0)
                         {
-                            var carlist = from vlcar in memListCar
-                                          where vlcar.stationid == Convert.ToInt32(_carnum)
-                                          select vlcar;
-                            pin2_id = pin2_id + 1;
-                            dtoPin pin2 = new dtoPin();
-                            pin2.id = pin2_id;
-                            pin2.idcar = Convert.ToInt32(_carnum);
-                            pin2.idpin = 1;
-                            pin2.pbreak = false;
-                            pin2.pcarcode = carlist.FirstOrDefault().code;
-                            pin2.owner = carlist.FirstOrDefault().owner;
-                            pin2.carsize = carlist.FirstOrDefault().size;
-                            pin2.car1 = carlist.FirstOrDefault().car1;
-                            pin2.car2 = carlist.FirstOrDefault().car2;
-                            pin2.car3 = carlist.FirstOrDefault().car3;
-                            pin2.car4 = carlist.FirstOrDefault().car4;
-                            pin2.car5 = carlist.FirstOrDefault().car5;
-                            memListPin2.Add(pin2);
-                            dtoPinStatus pinStatus = new dtoPinStatus();
-                            pinStatus.carid = pin2.idcar;
-                            pinStatus.pinid = pin2.idpin;
-                            memListPinStatus.Add(pinStatus);
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+                                pin2_id = pin2_id + 1;
+                                dtoPin pin2 = new dtoPin();
+                                pin2.id = pin2_id;
+                                pin2.idcar = Convert.ToInt32(_carnum);
+                                pin2.idpin = 1;
+                                pin2.pbreak = false;
+                                pin2.pcarcode = carlist.FirstOrDefault().code;
+                                pin2.owner = carlist.FirstOrDefault().owner;
+                                pin2.carsize = carlist.FirstOrDefault().size;
+                                pin2.car1 = carlist.FirstOrDefault().car1;
+                                pin2.car2 = carlist.FirstOrDefault().car2;
+                                pin2.car3 = carlist.FirstOrDefault().car3;
+                                pin2.car4 = carlist.FirstOrDefault().car4;
+                                pin2.car5 = carlist.FirstOrDefault().car5;
+                                memListPin2.Add(pin2);
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin2.idcar;
+                                pinStatus.pinid = pin2.idpin;
+                                memListPinStatus.Add(pinStatus);
 
-                            lboxPin2.DataContext = memListPin2;
-                            lboxPin2.Items.Refresh();
+                                lboxPin2.DataContext = memListPin2;
+                                lboxPin2.Items.Refresh();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            MessageBox.Show("Bíllinn er á nál.");
                         }
-
                     }
                 }
                 //    if (e.Key == Key.Enter)
@@ -603,6 +598,7 @@ namespace sendill_client
                 // Svæði 2 endar
             #endregion
 
+
             #region Nálar Svæði3 - Breiðholt - Ikea
 
             // Svæði 3 byrjar
@@ -629,6 +625,11 @@ namespace sendill_client
                                 where lc.stationid == Convert.ToInt32(_carnum)
                                 select lc).Count();
 
+                    int caronpin = (from lps in memListPinStatus
+                                    where lps.carid == Convert.ToInt32(_carnum)
+                                    select lps).Count();
+                    if (caronpin == 0)
+                    {
                     if (lcar == 1)
                     {
                         var carlist = from vlcar in memListCar
@@ -662,8 +663,12 @@ namespace sendill_client
                     {
                         MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
                     }
-
                 }
+                else
+                {
+                    MessageBox.Show("Bílinn er þegar á nál.");
+                }
+               }
             }
 
             //Þetta er fyrir endurröðun
@@ -684,45 +689,80 @@ namespace sendill_client
                 }
 
             }
+
+
+
+        // Taka bíl af nál 3
+
+
+
             private void com_A3_Pause_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
             {
+                Debug.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                Debug.WriteLine("++++++++ Taka valinn bíl af nál 3 +++++++++++++++++++++");
                 if (lboxPin3.SelectedItems.Count > 0)
                 {
-                    var selectedcars = lboxPin2.SelectedItems;
-                    int scarid;
+                    var selectedcars = lboxPin3.SelectedItems;
+                    
                     dtoPinStatus itemPinStatus = new dtoPinStatus();
-                    foreach (dtoPin selcar in selectedcars)
+                    dtoPin itemDtoPin = new dtoPin();
+                    Debug.WriteLine("+++++ Fjöldi raða"+ lboxPin3.SelectedItems.Count.ToString() );
+                    foreach(dtoPin selcar in selectedcars)
                     {
-                        MessageBox.Show("Þetta er bíll með stöðvarnúmer " + selcar.idcar.ToString());
-                        foreach (var car in memListPin3)
-                        {
-                            if (car.pline > selcar.pline)
-                            {
-                                car.pline = car.pline - 1;
-                            }
-                        }
-                        memListPin3.Remove(selcar);
-                        lboxPin3.Items.Refresh();
-                        scarid = selcar.idcar;
-                        var list = from t in memListPinStatus
-                                   where t.carid == scarid
-                                   select t;
-                        Debug.WriteLine("Þetta er línan sem á að stroka út úr stöðulistanum.");
-                        foreach (var i in list)
-                        {
-                            itemPinStatus = i;
-                            Debug.WriteLine(i.pinid + " - " + i.carid);
-                        }
-                        memListPinStatus.Remove(itemPinStatus);
+                       MessageBox.Show("Þetta er bíll með stöðvarnúmer " + selcar.idcar.ToString());
+                       itemDtoPin = selcar;
+                        //foreach (var car in memListPin3)
+                        //{
+                        //    if (car.pline > selcar.pline)
+                        //    {
+                        //        car.pline = car.pline - 1;
+                        //    }
+                        //}
+                        //foreach (var i in memListPin3)
+                        //{
+                        //    Debug.WriteLine("-------- " + i.idcar);
+                        //}
+                        //memListPin3.Remove(selcar);
+                        //lboxPin3.Items.Refresh();
+            //            scarid = selcar.idcar;
+            //            var list = from t in memListPinStatus
+            //                       where t.carid == scarid
+            //                       select t;
+            //            Debug.WriteLine("Þetta er línan sem á að stroka út úr stöðulistanum.");
+            //            foreach (var i in list)
+            //            {
+            //                itemPinStatus = i;
+            //                Debug.WriteLine(i.pinid + " - " + i.carid);
+            //            }
+            //            memListPinStatus.Remove(itemPinStatus);
 
-                        Debug.WriteLine("Þetta er stöðuslistinn");
-                        foreach (var a in memListPinStatus)
-                        {
-                            Debug.WriteLine(a.pinid + " - " + a.carid);
-                        }
+            //            Debug.WriteLine("Þetta er stöðuslistinn");
+            //            foreach (var a in memListPinStatus)
+            //            {
+            //                Debug.WriteLine(a.pinid + " - " + a.carid);
+            //            }
 
 
                     }
+                    memListPin3.Remove(itemDtoPin);
+                    lboxPin3.Items.Refresh();
+                    foreach (var i in memListPin3)
+                    {
+                        if (i.pline > itemDtoPin.pline)
+                        {
+                            i.pline = i.pline - 1;
+                        }
+                    }
+                    itemDtoPin = null;
+                    //var list = from t in memListPinStatus
+                    //           where t.carid == itemDtoPin.idcar
+                    //           select t;
+                    //foreach (var i in list)
+                    //{
+                    //    itemPinStatus = i;
+                    //}
+                    memListPinStatus.Remove(itemPinStatus);
+
                 }
                 else
                 {
@@ -733,6 +773,7 @@ namespace sendill_client
         // Svæði 3 endar
 
             #endregion
+
 
             #region Nálar - Svæði4 - Árbær / Bauhaus
 
@@ -749,6 +790,12 @@ namespace sendill_client
                     int lcar = (from lc in memListCar
                                 where lc.stationid == Convert.ToInt32(_carnum)
                                 select lc).Count();
+                    int caronpin = (from lps in memListPinStatus
+                                    where lps.carid == Convert.ToInt32(_carnum)
+                                    select lps).Count();
+                    if (caronpin == 0)
+                    {
+                    
 
                     if (lcar == 1)
                     {
@@ -771,18 +818,24 @@ namespace sendill_client
                         pin4.car4 = carlist.FirstOrDefault().car4;
                         pin4.car5 = carlist.FirstOrDefault().car5;
 
-                        memListPin2.Add(pin4);
+                        memListPin4.Add(pin4);
                         dtoPinStatus pinStatus = new dtoPinStatus();
                         pinStatus.carid = pin4.idcar;
                         pinStatus.pinid = pin4.idpin;
                         memListPinStatus.Add(pinStatus);
 
-                        lboxPin4.DataContext = memListPin2;
+                        lboxPin4.DataContext = memListPin4;
                         lboxPin4.Items.Refresh();
                     }
                     else
                     {
                         MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                    }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bílinn er þegar á nál");
                     }
                 }
            
@@ -817,7 +870,60 @@ namespace sendill_client
                 }
             }
 
+            private void com_A4_Pause_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            {
+                if (lboxPin4.SelectedItems.Count > 0)
+                {
+                    var selectedcars = lboxPin4.SelectedItems;
+                    int scarid;
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    dtoPin itemDtoPin4 = new dtoPin();
+                    Debug.WriteLine("+++++ Fjöldi raða" + lboxPin4.SelectedItems.Count.ToString());
+                    foreach (dtoPin selcar in selectedcars)
+                    {
+                        MessageBox.Show("Þetta er bíll á pin 4 með stöðvarnúmer " + selcar.idcar.ToString());
+                        itemDtoPin4 = selcar;
+                        scarid = selcar.idcar;
+
+                        //Debug.WriteLine("Þetta er línan sem á að stroka út úr stöðulistanum.");
+                        //foreach (var i in list)
+                        //{
+                        //    itemPinStatus = i;
+                        //    Debug.WriteLine(i.pinid + " - " + i.carid);
+                        //}
+                        
+
+
+
+
+                    }
+                    memListPin4.Remove(itemDtoPin4);
+
+                    foreach (var car in memListPin4)
+
+      {
+                        if (car.pline > itemDtoPin4.pline)
+                        {
+                            car.pline = car.pline - 1;
+                        }
+                    }
+                    lboxPin4.ItemsSource = memListPin4;
+                    lboxPin4.Items.Refresh();
+                    Debug.WriteLine("**** Þetta er stöðuslistinn **********");
+                    foreach (var a in memListPinStatus)
+                    {
+                        Debug.WriteLine(a.pinid + " - " + a.carid);
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+            }
+
             #endregion
+
 
             #region Nálar - Svæði5 - Renna
 
@@ -835,40 +941,56 @@ namespace sendill_client
                                 where lc.stationid == Convert.ToInt32(_carnum)
                                 select lc).Count();
 
-                    if (lcar == 1)
+                    int caronpin = (from lps in memListPinStatus
+                                where lps.carid == Convert.ToInt32(_carnum)
+                                select lps).Count();
+                    if (caronpin == 0)
                     {
-                        var carlist = from vlcar in memListCar
-                                      where vlcar.stationid == Convert.ToInt32(_carnum)
-                                      select vlcar;
 
-                        pin5_id = pin5_id + 1;
-                        dtoPin pin5 = new dtoPin();
-                        pin5.id = pin4_id;
-                        pin5.idcar = Convert.ToInt32(_carnum);
-                        pin5.idpin = 4;
-                        pin5.pbreak = false;
-                        pin5.pcarcode = carlist.FirstOrDefault().code;
-                        pin5.owner = carlist.FirstOrDefault().owner;
-                        pin5.carsize = carlist.FirstOrDefault().size;
-                        pin5.car1 = carlist.FirstOrDefault().car1;
-                        pin5.car2 = carlist.FirstOrDefault().car2;
-                        pin5.car3 = carlist.FirstOrDefault().car3;
-                        pin5.car4 = carlist.FirstOrDefault().car4;
-                        pin5.car5 = carlist.FirstOrDefault().car5;
-                        pin5.pline = memListPin5.Count() + 1;
 
-                        memListPin5.Add(pin5);
-                        dtoPinStatus pinStatus = new dtoPinStatus();
-                        pinStatus.carid = pin5.idcar;
-                        pinStatus.pinid = pin5.idpin;
-                        memListPinStatus.Add(pinStatus);
+                        if (lcar == 1)
+                        {
+                            var carlist = from vlcar in memListCar
+                                          where vlcar.stationid == Convert.ToInt32(_carnum)
+                                          select vlcar;
 
-                        lboxPin5.DataContext = memListPin5;
-                        lboxPin5.Items.Refresh();
+                            pin5_id = pin5_id + 1;
+                            dtoPin pin5 = new dtoPin();
+                            pin5.id = pin4_id;
+                            pin5.idcar = Convert.ToInt32(_carnum);
+                            pin5.idpin = 4;
+                            pin5.pbreak = false;
+                            pin5.pcarcode = carlist.FirstOrDefault().code;
+                            pin5.owner = carlist.FirstOrDefault().owner;
+                            pin5.carsize = carlist.FirstOrDefault().size;
+                            pin5.car1 = carlist.FirstOrDefault().car1;
+                            pin5.car2 = carlist.FirstOrDefault().car2;
+                            pin5.car3 = carlist.FirstOrDefault().car3;
+                            pin5.car4 = carlist.FirstOrDefault().car4;
+                            pin5.car5 = carlist.FirstOrDefault().car5;
+                            pin5.pline = memListPin5.Count() + 1;
+
+                            // Bæta við status.
+
+                            memListPin5.Add(pin5);
+                            dtoPinStatus pinStatus = new dtoPinStatus();
+                            pinStatus.carid = pin5.idcar;
+                            pinStatus.pinid = pin5.idpin;
+                            memListPinStatus.Add(pinStatus);
+
+                            // Uppfæra lista.
+                            
+                            lboxPin5.DataContext = memListPin5;
+                            lboxPin5.Items.Refresh();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                        MessageBox.Show(" Bíllinn er á nál. ");
                     }
                 }
             }
@@ -895,9 +1017,15 @@ namespace sendill_client
         
             #endregion
 
-            #region Nálar - Túrar í bið
+
+        #region Nálar - Túrar í bið
+
+        
+
+
 
         #endregion
+
 
             #region Nálar - Bílar í túr
 
@@ -1093,11 +1221,8 @@ namespace sendill_client
             {
                 try
                 {
-                    using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
-                    {
-                        BinaryFormatter bin = new BinaryFormatter();
-                        memListTour = (List<dtoTour>)bin.Deserialize(stream);
-                    }
+                    DBManager db = new DBManager();
+                    memListTour = db.GetAllToursFromFile();
                 }
                 catch (IOException)
                 {
@@ -1126,8 +1251,22 @@ namespace sendill_client
 
             #region Functions
 
-            #endregion
+            public void funcFillToursOnPin()
+            {
+                List<dtoTour> ltour = new List<dtoTour>();
+                dtoTour objtour = new dtoTour();
+                objtour.id = 1;
+                objtour.idpin=1;
+                objtour.taddress="Gtundarstíg 38";
+                objtour.tcontact="Jón Sigurbjörnsson";
+                ltour.Add(objtour);
+                lbox6.ItemsSource=ltour;
 
+
+            }
+
+            #endregion
+     
 
             #region Ónotaður kóði
 
@@ -1258,6 +1397,9 @@ namespace sendill_client
             }
 
         #endregion
+
+
+
 
 
 
