@@ -59,5 +59,43 @@ namespace sendill_client
             window2.memListTour = ltour;
         }
 
+        private void carToolbarComRecFirst_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
+            dtoTourViewSource.Source = ltour;
+            dtoTourViewSource.View.MoveCurrentToFirst();
+        }
+
+        private void carToolbarComRecLast_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
+            dtoTourViewSource.Source = ltour;
+            dtoTourViewSource.View.MoveCurrentToLast();
+        }
+
+        private void carToolbarComRecNext_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
+            dtoTourViewSource.Source = ltour;
+            dtoTourViewSource.View.MoveCurrentToNext();
+            if (dtoTourViewSource.View.IsCurrentAfterLast)
+            {
+                dtoTourViewSource.View.MoveCurrentToFirst();
+            }
+        }
+
+        private void carToolbarComRecPrev_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
+            dtoTourViewSource.Source = ltour;
+            dtoTourViewSource.View.MoveCurrentToPrevious();
+            if (dtoTourViewSource.View.IsCurrentBeforeFirst)
+            {
+                dtoTourViewSource.View.MoveCurrentToLast();
+            }
+        }
+
+
+
     }
 }

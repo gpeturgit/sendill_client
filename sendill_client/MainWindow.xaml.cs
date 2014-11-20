@@ -435,54 +435,71 @@ namespace sendill_client
                     if (e.Key == Key.Enter)
                     {
                         string _carnum;
+                        string _value = "";
+                        bool _istrue;
                         _carnum = txtArea02.Text;
-
-                        txtArea02.Clear();
-                        txtArea02.Text = "";
-                        int lcar = (from lc in memListCar
-                        where lc.stationid == Convert.ToInt32(_carnum)
-                        select lc).Count();
-                        int caronpin = (from lps in memListPinStatus
-                                        where lps.carid == Convert.ToInt32(_carnum)
-                                        select lps).Count();
-                        if (caronpin == 0)
+                        if (_carnum==_value)
                         {
-                            if (lcar == 1)
-                            {
-                                var carlist = from vlcar in memListCar
-                                              where vlcar.stationid == Convert.ToInt32(_carnum)
-                                              select vlcar;
-                                pin2_id = pin2_id + 1;
-                                dtoPin pin2 = new dtoPin();
-                                pin2.id = pin2_id;
-                                pin2.idcar = Convert.ToInt32(_carnum);
-                                pin2.idpin = 1;
-                                pin2.pbreak = false;
-                                pin2.pcarcode = carlist.FirstOrDefault().code;
-                                pin2.owner = carlist.FirstOrDefault().owner;
-                                pin2.carsize = carlist.FirstOrDefault().size;
-                                pin2.car1 = carlist.FirstOrDefault().car1;
-                                pin2.car2 = carlist.FirstOrDefault().car2;
-                                pin2.car3 = carlist.FirstOrDefault().car3;
-                                pin2.car4 = carlist.FirstOrDefault().car4;
-                                pin2.car5 = carlist.FirstOrDefault().car5;
-                                memListPin2.Add(pin2);
-                                dtoPinStatus pinStatus = new dtoPinStatus();
-                                pinStatus.carid = pin2.idcar;
-                                pinStatus.pinid = pin2.idpin;
-                                memListPinStatus.Add(pinStatus);
+                            _istrue = true;
+                        }
+                        else
+                        {
+                            _istrue = false;
+                        }
 
-                                lboxPin2.DataContext = memListPin2;
-                                lboxPin2.Items.Refresh();
+                        if (_istrue == false)
+                        {
+                            txtArea02.Clear();
+                            txtArea02.Text = "";
+                            int lcar = (from lc in memListCar
+                                        where lc.stationid == Convert.ToInt32(_carnum)
+                                        select lc).Count();
+                            int caronpin = (from lps in memListPinStatus
+                                            where lps.carid == Convert.ToInt32(_carnum)
+                                            select lps).Count();
+                            if (caronpin == 0)
+                            {
+                                if (lcar == 1)
+                                {
+                                    var carlist = from vlcar in memListCar
+                                                  where vlcar.stationid == Convert.ToInt32(_carnum)
+                                                  select vlcar;
+                                    pin2_id = pin2_id + 1;
+                                    dtoPin pin2 = new dtoPin();
+                                    pin2.id = pin2_id;
+                                    pin2.idcar = Convert.ToInt32(_carnum);
+                                    pin2.idpin = 1;
+                                    pin2.pbreak = false;
+                                    pin2.pcarcode = carlist.FirstOrDefault().code;
+                                    pin2.owner = carlist.FirstOrDefault().owner;
+                                    pin2.carsize = carlist.FirstOrDefault().size;
+                                    pin2.car1 = carlist.FirstOrDefault().car1;
+                                    pin2.car2 = carlist.FirstOrDefault().car2;
+                                    pin2.car3 = carlist.FirstOrDefault().car3;
+                                    pin2.car4 = carlist.FirstOrDefault().car4;
+                                    pin2.car5 = carlist.FirstOrDefault().car5;
+                                    memListPin2.Add(pin2);
+                                    dtoPinStatus pinStatus = new dtoPinStatus();
+                                    pinStatus.carid = pin2.idcar;
+                                    pinStatus.pinid = pin2.idpin;
+                                    memListPinStatus.Add(pinStatus);
+
+                                    lboxPin2.DataContext = memListPin2;
+                                    lboxPin2.Items.Refresh();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                                MessageBox.Show("Bíllinn er á nál.");
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Bíllinn er á nál.");
+                            MessageBox.Show("Engin tala var sleginn inn");
                         }
                     }
                 }
@@ -1397,6 +1414,12 @@ namespace sendill_client
             }
 
         #endregion
+
+            private void btnNewTour_Click(object sender, RoutedEventArgs e)
+            {
+                winNewTour wt = new winNewTour();
+                wt.ShowDialog();
+            }
 
 
 

@@ -53,6 +53,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!--**************************************************************************************************************-->    
         <CollectionViewSource x:Key="dtoTourViewSource" d:DesignSource="{d:DesignInstance my:dtoTour, CreateList=True}" />
     </Window.Resources>
     <Grid>
@@ -82,22 +83,22 @@
                     <Image Source="/sendill_client;component/Images/ToolbarRecSave.png" Height="20" Width="20"></Image>
                 </StackPanel>
             </Button>
-            <Button Name="carToolbarComRecFirst" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+            <Button Name="carToolbarComRecFirst" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecFirst_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/sendill_client;component/Images/ToolbarRecFirst.png" Height="20" Width="20"></Image>
                 </StackPanel>
             </Button>
-            <Button Name="carToolbarComRecPrev" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+            <Button Name="carToolbarComRecPrev" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecPrev_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/sendill_client;component/Images/ToolbarRecPrev.png" Height="20" Width="20"></Image>
                 </StackPanel>
             </Button>
-            <Button Name="carToolbarComRecNext" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+            <Button Name="carToolbarComRecNext" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecNext_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/sendill_client;component/Images/ToolbarRecNext.png" Height="20" Width="20"></Image>
                 </StackPanel>
             </Button>
-            <Button Name="carToolbarComRecLast" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+            <Button Name="carToolbarComRecLast" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecLast_Click" >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/sendill_client;component/Images/ToolbarRecLast.png" Height="20" Width="20"></Image>
                 </StackPanel>
@@ -107,11 +108,13 @@
         <Grid DataContext="{StaticResource dtoTourViewSource}" Grid.Row="2" HorizontalAlignment="Left" Margin="26,21,0,0" Name="grid3" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -163,11 +166,11 @@
             <!--R6C0 Label Viðskiptavinur-->
             <Label Content="Viðskiptavinur :" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R6C1 Content Viðskiptavinur-->
-            <TextBox Grid.Column="1" Grid.Row="6" Height="23" HorizontalAlignment="Left" Margin="3" Name="tcustomerTextBox" Text="{Binding Path=tcustomer, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="6" Height="23" Margin="3" Name="tcustomerTextBox" Text="{Binding Path=tcustomer, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="200" />
             <!--R7C0 Label Tengiliður-->
             <Label Content="Hver pantaði :" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R7C1 Content Tengiliður-->
-            <TextBox Grid.Column="1" Grid.Row="7" Height="23" HorizontalAlignment="Left" Margin="3" Name="tcontactTextBox" Text="{Binding Path=tcontact, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="7" Height="23" HorizontalAlignment="Left" Margin="3" Name="tcontactTextBox" Text="{Binding Path=tcontact, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="200" />
 
             <!--R8C0 Label Athugasemdir-->
             <Label Content="Athugasemdir" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" />

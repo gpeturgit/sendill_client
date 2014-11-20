@@ -47,5 +47,11 @@ namespace sendill_client
             winNewTour wt= new winNewTour();
             wt.Show();
         }
+
+        private void comSendaSms_Click(object sender, RoutedEventArgs e)
+        {
+            winSendSms wss = new winSendSms();
+            wss.Show();
+        }
     }
 }
