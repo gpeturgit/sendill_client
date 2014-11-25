@@ -137,7 +137,7 @@
         <!--*********************************************************************************************************-->
         <DataTemplate x:Key="TourOnPin" x:Name="dtTourOnPin" >
             <StackPanel Orientation="Horizontal">
-                <Image Name="TourHouse" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32" />
+                <Image Name="TourHouse" Source="/sendill_client;component/Images/utour3232.png" MinHeight="0" Margin="2" Height="32" />
                 <Label Content="{Binding Path=time}"  Width="50" FontSize="14" VerticalAlignment="Center" />
                 <Label Content="{Binding Path=idpin}" Width="40" FontSize="14" VerticalAlignment="Center" />
                 <Image Name="TourDriver" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32" />
@@ -173,9 +173,9 @@
                 <Button Name="comLoadCarsToLocalCouch" Content="Setja bíla í sófa" />
             </Grid>
         </wpfx:ChildWindow>
-        <!--*********************************************************************************************************-->
+        <!--*****************************************************************************************************************-->
         <!-- Modal Tours window -->
-        <!--*********************************************************************************************************-->
+        <!--*****************************************************************************************************************-->
         <wpfx:ChildWindow Name="childWinTours" Height="600" Width="800" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsModal="True">
             <Grid>
                 <Grid.RowDefinitions>
@@ -553,10 +553,13 @@
                     </TextBox.Background>
                 </TextBox>
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
-                        <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" Name="txtArea07" Text="" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" BorderBrush="#FF224591" KeyDown="txtArea05_KeyDown" ></TextBox>
-                        <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA7_off" />
-                        <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA7_pause"/>
-                        <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA7_reorder"/>
+              
+                        <Button x:Name="btnNewTour" CommandParameter="{Binding idcar}" Click="btnNewTour_Click"  Style="{StaticResource BorderlessButton}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Images/tour_new.png" MinHeight="0" Margin="2,2,6,2" Height="24" />
+                                <TextBlock Text="Skrá nýjan túr" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                     <ListBox  Height="249" Background="#FFBFC9D9" Name="lbox7">
 

@@ -55,7 +55,6 @@
         <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
             <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"></Image>
             <TextBlock Text="Túrar" TextAlignment="Left" VerticalAlignment="Center" Width="94" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
-            <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
         </StackPanel>
         <!--<StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="DarkBlue" Orientation="Horizontal" Grid.Row="0">        
         </ToolBar>-->
