@@ -538,10 +538,10 @@
                         <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA6_pause"/>
                         <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA6_reorder"/>
                     </StackPanel>
-            <!--***************************************************************************************************************************************-->
+            <!--*********************************************************************************************************-->
             <!-- Túrar og biðtúrar -->
-            <!--***************************************************************************************************************************************-->
-            <ListBox  Height="248" Background="#FFBAC4D5" Name="lbox6" ItemsSource="{Binding}" ItemTemplate="{StaticResource TourOnPin}" Style="{StaticResource pinListboxStyle}">
+            <!--*********************************************************************************************************-->
+                    <ListBox  Height="248" Background="#FFBAC4D5" Name="lbox6" ItemsSource="{Binding}" ItemTemplate="{StaticResource TourOnPin}" Style="{StaticResource pinListboxStyle}">
 
             </ListBox>
                 <TextBox Text="Biðtúrar" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
@@ -553,6 +553,7 @@
                     </TextBox.Background>
                 </TextBox>
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
+              
                         <Button x:Name="btnNewTour" CommandParameter="{Binding idcar}" Click="btnNewTour_Click"  Style="{StaticResource BorderlessButton}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/tour_new.png" MinHeight="0" Margin="2,2,6,2" Height="24" />

@@ -32,6 +32,7 @@ namespace sendill_client
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
+        
         public List<dtoPin>   memListPin1  =  new List<dtoPin>();
         public List<dtoPin>   memListPin2  =  new List<dtoPin>();
         public List<dtoPin>   memListPin3  =  new List<dtoPin>();
@@ -288,7 +289,6 @@ namespace sendill_client
 
                             //Settur status inní lista yfir status
 
-
                             dtoPinStatus pinStatus = new dtoPinStatus();
                             pinStatus.carid = pin1.idcar;
                             pinStatus.pinid = pin1.idpin;
@@ -328,6 +328,27 @@ namespace sendill_client
 
         private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Klikkað á kaffitíma.");
+            Button b = sender as Button;
+            int id = (int)b.CommandParameter;
+            var pinnum = (from mpin in memListPinStatus
+                          where mpin.carid == id
+                          select mpin).FirstOrDefault().pinid;
+            pinnum = 1;
+
+            if(pinnum==1)
+            {
+                var _pin = lboxPin1.SelectedItem as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin1.Items.Refresh();
+            }
 
         }
 
@@ -1250,7 +1271,6 @@ namespace sendill_client
                 try
                 {
                     using (Stream stream = File.Open(@"C:\dbsendill\carfile.bin", FileMode.Open))
-                    //using (Stream stream = File.Open(@"..\LocalData\carfile.bin", FileMode.Open))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
                         MessageBox.Show("Binary formatter lokið");
@@ -1418,8 +1438,7 @@ namespace sendill_client
 
             private void btnNewTour_Click(object sender, RoutedEventArgs e)
             {
-                winNewTour wt = new winNewTour();
-                wt.ShowDialog();
+
             }
 
 
