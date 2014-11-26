@@ -284,6 +284,12 @@
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="LocaData\carfile.bin" />
+    <None Include="LocaData\datastatus.bin" />
+    <None Include="LocaData\list_customers.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="LocaData\list_tours.bin" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\dbsendillEntities.datasource" />
     <None Include="Properties\DataSources\dtoCustomer.datasource" />
@@ -372,7 +378,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DbSendill\" />
-    <Folder Include="LocaData\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\tours_128_over.png" />
@@ -559,9 +564,38 @@
     <Resource Include="Images\ToolbarRecSave.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ProjectRef\Microsoft.ReportViewer.WinForms.dll" />
+    <Content Include="ProjectRef\Newtonsoft.Json.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Design.4.0.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Design.4.0.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Expression.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Expression.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.VisualStudio.Design.pdb" />
     <Resource Include="Images\utour.png" />
     <Resource Include="Images\utour3232.png" />
     <Resource Include="Images\tour_new.png" />
+    <Content Include="ProjectRef\WPFToolkit.Extended.dll" />
     <Content Include="SendillContext.edmx.sql" />
     <None Include="Service References\ServiceReference1\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
