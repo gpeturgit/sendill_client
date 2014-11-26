@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace sendill_client
 {
@@ -21,6 +22,23 @@ namespace sendill_client
         public winPinLog()
         {
             InitializeComponent();
+            LoadToursToList();
+            
         }
+
+
+        private void LoadToursToList()
+        {
+            try
+            {
+                DBManager db = new DBManager();
+                var memListTour = db.GetAllToursFromFile();
+                
+            }
+            catch (IOException)
+            {
+            }
+        }
+
     }
 }

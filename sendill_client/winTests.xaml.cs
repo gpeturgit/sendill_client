@@ -38,8 +38,10 @@ namespace sendill_client
 
         private void comEndurrada_Click(object sender, RoutedEventArgs e)
         {
-            frmPinReorder winPinReorder = new frmPinReorder();
-            winPinReorder.Show();
+            //frmPinReorder winPinReorder = new frmPinReorder();
+            //winPinReorder.Show();
+            winPinLog wpl = new winPinLog();
+            wpl.Show();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)

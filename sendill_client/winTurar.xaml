@@ -1,7 +1,8 @@
-﻿<Window x:Class="sendill_client.winTurar"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:sendill_client" x:Class="sendill_client.winTurar"
         Title="Túrar" Height="740" Width="1024" WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
@@ -9,8 +10,8 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="260*" />
         </Grid.RowDefinitions>
-        <wpfx:ChildWindow Name="PopupNewTourWindow" Caption="Sráning nýrra túra" Height="350" IsModal="True" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="3" >
-            <Grid Name="ChildWinGrid">
+        <wpfx:ChildWindow x:Name="PopupNewTourWindow" Caption="Sráning nýrra túra" Height="350" IsModal="True" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="3" >
+            <Grid x:Name="ChildWinGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="Auto" />
@@ -21,31 +22,31 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="20" />
-                    <RowDefinition Height="Auto" />                   
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
-                <Label Name="lblIdCar" Content="Stöðvarnúmer :" Grid.Column="1" Grid.Row="1"></Label>              
-                <Label Name="lblAddress" Content="Ekið frá :" Grid.Column="1" Grid.Row="2"></Label>
-                <Label Name="lblContact" Content="Umbeðið af :" Grid.Column="1" Grid.Row="3"></Label>
-                <Label Name="lblPhone" Content="Sími :" Grid.Column="1" Grid.Row="4"></Label>
-                <Label Name="lblListedCustomer" Content="Fastur viðskiptavinur :" Grid.Column="1" Grid.Row="5"></Label>
-                <Label Name="lblNote" Content="Athugasemdir :" Grid.Column="1" Grid.Row="6"></Label>
-                
-                
-                <TextBox Name="txtIdCar" Grid.Column="2" Grid.Row="1"/>
-                <TextBox Name="txtAddress" Grid.Column="2" Grid.Row="2"/>
-                <TextBox Name="txtContact" Grid.Column="2" Grid.Row="3"/>
-                <TextBox Name="txtPhone" Grid.Column="2" Grid.Row="4"/>
-                <TextBox Name="txtCustomer" Grid.Column="2" Grid.Row="5" />
-                <TextBox Name="txtNote" Grid.Column="2" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True" Height="50" />
-                <ComboBox Name="comboCustomer" DisplayMemberPath="name" Grid.Row="7" Grid.Column="2" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="comboCustomer_SelectionChanged" KeyDown="comboCustomer_KeyDown" />
-                <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right"> 
-                    <Button Name="comChildSave" Width="75" Click="comChildSave_Click">Geyma </Button>
-                    <Button Name="comChildCancel" Width="75" Click="comChildCancel_Click">Hætta við</Button>
+                <Label x:Name="lblIdCar" Content="Stöðvarnúmer :" Grid.Column="1" Grid.Row="1"/>
+                <Label x:Name="lblAddress" Content="Ekið frá :" Grid.Column="1" Grid.Row="2"/>
+                <Label x:Name="lblContact" Content="Umbeðið af :" Grid.Column="1" Grid.Row="3"/>
+                <Label x:Name="lblPhone" Content="Sími :" Grid.Column="1" Grid.Row="4"/>
+                <Label x:Name="lblListedCustomer" Content="Fastur viðskiptavinur :" Grid.Column="1" Grid.Row="5"/>
+                <Label x:Name="lblNote" Content="Athugasemdir :" Grid.Column="1" Grid.Row="6"/>
+
+
+                <TextBox x:Name="txtIdCar" Grid.Column="2" Grid.Row="1"/>
+                <TextBox x:Name="txtAddress" Grid.Column="2" Grid.Row="2"/>
+                <TextBox x:Name="txtContact" Grid.Column="2" Grid.Row="3"/>
+                <TextBox x:Name="txtPhone" Grid.Column="2" Grid.Row="4"/>
+                <TextBox x:Name="txtCustomer" Grid.Column="2" Grid.Row="5" />
+                <TextBox x:Name="txtNote" Grid.Column="2" Grid.Row="6" TextWrapping="Wrap" AcceptsReturn="True" Height="50" />
+                <ComboBox x:Name="comboCustomer" DisplayMemberPath="name" Grid.Row="7" Grid.Column="2" IsEditable="True" IsTextSearchEnabled="True" SelectionChanged="comboCustomer_SelectionChanged" KeyDown="comboCustomer_KeyDown" />
+                <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="comChildSave" Width="75" Click="comChildSave_Click" Content="Geyma"/>
+                    <Button x:Name="comChildCancel" Width="75" Click="comChildCancel_Click" Content="Hætta við"/>
                 </StackPanel>
 
 
@@ -53,38 +54,38 @@
             </Grid>
         </wpfx:ChildWindow>
         <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
-            <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"></Image>
+            <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"/>
             <TextBlock Text="Túrar" TextAlignment="Left" VerticalAlignment="Center" Width="94" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
         </StackPanel>
         <!--<StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="DarkBlue" Orientation="Horizontal" Grid.Row="0">        
         </ToolBar>-->
 
-        <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-            <Button Name="comTBarNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarNew_Click">
-                <Image Source="/sendill_client;component/Images/newDarkBlue32.png"> </Image>
+        <StackPanel HorizontalAlignment="Stretch" x:Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
+            <Button x:Name="comTBarNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarNew_Click">
+                <Image Source="/sendill_client;component/Images/newDarkBlue32.png"/>
             </Button>
-            <Button Name="comTBarSave" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarSave_Click">
-                <Image Source="/sendill_client;component/Images/saveDarkBlue32.png" ></Image>
+            <Button x:Name="comTBarSave" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarSave_Click">
+                <Image Source="/sendill_client;component/Images/saveDarkBlue32.png" />
             </Button>
-            <Button Name="comTBarDelete" BorderBrush="{x:Null}" Foreground="DarkBlue" Margin="0,0,0,0" Width="35" BorderThickness="0" FontSize="16" Background="#FFB9C9DA" >
-                <Image Source="/sendill_client;component/Images/deleteDarkBlue32.png"></Image>
+            <Button x:Name="comTBarDelete" BorderBrush="{x:Null}" Foreground="DarkBlue" Margin="0,0,0,0" Width="35" BorderThickness="0" FontSize="16" Background="#FFB9C9DA" >
+                <Image Source="/sendill_client;component/Images/deleteDarkBlue32.png"/>
             </Button>
-            <Label Content="Frá :" Height="28" Name="label1" />
-            <DatePicker Height="25" Name="datePicker1" Width="115" />
-            <Label Content="Til :" Height="28" Name="label2" />
-            <DatePicker Height="25" Name="datePicker2" Width="115" />
+            <Label Content="Frá :" Height="28" x:Name="label1" />
+            <DatePicker Height="25" x:Name="datePicker1" Width="115" />
+            <Label Content="Til :" Height="28" x:Name="label2" />
+            <DatePicker Height="25" x:Name="datePicker2" Width="115" />
         </StackPanel>
-        <DataGrid AutoGenerateColumns="False" Name="dataGridTurar" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
+        <DataGrid AutoGenerateColumns="False" x:Name="dataGridTurar" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
             <DataGrid.Columns>
-                
-                <DataGridTextColumn Header="Dagsetning" Binding="{Binding tdatetime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=t}" Width="80"/>
+
+                <DataGridTextColumn Header="Dagsetning" Binding="{Binding tdatetime, Mode=OneWay, StringFormat=t, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                 <DataGridTextColumn Header="Tími" Binding="{Binding tdatetime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                <DataGridTextColumn Header="Stöðvarnúmer" Binding="{Binding idcar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>          
+                <DataGridTextColumn Header="Stöðvarnúmer" Binding="{Binding idcar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
                 <DataGridTextColumn Header="Ekið frá" Binding="{Binding taddress}" Width="250" />
                 <DataGridTextColumn Header="Umbeðið af" Binding="{Binding tcontact, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250" />
                 <DataGridTextColumn Header="Sími" Binding="{Binding tphone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
                 <DataGridTextColumn Header="Fastur viðskiptavinur" Binding="{Binding tcustomer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150"/>
-            
+
             </DataGrid.Columns>
             <!--<DataGrid.RowDetailsTemplate>
                 <DataTemplate>
@@ -97,6 +98,9 @@
                     </Grid>
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>-->
+            <DataGrid.DataContext>
+                <local:dtoTour/>
+            </DataGrid.DataContext>
         </DataGrid>
     </Grid>
 </Window>

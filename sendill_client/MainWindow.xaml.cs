@@ -288,6 +288,7 @@ namespace sendill_client
 
                             //Settur status inní lista yfir status
 
+
                             dtoPinStatus pinStatus = new dtoPinStatus();
                             pinStatus.carid = pin1.idcar;
                             pinStatus.pinid = pin1.idpin;
@@ -327,7 +328,6 @@ namespace sendill_client
 
         private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
         {
-
 
         }
 
@@ -1250,6 +1250,7 @@ namespace sendill_client
                 try
                 {
                     using (Stream stream = File.Open(@"C:\dbsendill\carfile.bin", FileMode.Open))
+                    //using (Stream stream = File.Open(@"..\LocalData\carfile.bin", FileMode.Open))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
                         MessageBox.Show("Binary formatter lokið");
