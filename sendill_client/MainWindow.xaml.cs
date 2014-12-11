@@ -331,6 +331,8 @@ namespace sendill_client
             Button b = sender as Button;
             int id = (int)b.CommandParameter;
             MessageBox.Show("Senda þetta bílnúmer í túr " + id.ToString());
+            ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+            lbi.IsSelected = true;
         }
 
 
