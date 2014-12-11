@@ -65,7 +65,7 @@
         <!--*********************************************************************************************************-->
         <DataTemplate x:Key="CarOnPin" x:Name="dtCarOnPin">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Click="btnCarOnPin_Click" Style="{StaticResource BorderlessButton}">
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Click="btnCarOnPin_Click" Style="{StaticResource BorderlessButton}" IsEnabled="False">
                     <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32">
                     <Image.ToolTip>
                         <ToolTip>
@@ -102,7 +102,7 @@
                 </Button>
                 <Label Content="{Binding Path=idcar}"  Width="40" FontSize="14" VerticalAlignment="Center" />
                 <Label Content="{Binding Path=pcarcode}" Width="50" FontSize="14" VerticalAlignment="Center" />
-                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Click="btnCoffeebreak_Click" Style="{StaticResource BorderlessButton}">
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Click="btnCoffeebreak_Click" Style="{StaticResource BorderlessButton}" IsEnabled="False">
                     <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CoffeeRed32.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
                 </Button>
                 <Button x:Name="btnSendToTour" CommandParameter="{Binding idcar}" Click="btnSendToTour_Click" Style="{StaticResource BorderlessButton}">
@@ -333,9 +333,13 @@
                 </TextBox>
                 <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                     <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea01" TextChanged="txtArea01_TextChanged" TextInput="txtArea01_TextInput" KeyDown="txtArea01_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea01_LostFocus" BorderBrush="#FF224591"></TextBox>
-                    <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_reorder" MouseLeftButtonDown="comA1_off_MouseLeftButtonDown" />
-                    <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_Off" MouseLeftButtonDown="com_A1_Off_MouseLeftButtonDown" />
-                    <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_filter">
+                        <Button x:Name="btnPinOneMooveUp" Click="btnPinOneMooveUp_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                            <Image Source="Images\sendill_swapup_24_1_#FF45597C.png"/>
+                        </Button>
+                        <Button x:Name="btnPinOneMooveDown" Click="btnPinOneMooveDown_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                            <Image Source="Images\sendill_swapdown_24_1_#FF45597C.png"/>
+                        </Button>
+                        <Image Source="Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_filter">
                             <Image.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Raða í stæði">
@@ -351,8 +355,8 @@
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                            <Setter Property="Background" Value="White"/>
-                        </Style>
+                                <Setter Property="Background" Value="White"/>
+                            </Style>
                     </ListBox.ItemContainerStyle>
             </ListBox>
         </StackPanel>

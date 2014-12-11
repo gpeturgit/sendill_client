@@ -32,7 +32,7 @@ namespace sendill_client
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
-        
+        public List<dtoPin>[] arrListPin = new List<dtoPin>[6];
         public List<dtoPin>   memListPin1  =  new List<dtoPin>();
         public List<dtoPin>   memListPin2  =  new List<dtoPin>();
         public List<dtoPin>   memListPin3  =  new List<dtoPin>();
@@ -56,7 +56,7 @@ namespace sendill_client
             LoadCarsToMem();
             LoadCustomersToMem();
             LoadCarsToList();
-                                                                  
+            funcStyleListBox();                                                    
             ContextMenu mnuNightService = new ContextMenu();
             MenuItem mitem01 = new MenuItem();
             
@@ -1261,6 +1261,7 @@ namespace sendill_client
                 {
                     DBManager db = new DBManager();
                     memListTour = db.GetAllToursFromFile();
+                    //arrListPin[0].Add(db.)
                 }
                 catch (IOException)
                 {
@@ -1302,6 +1303,17 @@ namespace sendill_client
 
 
             }
+
+        public void funcStyleListBox()
+            {
+
+                //Style itemContainerStyle = new Style(typeof(ListBoxItem));
+                //itemContainerStyle.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
+                //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.MouseDownEvent, new MouseButtonEventHandler(s_PreviewMouseLeftButtonDown)));
+                //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, new DragEventHandler(lboxPin1_drop)));
+                //lboxPin1.ItemContainerStyle = itemContainerStyle;
+            }
+
 
             #endregion
      
@@ -1437,6 +1449,16 @@ namespace sendill_client
         #endregion
 
             private void btnNewTour_Click(object sender, RoutedEventArgs e)
+            {
+                
+            }
+
+            private void btnPinOneMooveUp_Click(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+            private void btnPinOneMooveDown_Click(object sender, RoutedEventArgs e)
             {
 
             }
