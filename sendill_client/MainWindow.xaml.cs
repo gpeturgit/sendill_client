@@ -33,7 +33,7 @@ namespace sendill_client
         public bool isStartup;
         public string extDataChange;
         
-        public List<dtoPin>   memListPin1  =  new List<dtoPin>();
+        public IList<dtoPin>   memListPin1  =  new List<dtoPin>();
         public List<dtoPin>   memListPin2  =  new List<dtoPin>();
         public List<dtoPin>   memListPin3  =  new List<dtoPin>();
         public List<dtoPin>   memListPin4  =  new List<dtoPin>();
@@ -226,12 +226,22 @@ namespace sendill_client
 
         private void comA1_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (memListPin5.Count > 1)
+            if (memListPin1.Count > 1)
             {
-                txtReorderHeader.Text = "  Endurraða Stöðin";
-                childWinReorderPin.Show();
-                childWinReorderPin_DataGrid.ItemsSource = memListPin1;
-                _pinid = 0;
+                //txtReorderHeader.Text = "  Endurraða Stöðin";
+                //childWinReorderPin.Show();
+                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                //_pinid = 0;
+                int i = lboxPin1.SelectedIndex;
+                int ic = lboxPin1.Items.Count;
+                Debug.Print("Selected index:  " + i.ToString() + "  ItemsCount:  " + ic.ToString());
+                dtoPin sitem = memListPin1[i];
+                Debug.Print("Bíll númer "+sitem.idcar.ToString()+" er númer "+i.ToString());
+                memListPin1.RemoveAt(i);
+                memListPin1.Insert(i - 1,sitem);
+                lboxPin1.DataContext = memListPin1;
+                lboxPin1.Items.Refresh();
+                
 
             }
             else
