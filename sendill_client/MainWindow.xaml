@@ -333,10 +333,10 @@
                 </TextBox>
                 <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                     <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea01" TextChanged="txtArea01_TextChanged" TextInput="txtArea01_TextInput" KeyDown="txtArea01_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea01_LostFocus" BorderBrush="#FF224591"></TextBox>
-                        <Button x:Name="btnPinOneMooveUp" Click="btnPinOneMooveUp_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                        <Button x:Name="btnPinOneMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True">
                             <Image Source="Images\sendill_swapup_24_1_#FF45597C.png"/>
                         </Button>
-                        <Button x:Name="btnPinOneMooveDown" Click="btnPinOneMooveDown_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                        <Button x:Name="btnPinOneMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True">
                             <Image Source="Images\sendill_swapdown_24_1_#FF45597C.png"/>
                         </Button>
                         <Image Source="Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_filter">

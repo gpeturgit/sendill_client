@@ -32,8 +32,8 @@ namespace sendill_client
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
-        public List<dtoPin>[] arrListPin = new List<dtoPin>[6];
-        public List<dtoPin>   memListPin1  =  new List<dtoPin>();
+        
+        public IList<dtoPin>   memListPin1  =  new List<dtoPin>();
         public List<dtoPin>   memListPin2  =  new List<dtoPin>();
         public List<dtoPin>   memListPin3  =  new List<dtoPin>();
         public List<dtoPin>   memListPin4  =  new List<dtoPin>();
@@ -56,7 +56,7 @@ namespace sendill_client
             LoadCarsToMem();
             LoadCustomersToMem();
             LoadCarsToList();
-            funcStyleListBox();                                                    
+                                                                  
             ContextMenu mnuNightService = new ContextMenu();
             MenuItem mitem01 = new MenuItem();
             
@@ -226,12 +226,22 @@ namespace sendill_client
 
         private void comA1_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (memListPin5.Count > 1)
+            if (memListPin1.Count > 1)
             {
-                txtReorderHeader.Text = "  Endurraða Stöðin";
-                childWinReorderPin.Show();
-                childWinReorderPin_DataGrid.ItemsSource = memListPin1;
-                _pinid = 0;
+                //txtReorderHeader.Text = "  Endurraða Stöðin";
+                //childWinReorderPin.Show();
+                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                //_pinid = 0;
+                int i = lboxPin1.SelectedIndex;
+                int ic = lboxPin1.Items.Count;
+                Debug.Print("Selected index:  " + i.ToString() + "  ItemsCount:  " + ic.ToString());
+                dtoPin sitem = memListPin1[i];
+                Debug.Print("Bíll númer "+sitem.idcar.ToString()+" er númer "+i.ToString());
+                memListPin1.RemoveAt(i);
+                memListPin1.Insert(i - 1,sitem);
+                lboxPin1.DataContext = memListPin1;
+                lboxPin1.Items.Refresh();
+                
 
             }
             else
@@ -321,6 +331,8 @@ namespace sendill_client
             Button b = sender as Button;
             int id = (int)b.CommandParameter;
             MessageBox.Show("Senda þetta bílnúmer í túr " + id.ToString());
+            ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+            lbi.IsSelected = true;
         }
 
 
@@ -1261,7 +1273,6 @@ namespace sendill_client
                 {
                     DBManager db = new DBManager();
                     memListTour = db.GetAllToursFromFile();
-                    //arrListPin[0].Add(db.)
                 }
                 catch (IOException)
                 {
@@ -1303,17 +1314,6 @@ namespace sendill_client
 
 
             }
-
-        public void funcStyleListBox()
-            {
-
-                //Style itemContainerStyle = new Style(typeof(ListBoxItem));
-                //itemContainerStyle.Setters.Add(new Setter(ListBoxItem.AllowDropProperty, true));
-                //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.MouseDownEvent, new MouseButtonEventHandler(s_PreviewMouseLeftButtonDown)));
-                //itemContainerStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, new DragEventHandler(lboxPin1_drop)));
-                //lboxPin1.ItemContainerStyle = itemContainerStyle;
-            }
-
 
             #endregion
      
@@ -1449,16 +1449,6 @@ namespace sendill_client
         #endregion
 
             private void btnNewTour_Click(object sender, RoutedEventArgs e)
-            {
-                
-            }
-
-            private void btnPinOneMooveUp_Click(object sender, RoutedEventArgs e)
-            {
-
-            }
-
-            private void btnPinOneMooveDown_Click(object sender, RoutedEventArgs e)
             {
 
             }
