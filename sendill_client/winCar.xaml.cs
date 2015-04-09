@@ -37,8 +37,14 @@ namespace sendill_client
            .FirstOrDefault(window => window is MainWindow) as MainWindow;
             ocar = window2.memListCar;
             CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
+            masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid",System.ComponentModel.ListSortDirection.Ascending));
             masterviewsource.Source = ocar;
+            
             mainGrid.DataContext = masterviewsource;
+
+            comboCarType.ItemsSource = CreateCroup();
+            comboCarType.DisplayMemberPath = "name";
+            comboCarType.SelectedValuePath = "type";
 
         }
 
@@ -56,11 +62,12 @@ namespace sendill_client
         private void button1_Click(object sender, RoutedEventArgs e)
         {
 
-            FileStream fs = new FileStream(@"C:\dbsendill\list_cars.bin", FileMode.Create);
+            FileStream fs = new FileStream(@"C:\dbsendill\list_carall.bin", FileMode.Create);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, ocar);
             fs.Close();
             MessageBox.Show("Bílalisti uppfærður");
+
 
         }
 
@@ -68,57 +75,7 @@ namespace sendill_client
 
         private void comSave_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new dbsendillEntities())
-            {
-                foreach(var ocars in ocar)
-                {
-                    var tblcars = new tbl_cars();
-                    tblcars.ID = ocars.id;
-                    tblcars.address = ocars.address;
-                    tblcars.back_door_height = ocars.backdoorheight;
-                    tblcars.back_door_width = ocars.backdoorlength;
-                    tblcars.car1 = ocars.car1;
-                    tblcars.car2 = ocars.car2;
-                    tblcars.car3 = ocars.car3;
-                    tblcars.car4 = ocars.car4;
-                    tblcars.car5 = ocars.car5;
-                    tblcars.car6 = ocars.car6;
-                    tblcars.car7 = ocars.car7;
-                    tblcars.car8 = ocars.car8;
-                    tblcars.car9 = ocars.car9;
-                    tblcars.carname = ocars.carname;
-                    tblcars.carnumber = ocars.carnumber;
-                    tblcars.code = ocars.code;
-                    tblcars.daddress = ocars.daddress;
-                    tblcars.dkt = ocars.dkt;
-                    tblcars.dmobile = ocars.dmobile;
-                    tblcars.dphone = ocars.dphone;
-                    tblcars.dpostcode = ocars.dpostcode;
-                    tblcars.driver = ocars.driver;
-                    tblcars.dtown = ocars.dtown;
-                    tblcars.heightofbox = ocars.heightofbox;
-                    tblcars.kt = ocars.kt;
-                    tblcars.length = ocars.length;
-                    tblcars.lift_size = ocars.liftsize;
-                    tblcars.listed = ocars.listed;
-                    tblcars.max_carry = ocars.maxcarry;
-                    tblcars.mobile = ocars.mobile;
-                    tblcars.model = ocars.model;
-                    tblcars.owner = ocars.owner;
-                    tblcars.phone = ocars.phone;
-                    tblcars.postcode = ocars.postcode;
-                    tblcars.side_door_height = ocars.sidedoorheight;
-                    tblcars.side_door_width = ocars.sidedoorlength;
-                    tblcars.stationid = Convert.ToInt16(ocars.stationid);
-                    tblcars.town = ocars.town;
-                    tblcars.Volume = ocars.volume;
-                    tblcars.weight_limit = ocars.weightlimit;
-                    tblcars.width = ocars.width;
-                    db.tbl_cars.AddObject(tblcars);
-                }
-                db.SaveChanges();
-                MessageBox.Show("Gagnagrunnur uppfærður");
-            }
+
         }
 
 
@@ -137,7 +94,7 @@ namespace sendill_client
             CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
             masterviewsource.Source = ocar;
             masterviewsource.View.MoveCurrentToFirst();
-            
+
         }
 
 
@@ -168,21 +125,83 @@ namespace sendill_client
             masterviewsource.View.MoveCurrentToLast();
 
         }
-    }
 
-    public static class ObservableExtensions
-    {
-        public static ObservableCollection<T> ToObservableCollection<T>(this List<T> items)
+        private void carToolbarComRecNew_Click(object sender, RoutedEventArgs e)
         {
-            ObservableCollection<T> collection = new ObservableCollection<T>();
+            dtoCars _car = new dtoCars();
+            int rid = 1000 + ocar.Count();
+                _car.id=rid;
+            ocar.Add(_car);
+            CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
+            masterviewsource.Source = ocar;
+            masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("id", System.ComponentModel.ListSortDirection.Ascending));
+            masterviewsource.View.MoveCurrentToFirst();
 
-            foreach (var item in items)
-            {
-                collection.Add(item);
-            }
+        }
 
-            return collection;
+                public class CarGroups
+        {
+            public string name { get; set; }
+            public int type { get; set; }
+        }
+
+        private List<CarGroups> CreateCroup()
+        {
+            List<CarGroups> _cargroup = new List<CarGroups>();
+            CarGroups _ocg = new CarGroups();
+            _ocg.type = 1;
+            _ocg.name = "Lítill";
+            _cargroup.Add(_ocg);
+            _ocg = new CarGroups();
+            _ocg.type = 2;
+            _ocg.name = "Milli";
+            _cargroup.Add(_ocg);
+            _ocg = new CarGroups();
+            _ocg.type = 3;
+            _ocg.name = "Stór";
+            _cargroup.Add(_ocg);
+
+            return _cargroup;
+        }
+
+        private void carToolbarComRecSave_Click(object sender, RoutedEventArgs e)
+        {
+            FileStream fs = new FileStream(@"C:\dbsendill\list_carall.bin", FileMode.Create);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, ocar);
+            fs.Close();
+            MessageBox.Show("Bílalisti uppfærður");
+            CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
+            masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid", System.ComponentModel.ListSortDirection.Ascending));
+
+            masterviewsource.Source = ocar;
+            mainGrid.DataContext = masterviewsource;
+
+        }
+
+        private void RibbonButton_Click(object sender, RoutedEventArgs e)
+        {
+            winCarDetail wcd = new winCarDetail();
+            wcd.Show();
+        }
+
+        private void carToolbarComRecDelete_Click(object sender, RoutedEventArgs e)
+        {
+            int _idcar=Convert.ToInt32(txtId.Text);
+            dtoCars _car = ocar.Find(x => x.id.Equals(_idcar));
+            ocar.Remove(_car);
+            CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
+            masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid", System.ComponentModel.ListSortDirection.Ascending));
+            masterviewsource.Source = ocar;
+            mainGrid.DataContext = masterviewsource;
+
+
         }
     }
-}
+
+
+
+
+    }
+
 

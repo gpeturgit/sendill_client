@@ -15,7 +15,7 @@
             <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
         </StackPanel>
         <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-            <Button Name="comNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" >
+            <Button Name="comNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comNew_Click" >
                 <Image Source="/sendill_client;component/Images/newDarkBlue32.png" ></Image>
             </Button>
             <Button Name="comPrev" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" >
@@ -25,6 +25,6 @@
                 <Image Source="/sendill_client;component/Images/deleteDarkBlue32.png"></Image>
             </Button>
         </StackPanel>
-        <DataGrid Grid.Row="2"/>
+        <DataGrid Name="dgMain" Grid.Row="2"/>
     </Grid>
 </Window>

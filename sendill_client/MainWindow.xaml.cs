@@ -21,6 +21,8 @@ using System.Diagnostics;
 
 namespace sendill_client
 {
+    
+    //Version.1.0 Current dev.
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -32,15 +34,20 @@ namespace sendill_client
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
+
+        public dtoTour global_dtotour;
         
-        public IList<dtoPin>   memListPin1  =  new List<dtoPin>();
+        public List<dtoPin>   memListPin1  =  new List<dtoPin>();
         public List<dtoPin>   memListPin2  =  new List<dtoPin>();
         public List<dtoPin>   memListPin3  =  new List<dtoPin>();
         public List<dtoPin>   memListPin4  =  new List<dtoPin>();
         public List<dtoPin>   memListPin5  =  new List<dtoPin>();
         public List<dtoCars>  memListCar   =  new List<dtoCars>();
         public List<dtoTour>  memListTour  =  new List<dtoTour>();
+        public List<dtoTour> memListPin6 = new List<dtoTour>();
         public List<dtoPinStatus> memListPinStatus = new List<dtoPinStatus>();
+        public List<dtoPinStatus> memListPinStatusLog = new List<dtoPinStatus>();
+        public System.Collections.IList selectedItem;
         public int pin1_id = 0;
         public int pin2_id = 0;
         public int pin3_id = 0;
@@ -56,15 +63,15 @@ namespace sendill_client
             LoadCarsToMem();
             LoadCustomersToMem();
             LoadCarsToList();
-                                                                  
-            ContextMenu mnuNightService = new ContextMenu();
-            MenuItem mitem01 = new MenuItem();
+
+            System.Windows.Controls.ContextMenu mnuNightService = new System.Windows.Controls.ContextMenu();
+            System.Windows.Controls.MenuItem mitem01 = new System.Windows.Controls.MenuItem();
             
             mitem01.Click += new RoutedEventHandler(mitem01_Click);
             mnuNightService.Items.Add(mitem01);            
             isStartup=true;
             LoadToursToList();
-            funcFillToursOnPin();
+            //funcFillToursOnPin();
         }
 
 
@@ -220,11 +227,189 @@ namespace sendill_client
 
         #region Nálar - Stöðvarlistar fyrir bíla
 
+        #region Allar nálar - ListItem events
+
+        //Senda bíl í túr.
+
+        private void btnSendToTour_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            int id = (int)b.CommandParameter;
+            var ops = (from mpin in memListPinStatus
+                          where mpin.carid == id
+                          select mpin).FirstOrDefault();
+            var pinnum = ops.pinid;
+            //
+            if (pinnum==0)
+            {
+              ListBoxItem  lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+              lbi.IsSelected = true;
+              int i = lboxPin1.SelectedIndex;
+              int ic = lboxPin1.Items.Count;
+              dtoPin sitem = memListPin1[i];
+              memListPin1.RemoveAt(i);
+              lboxPin1.DataContext = memListPin1;
+              lboxPin1.Items.Refresh();
+              memListPinStatus.Remove(ops);
+              ops.pinid = 5;
+              ops.pinpos = memListPin6.Count;
+              memListPinStatus.Add(ops);
+              memListPinStatusLog.Add(ops);
+
+            }
+            if (pinnum==1)
+            {
+                ListBoxItem lbi = (ListBoxItem)lboxPin2.ItemContainerGenerator.ContainerFromIndex(0);
+                lbi.IsSelected = true;
+            }
+            if (pinnum == 2)
+            {
+                ListBoxItem lbi = (ListBoxItem)lboxPin3.ItemContainerGenerator.ContainerFromIndex(0);
+                lbi.IsSelected = true;
+            }
+            if (pinnum == 3)
+            {
+                ListBoxItem lbi = (ListBoxItem)lboxPin4.ItemContainerGenerator.ContainerFromIndex(0);
+                lbi.IsSelected = true;
+            }
+            if (pinnum == 4)
+            {
+                ListBoxItem lbi = (ListBoxItem)lboxPin5.ItemContainerGenerator.ContainerFromIndex(0);
+                lbi.IsSelected = true;
+            }
+
+            winNewTour _editTour = new winNewTour();
+            _editTour.global_car_id = id;
+            _editTour.globl_new_tour = true;
+            _editTour.global_pin_id = pinnum;
+            _editTour.Show();
+            
+        }
 
 
-            #region Nálar - Svæði1 - Stöðin
 
-        private void comA1_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+
+
+        private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
+        {
+            Button b = sender as Button;
+            int id = (int)b.CommandParameter;
+            var pinnum = (from mpin in memListPinStatus
+                          where mpin.carid == id
+                          select mpin).FirstOrDefault().pinid;
+            var pinpos = (from mpin in memListPinStatus
+                          where mpin.carid == id
+                          select mpin).FirstOrDefault().pinpos;
+
+            if (pinnum == 0)
+            {
+                var _pin = lboxPin1.Items[pinpos] as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin1.Items.Refresh();
+            }
+
+            if (pinnum == 1)
+            {
+                var _pin = lboxPin2.Items[pinpos] as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin2.Items.Refresh();
+            }
+
+            if (pinnum == 2)
+            {
+                var _pin = lboxPin3.Items[pinpos] as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin3.Items.Refresh();
+            }
+
+            if (pinnum == 3)
+            {
+                var _pin = lboxPin4.Items[pinpos] as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin4.Items.Refresh();
+            }
+
+            if (pinnum == 4)
+            {
+                var _pin = lboxPin3.Items[pinpos] as dtoPin;
+                if (_pin.pbreak == true)
+                {
+                    _pin.pbreak = false;
+                }
+                else
+                {
+                    _pin.pbreak = true;
+                }
+                lboxPin3.Items.Refresh();
+            }
+        }
+
+        #endregion
+
+
+
+        #region Nálar - Svæði1 - Stöðin
+
+        private void btnPinOneMooveDown_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (memListPin1.Count > 1)
+            {
+                //txtReorderHeader.Text = "  Endurraða Stöðin";
+                //childWinReorderPin.Show();
+                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                //_pinid = 0;
+                int i = lboxPin1.SelectedIndex;
+                int ic = lboxPin1.Items.Count;
+                dtoPin sitem = memListPin1[i];
+
+                if (i==memListPin1.Count-1)
+                {
+                    MessageBox.Show("Þetta er síðasti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    memListPin1.RemoveAt(i);
+                    memListPin1.Insert(i + 1, sitem);
+                    lboxPin1.DataContext = memListPin1;
+                    lboxPin1.Items.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+            }      
+        }
+
+        private void btnPinOneMooveUp_Click(object sender, RoutedEventArgs e)
         {
             if (memListPin1.Count > 1)
             {
@@ -234,9 +419,38 @@ namespace sendill_client
                 //_pinid = 0;
                 int i = lboxPin1.SelectedIndex;
                 int ic = lboxPin1.Items.Count;
-                Debug.Print("Selected index:  " + i.ToString() + "  ItemsCount:  " + ic.ToString());
                 dtoPin sitem = memListPin1[i];
-                Debug.Print("Bíll númer "+sitem.idcar.ToString()+" er númer "+i.ToString());
+
+                if(i==0)
+                {
+                    MessageBox.Show("Það er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    memListPin1.RemoveAt(i);
+                    memListPin1.Insert(i - 1, sitem);
+                    lboxPin1.DataContext = memListPin1;
+                    lboxPin1.Items.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void comA1_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (memListPin1.Count > 1)
+            {
+                //txtReorderHeader.Text = "  Endurraða Stöðin";
+                //childWinReorderPin.Show();
+                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                //_pinid = 0;
+
+                int i = lboxPin1.SelectedIndex;
+                int ic = lboxPin1.Items.Count;
+                dtoPin sitem = memListPin1[i];
                 memListPin1.RemoveAt(i);
                 memListPin1.Insert(i - 1,sitem);
                 lboxPin1.DataContext = memListPin1;
@@ -249,6 +463,12 @@ namespace sendill_client
                 MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        //private void lboxPin1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    int i = lboxPin1.SelectedIndex;
+        //    MessageBox.Show("Bíll með index númer " + i.ToString());
+        //}
 
        
         // Setja bíl á nál
@@ -302,11 +522,13 @@ namespace sendill_client
                             dtoPinStatus pinStatus = new dtoPinStatus();
                             pinStatus.carid = pin1.idcar;
                             pinStatus.pinid = pin1.idpin;
+                            pinStatus.pinpos = memListPin1.Count-1;
                             memListPinStatus.Add(pinStatus);
                             //var list = from c in memListPin1
                             //           select c;
                             lboxPin1.DataContext = memListPin1;
                             lboxPin1.Items.Refresh();
+                            
                         }
                         else
                         {
@@ -321,51 +543,21 @@ namespace sendill_client
             }
         }
 
-        
-        
         // Svæði1 - ListItem events
 
 
-        private void btnSendToTour_Click(object sender, RoutedEventArgs e)
-        {
-            Button b = sender as Button;
-            int id = (int)b.CommandParameter;
-            MessageBox.Show("Senda þetta bílnúmer í túr " + id.ToString());
-            ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
-            lbi.IsSelected = true;
-        }
-
-
-
-
-        private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Klikkað á kaffitíma.");
-            Button b = sender as Button;
-            int id = (int)b.CommandParameter;
-            var pinnum = (from mpin in memListPinStatus
-                          where mpin.carid == id
-                          select mpin).FirstOrDefault().pinid;
-            pinnum = 1;
-
-            if(pinnum==1)
-            {
-                var _pin = lboxPin1.SelectedItem as dtoPin;
-                if (_pin.pbreak == true)
-                {
-                    _pin.pbreak = false;
-                }
-                else
-                {
-                    _pin.pbreak = true;
-                }
-                lboxPin1.Items.Refresh();
-            }
-
-        }
 
         private void btnCarOnPin_Click(object sender, RoutedEventArgs e)
         {
+            Button b = sender as Button;
+            int id = (int)b.CommandParameter;
+            ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+            lbi.IsSelected = true;
+            //winNewTour _editTour = new winNewTour();
+            //_editTour.Show();
+            winCar _viewCar = new winCar();
+            _viewCar.Show();
+
 
         }
 
@@ -378,24 +570,7 @@ namespace sendill_client
 
         //Context menu
         // Upplýsingar um bíl
-        private void mnuItemPin1Car_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
-        // Opnar glugga yfyr túra sem bíll hefur farið.
-        private void mnuItemPin1Car01_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem b = sender as MenuItem;
-            int id = (int)b.CommandParameter;
-            DBManager dbm = new DBManager();
-            dataGridTur.ItemsSource = dbm.GetToursPar_CarId(id);       
-            childWinTours.Show();
-        }
-
-        private void mnuItemPin1Car02_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         // Hreynsa textbox
 
@@ -419,7 +594,6 @@ namespace sendill_client
                 dtoPinStatus itemPinStatus = new dtoPinStatus();
                 foreach (dtoPin selcar in selectedcars)
                 {
-                    MessageBox.Show("Þetta er bíll með stöðvarnúmer " + selcar.idcar.ToString());
                     foreach(var car in memListPin1)
                     {
                         if (car.pline > selcar.pline)
@@ -433,21 +607,11 @@ namespace sendill_client
                     var list = from t in memListPinStatus
                             where t.carid == scarid
                             select t;
-                    Debug.WriteLine("Þetta er línan sem á að stroka út úr stöðulistanum.");
                     foreach(var i in list)
                     {
                         itemPinStatus=i;
-                        Debug.WriteLine(i.pinid + " - " + i.carid);
                     }
-                    memListPinStatus.Remove(itemPinStatus);
-                    
-                    Debug.WriteLine("Þetta er stöðuslistinn");
-                    foreach(var a in memListPinStatus)
-                    {
-                        Debug.WriteLine(a.pinid + " - " + a.carid);
-                    }
-                    
-                    
+                    memListPinStatus.Remove(itemPinStatus);                 
                 }
             }
             else
@@ -455,14 +619,167 @@ namespace sendill_client
                 MessageBox.Show("Það er enginn bíll valinn. ");
             }
         }
-            
-            
-            #endregion
+
+        #region PinMenuActions
 
 
-            #region Nálar - Svæði2 - Miðbær
+        // Sýnir menu fyrir aðgerðir á völdum bíl.
+        private void btnPinOneTakeOff_Click(object sender, RoutedEventArgs e)
+        {
+            (sender as Button).ContextMenu.IsEnabled = true;
+            (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
+            (sender as Button).ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            (sender as Button).ContextMenu.IsOpen = true;
+        }
 
-                //Svæði 2 Byrjar 
+        // Opnar glugga yfir upplýsingar um bílinn og bílstjórann.
+
+        private void mnuItemPin1Car_Click(object sender, RoutedEventArgs e)
+        {
+            if (memListPin1.Count()==0)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+            }
+            else
+            {
+            int i = lboxPin1.SelectedIndex;
+            int ic = lboxPin1.Items.Count;
+            dtoPin sitem = memListPin1[i];
+            winCarDetail frmcar = new winCarDetail();
+            frmcar.pub_icar = sitem.idcar;
+            frmcar.Show();
+            }
+
+        }
+        // Opnar glugga yfyr túra sem bíll hefur farið.
+        private void mnuItemPin1Car01_Click(object sender, RoutedEventArgs e)
+        {
+            int i = lboxPin1.SelectedIndex;
+            int ic = lboxPin1.Items.Count;
+            dtoPin sitem = memListPin1[i];
+            DBManager dbm = new DBManager();
+            dataGridTur.ItemsSource = dbm.GetToursPar_CarId(sitem.idcar);
+            childWinTours.Show();
+        }
+
+
+        private void mnuItemPin1Car02_Click(object sender, RoutedEventArgs e)
+        {
+            if (memListPin1.Count()==0)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+            }
+            else
+            {
+            dtoPinStatus itemPinStatus = new dtoPinStatus();
+            int i = lboxPin1.SelectedIndex;
+            int ic = lboxPin1.Items.Count;
+            dtoPin sitem = memListPin1[i];
+            memListPin1.Remove(sitem);
+            lboxPin1.ItemsSource = null;
+            lboxPin1.ItemsSource = memListPin1;
+            lboxPin1.Items.Refresh();           
+            int scarid = sitem.idcar;
+            MessageBox.Show("Áður en statusitem er fundið");
+            itemPinStatus = (from t in memListPinStatus
+                       where t.carid == scarid
+                       select t).FirstOrDefault();
+            MessageBox.Show("Áður en item er uppfært");
+            //Debug.WriteLine("Áður en item er uppfært");
+            var listPinStatus = from ls in memListPinStatus
+                                where ls.pinid == 0 && ls.pinpos>itemPinStatus.pinpos
+                                select ls;
+            //Debug.WriteLine("Fjölldi itema er : "+listPinStatus.Count().ToString());
+            foreach (var stat in listPinStatus)
+            {
+                stat.pinpos = stat.pinpos + 1;
+            }
+            memListPinStatus.Remove(itemPinStatus);  
+            }
+
+
+            //    int scarid;
+            //    dtoPinStatus itemPinStatus = new dtoPinStatus();
+            //    foreach (dtoPin selcar in selectedcars)
+            //    {
+            //        foreach(var car in memListPin1)
+            //        {
+            //            if (car.pline > selcar.pline)
+            //            {
+            //                car.pline = car.pline - 1;
+            //            }
+            //        }
+            //        memListPin1.Remove(selcar);
+            //        lboxPin1.Items.Refresh();
+            //        //scarid = selcar.idcar;
+            //        //var list = from t in memListPinStatus
+            //        //        where t.carid == scarid
+            //        //        select t;
+            //        //foreach(var i in list)
+            //        //{
+            //        //    itemPinStatus=i;
+            //        //}
+            //        //memListPinStatus.Remove(itemPinStatus);                 
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Það er enginn bíll valinn. ");
+            //}
+        }
+
+        private void mnuItemPin1Car03_Click(object sender, RoutedEventArgs e)
+        {
+            if (memListPin1.Count() == 0)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+            }
+            else
+            {
+                dtoPinStatus itemPinStatus = new dtoPinStatus();
+                int i = lboxPin1.SelectedIndex;
+                int ic = lboxPin1.Items.Count;
+                dtoPin sitem = memListPin1[i];
+                memListPin1.Remove(sitem);
+                memListPin2.Add(sitem);
+                lboxPin1.ItemsSource = null;
+                lboxPin1.ItemsSource = memListPin1;
+                lboxPin1.Items.Refresh();
+                lboxPin2.ItemsSource = null;
+                lboxPin2.ItemsSource = memListPin2;
+                lboxPin2.Items.Refresh();
+                int scarid = sitem.idcar;
+                MessageBox.Show("Áður en statusitem er fundið");
+                itemPinStatus = (from t in memListPinStatus
+                                 where t.carid == scarid
+                                 select t).FirstOrDefault();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
+
+        #endregion
+
+
+        #region Nálar - Svæði2 - Miðbær
+
+        //Svæði 2 Byrjar 
                 private void txtArea02_KeyDown(object sender, KeyEventArgs e)
                 {
                     if (e.Key == Key.Enter)
@@ -1223,8 +1540,6 @@ namespace sendill_client
 
                 memTableTurar = (DataTable)bin.Deserialize(stream);
                 int rcount = memTableTurar.Rows.Count;
-                MessageBox.Show(rcount.ToString());
-                MessageBox.Show("Túrar hlaðnir í minni");
             }
         }
             private void LoadCustomersToMem()
@@ -1242,7 +1557,6 @@ namespace sendill_client
                 catch (IOException)
                 {
                 }
-                MessageBox.Show("Bílar hlaðnir");
             }
             private void LoadCarsToMem()
             {
@@ -1259,7 +1573,6 @@ namespace sendill_client
                 catch (IOException)
                 {
                 }
-                MessageBox.Show("Bílar hlaðnir í minni");
             }
 
         #endregion
@@ -1272,7 +1585,7 @@ namespace sendill_client
                 try
                 {
                     DBManager db = new DBManager();
-                    memListTour = db.GetAllToursFromFile();
+                    memListTour = db.GetAllToursFromFile().ToList();
                 }
                 catch (IOException)
                 {
@@ -1282,17 +1595,15 @@ namespace sendill_client
             {
                 try
                 {
-                    using (Stream stream = File.Open(@"C:\dbsendill\carfile.bin", FileMode.Open))
+                    using (Stream stream = File.Open(@"C:\dbsendill\list_carall.bin", FileMode.Open))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
-                        MessageBox.Show("Binary formatter lokið");
                         memListCar = (List<dtoCars>)bin.Deserialize(stream);
                     }
                 }
                 catch (IOException)
                 {
                 }
-                MessageBox.Show("Bílar hlaðnir í minni");
             }
             
 
@@ -1301,7 +1612,7 @@ namespace sendill_client
 
             #region Functions
 
-            public void funcFillToursOnPin()
+        public void funcFillToursOnPin()
             {
                 List<dtoTour> ltour = new List<dtoTour>();
                 dtoTour objtour = new dtoTour();
@@ -1309,10 +1620,32 @@ namespace sendill_client
                 objtour.idpin=1;
                 objtour.taddress="Gtundarstíg 38";
                 objtour.tcontact="Jón Sigurbjörnsson";
+                objtour.idcar = 3;
                 ltour.Add(objtour);
                 lbox6.ItemsSource=ltour;
 
 
+            }
+
+        public void funcCreatePinItemDataTemlate(int listboxindex)
+            {
+                
+                var btrigger = new DataTrigger();
+                var bstyle = new Style();
+            
+
+
+            }
+
+        public void funcAddNewTour(dtoTour par_tour)
+            {
+                memListPin6.Add(par_tour);
+                lbox6.ItemsSource = memListPin6;
+                lbox6.Items.Refresh();
+                
+                
+                
+                
             }
 
             #endregion
@@ -1342,8 +1675,8 @@ namespace sendill_client
 
             private void image6_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
             {
-                winRep repwindow = new winRep();
-                repwindow.ShowDialog();
+                frmReports rep = new frmReports();
+                rep.ShowDialog();
             }
 
             private void txtArea03_TextChanged(object sender, TextChangedEventArgs e)
@@ -1453,25 +1786,37 @@ namespace sendill_client
 
             }
 
+            private void lboxPin1_SizeChanged(object sender, SizeChangedEventArgs e)
+            {
+
+            }
+
+            private void lboxPin1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                //int i = lboxPin1.SelectedIndex;
+                //ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(i);
+                //lbi.SetValue(Name,"nn1");
+                //Object obj = nn1.FindName("btnSendToTour");
+                //if (obj is Button)
+                //{
+                //    Button btn = (Button)obj;
+                //    MessageBox.Show(btn.Name+" Fundinn");
+                //}
+                selectedItem = lboxPin1.SelectedItems;
+            }
+
+            private void btnSendToTour_Loaded(object sender, RoutedEventArgs e)
+            {
+                //Button b = sender as Button;
+                //b.Name = "newButton";
+                //MessageBox.Show(b.Name);
+                //MessageBox.Show(b.Parent.GetType().Name);
+                //b.IsEnabled = false;
+            }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
 
     }
 }

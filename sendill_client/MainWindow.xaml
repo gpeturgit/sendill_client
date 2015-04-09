@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tex="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Sendill - Símaborð" Height="768" Width="1024" Loaded="Window_Loaded" Background="#FFD0DAF0" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStyle="ThreeDBorderWindow">
+        Title="Sendill - Símaborð" Height="768" Width="1024" Loaded="Window_Loaded" Background="#FFD0DAF0" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" Icon="Images/Truck128.png">
     <Window.Resources>
 
 
@@ -12,8 +12,8 @@
         <!--**************************************************************************************************************-->
         <Style x:Key="pinListboxStyle">
             <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="WhiteSmoke" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="WhiteSmoke" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightGray" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightGray" />
             </Style.Resources>
         </Style>
         <!--**************************************************************************************************************-->
@@ -65,10 +65,9 @@
         <!--*********************************************************************************************************-->
         <DataTemplate x:Key="CarOnPin" x:Name="dtCarOnPin">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Click="btnCarOnPin_Click" Style="{StaticResource BorderlessButton}" IsEnabled="False">
-                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32">
-                    <Image.ToolTip>
-                        <ToolTip>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Click="btnCarOnPin_Click" Style="{StaticResource BorderlessButton}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
                             <StackPanel>
                                 <Label Content="{Binding Path=owner}" FontSize="14" Margin="4"></Label>
                                 <CheckBox IsChecked="{Binding car1, Mode=OneWay}" Content="Lyfta" Margin="4"/>
@@ -77,45 +76,26 @@
                                 <CheckBox IsChecked="{Binding car4, Mode=OneWay}" Content="Þungaburður" Margin="4"/>
                                 <CheckBox IsChecked="{Binding car5, Mode=OneWay}" Content="Rafmagnstjakkur" Margin="4"/>
                             </StackPanel>
-                        </ToolTip>
-                    </Image.ToolTip>
-                    </Image>
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem x:Name="mnuItemPin1Car" Header="Skoða bíl" Click="mnuItemPin1Car_Click" CommandParameter="{Binding idcar}" FontSize="14">
-                                <MenuItem.Icon>
-                                    <Image Source="/sendill_client;component/Images/mnu_information.png" Height="24" Width="24"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="mnuItemPin1Car01" Header="Túrar" Click="mnuItemPin1Car01_Click" CommandParameter="{Binding idcar}" FontSize="14">
-                                <MenuItem.Icon>
-                                    <Image Source="/sendill_client;component/Images/mnu_tour.png" Height="24" Width="24" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="mnuItemPin1Car02" Header="Endurraða" Click="mnuItemPin1Car02_Click"  CommandParameter="{Binding idcar}" FontSize="14">
-                                <MenuItem.Icon>
-                                    <Image Source="/sendill_client;component/Images/mnu_upload.png" Height="24" Width="24" />
-                                </MenuItem.Icon>
-                            </MenuItem>
                         </ContextMenu>
                     </Button.ContextMenu>
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32"/>
                 </Button>
                 <Label Content="{Binding Path=idcar}"  Width="40" FontSize="14" VerticalAlignment="Center" />
                 <Label Content="{Binding Path=pcarcode}" Width="50" FontSize="14" VerticalAlignment="Center" />
-                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Click="btnCoffeebreak_Click" Style="{StaticResource BorderlessButton}" IsEnabled="False">
-                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CoffeeRed32.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Click="btnCoffeebreak_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CoffeeGreen_32_32.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
                 </Button>
-                <Button x:Name="btnSendToTour" CommandParameter="{Binding idcar}" Click="btnSendToTour_Click" Style="{StaticResource BorderlessButton}">
+                <Button x:Name="btnSendToTour" CommandParameter="{Binding idcar}" Click="btnSendToTour_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True" Loaded="btnSendToTour_Loaded" >
                     <Image Source="/sendill_client;component/Images/BoxLightBrown32.png" MinHeight="0" Margin="2,2,2,2" Height="24" />
                 </Button>
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
-                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CoffeeGreen_32_32.png" />
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CoffeeRed32.png" />
                     <!--CoffeeGreen_32_32.png-->
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
-                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CoffeeRed32.png" />
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CoffeeGreen_32_32.png" />
                     <!--CoffeeGreen_32_32.png-->
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Path=carsize}" Value="3">
@@ -137,13 +117,59 @@
         <!--*********************************************************************************************************-->
         <DataTemplate x:Key="TourOnPin" x:Name="dtTourOnPin" >
             <StackPanel Orientation="Horizontal">
-                <Image Name="TourHouse" Source="/sendill_client;component/Images/utour3232.png" MinHeight="0" Margin="2" Height="32" />
-                <Label Content="{Binding Path=time}"  Width="50" FontSize="14" VerticalAlignment="Center" />
-                <Label Content="{Binding Path=idpin}" Width="40" FontSize="14" VerticalAlignment="Center" />
-                <Image Name="TourDriver" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="32" />
+
+                <Button x:Name="btnShowTourInfo" Style="{StaticResource BorderlessButton}" >
+                    <Image Name="TourClock" Source="/sendill_client;component/Images/listImageClock2424.png" MinHeight="0" Margin="2" Height="24" />
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Stöðvarnúmer :" Width="100"/>
+                                    <Label Content="{Binding Path=idcar}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Klukkan :" Width="100"/>
+                                    <Label Content="{Binding Path=time}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Sími :" Width="100"/>
+                                    <Label Content="{Binding Path=tphone}"/>
+                                </StackPanel>                        
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Áfangastaður :" Width="100"/>
+                                    <Label Content="{Binding Path=taddress}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Viðskiptavinur :" Width="100"/>
+                                    <Label Content="{Binding Path=tcustomer}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Athugasemdir :" Width="100"/>
+                                    <Label Content="{Binding Path=tcontact}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Hver Pantaði :" Width="100"/>
+                                    <Label Width="150">
+                                        <TextBlock Text="{Binding Path=tnote}" TextWrapping="WrapWithOverflow" />
+                                            
+                                </Label>
+                                </StackPanel>
+                            </StackPanel>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Label Content="{Binding Path=time}" FontSize="12" VerticalAlignment="Center" />
+                <Image Name="TourCarId" Source="/sendill_client;component/Images/tour_new.png" MinHeight="0" Margin="2" Height="24" />
+                <Label Content="{Binding Path=idcar}" FontSize="12" VerticalAlignment="Center" />
+
+                <Image Name="TourPhone" Source="/sendill_client;component/Images/listImagePhone2424.png" MinHeight="0" Margin="2" Height="24" />
+                <Label Content="{Binding Path=tphone}" FontSize="12" VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded"/>
+    </Window.Triggers>
     <Grid Background="#FFB3BED8">
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
@@ -191,7 +217,7 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
                     <Button Name="tourToolbarcomFilterOn" Margin="0,0,0,0" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="tourToolbarcomFilterOn_Click">
-                        <StackPanel Orientation="Horizontal"> 
+                        <StackPanel Orientation="Horizontal">
                             <Image Source="/sendill_client;component/Images/toolbar_filter.png" Height="20" Width="20"></Image>
                             <Label Content="Sía á " />
                         </StackPanel>
@@ -214,23 +240,23 @@
                     </Button>
 
                 </StackPanel>
-                    <DataGrid AutoGenerateColumns="False" Name="dataGridTur" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Dags-tími" Binding="{Binding tdatetime}" Width="150"/>
-                            <DataGridTextColumn Header="Nr" Binding="{Binding idcar}" Width="25"/>
-                            <DataGridTextColumn Header="Ekið frá" Binding="{Binding taddress}" Width="250" />
-                            <DataGridTextColumn Header="Umbeðið af" Binding="{Binding tcontact}" Width="250" />
-                            <DataGridTextColumn Header="Sími" Binding="{Binding tphone }" Width="100"/>
-                        </DataGrid.Columns>
-                        </DataGrid>
+                <DataGrid AutoGenerateColumns="False" Name="dataGridTur" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dags-tími" Binding="{Binding tdatetime}" Width="150"/>
+                        <DataGridTextColumn Header="Nr" Binding="{Binding idcar}" Width="25"/>
+                        <DataGridTextColumn Header="Ekið frá" Binding="{Binding taddress}" Width="250" />
+                        <DataGridTextColumn Header="Umbeðið af" Binding="{Binding tcontact}" Width="250" />
+                        <DataGridTextColumn Header="Sími" Binding="{Binding tphone }" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
-      
+
         </wpfx:ChildWindow>
         <!--*********************************************************************************************************-->
         <!-- Modal Car Detail window -->
         <!--*********************************************************************************************************-->
         <wpfx:ChildWindow>
-            
+
         </wpfx:ChildWindow>
 
         <!--*********************************************************************************************************-->
@@ -257,8 +283,6 @@
                     <Button Name="ChildWinReorderPin_ToolbarComCancel" Margin="15,0,0,5"  BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Content="Hætta við" Foreground="#FF224591">
 
                     </Button>
-
-
                 </StackPanel>
                 <DataGrid AutoGenerateColumns="False" Name="childWinReorderPin_DataGrid" Grid.Row="2" RowBackground="LightGray" AlternatingRowBackground="WhiteSmoke" CanUserAddRows="False" RowHeight="25">
                     <DataGrid.Columns>
@@ -267,7 +291,7 @@
                         <DataGridTextColumn Header="Staða " Binding="{Binding pline, Mode=OneWay}" Width="75" />
 
                     </DataGrid.Columns>
-                    
+
                 </DataGrid>
             </Grid>
         </wpfx:ChildWindow>
@@ -279,25 +303,14 @@
                 <ColumnDefinition Width="971*" />
                 <ColumnDefinition Width="31*" />
             </Grid.ColumnDefinitions>
-            <CheckBox Content="Lyfta" Height="22" Name="checkBoxLyfta" Margin="312,22,0,0" Foreground="WhiteSmoke" HorizontalAlignment="Left" Width="66" FontSize="14" VerticalAlignment="Top" />
-            <Border BorderBrush="Silver" BorderThickness="1" Height="65" HorizontalAlignment="Left" Margin="289,14,0,0" Name="border1" VerticalAlignment="Top" Width="347" CornerRadius="15"></Border>
-            <CheckBox Content="Dregur" FontSize="14" Foreground="WhiteSmoke" Height="22" HorizontalAlignment="Left" Margin="312,49,0,0" Name="checkBoxDregur" VerticalAlignment="Top" Width="66" />
-            <CheckBox Content="Rafmagnstjakkur" FontSize="14" Foreground="WhiteSmoke" HorizontalAlignment="Left" Margin="382,22,0,46" Name="checkBoxRafm" Width="139" />
-            <CheckBox Content="Þungaburður" FontSize="14" Foreground="WhiteSmoke" Height="22" HorizontalAlignment="Left" Margin="382,49,0,0" Name="checkBoxThunga" VerticalAlignment="Top" Width="115" />
-            <CheckBox Content="Krókur" FontSize="14" Foreground="WhiteSmoke" HorizontalAlignment="Left" Margin="507,22,0,0" Name="checkBoxKrokur" Width="92" Height="22" VerticalAlignment="Top" />
-            <Image Height="49" HorizontalAlignment="Left" Margin="16,20,0,0" Name="image2" Source="/sendill_client;component/Images/tel_over_128.png" Stretch="Fill" VerticalAlignment="Top" Width="48" />
-            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="15" Height="65" HorizontalAlignment="Left" Margin="10,14,0,0" Name="border2" VerticalAlignment="Top" Width="273"></Border>
-            <Image Height="49" Name="image3" Source="/sendill_client;component/Images/Find_blue_128_128.png" Stretch="Fill" Width="48" Margin="572,22,0,19" HorizontalAlignment="Left" />
-            <Label Content="Sigurður Sigurjónsson" Name="labelDriverName" FontSize="14" Foreground="White" Margin="72,19,709,44" />
-            <Label Content="8236954" FontSize="14" Foreground="White" Margin="72,42,709,21" Name="lblDriverPhone" />
-            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="15" Height="65" HorizontalAlignment="Left" Margin="642,14,0,0" Name="border3" VerticalAlignment="Top" Width="258" />
-            <Label Content="Sigurður Sigurjónsson" FontSize="14" Foreground="White" Margin="708,17,0,44" Name="lblTourName" HorizontalAlignment="Left" Width="166" />
-            <Label Content="8236954" FontSize="14" Foreground="White" Margin="711,41,99,22" Name="lblTourAddress" />
-            <Image Height="49" HorizontalAlignment="Left" Margin="652,22,0,19" Name="image4" Source="/sendill_client;component/Images/UserDarkBlue1281.png" Stretch="Fill" Width="48" />
+
+            
+            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="15" Height="65" HorizontalAlignment="Left" Margin="10,14,0,0" Name="border2" VerticalAlignment="Top" Width="891"></Border>
+            <Image Height="49" HorizontalAlignment="Left" Margin="30,20,0,0" Name="image2" Source="/sendill_client;component/Images/tel_over_128.png" Stretch="Fill" VerticalAlignment="Top" Width="50" />
+            <Label Content="Símaborð" Name="labelDriverName" FontSize="36" Foreground="White" Margin="103,13,0,27" HorizontalAlignment="Left" VerticalAlignment="Center" />
             <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="15" Height="65" HorizontalAlignment="Right" Margin="0,14,6,0" Name="border4" VerticalAlignment="Top" Width="90" Grid.ColumnSpan="2">
                 <Image Height="49" Name="image5" Source="/sendill_client;component/Images/dataconn_off.png" Stretch="Fill" Width="48" />
             </Border>
-            <Button Content="Test" Height="23" HorizontalAlignment="Left" Margin="797,45,0,0" Name="comTest" VerticalAlignment="Top" Width="39" Click="comTest_Click" />
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -307,76 +320,80 @@
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="220" />
             </Grid.ColumnDefinitions>
-        <!--*********************************************************************************************************-->
-        <!-- Vinstri menu bar-->
-        <!--*********************************************************************************************************-->
-        <StackPanel Grid.Column="0">
-            <Image Height="128" Name="imgTours" Width="128" Source="/sendill_client;component/Images/Clipboard_blue_1281.png" MouseEnter="image2_MouseEnter" MouseLeave="image2_MouseLeave" MouseRightButtonDown="imgTours_MouseRightButtonDown" MouseLeftButtonDown="imgTours_MouseLeftButtonDown" />
-            <Image Height="128" Name="image1" Width="128" Source="/sendill_client;component/Images/Truck128.png" ImageFailed="image1_ImageFailed_1" MouseEnter="image1_MouseEnter" MouseLeave="image1_MouseLeave" MouseRightButtonDown="image1_MouseRightButtonDown" MouseLeftButtonDown="image1_MouseLeftButtonDown" />
-            <Image Height="128" Name="limage1" Width="128" Source="/sendill_client;component/Images/UserDarkBlue1281.png" MouseEnter="limage1_MouseEnter" MouseLeave="limage1_MouseLeave" MouseLeftButtonDown="limage1_MouseLeftButtonDown" />
-            <Image Height="128" Name="limage2" Width="128" Source="/sendill_client;component/Images/SettingsDarkBlue.png" MouseEnter="limage2_MouseEnter" MouseLeave="limage2_MouseLeave" ImageFailed="limage2_ImageFailed" MouseLeftButtonDown="limage2_MouseLeftButtonDown" />
-            <Image Height="128" Name="image6" Width="128" Source="/sendill_client;component/Images/print_128.png" MouseEnter="image6_MouseEnter" MouseLeave="image6_MouseLeave" MouseLeftButtonDown="image6_MouseLeftButtonDown" />
-        </StackPanel>
+            <!--*********************************************************************************************************-->
+            <!-- Vinstri menu bar-->
+            <!--*********************************************************************************************************-->
+            <StackPanel Grid.Column="0">
+                <Image Height="128" Name="imgTours" Width="128" Source="/sendill_client;component/Images/Clipboard_blue_1281.png" MouseEnter="image2_MouseEnter" MouseLeave="image2_MouseLeave" MouseRightButtonDown="imgTours_MouseRightButtonDown" MouseLeftButtonDown="imgTours_MouseLeftButtonDown" />
+                <Image Height="128" Name="image1" Width="128" Source="/sendill_client;component/Images/Truck128.png" ImageFailed="image1_ImageFailed_1" MouseEnter="image1_MouseEnter" MouseLeave="image1_MouseLeave" MouseRightButtonDown="image1_MouseRightButtonDown" MouseLeftButtonDown="image1_MouseLeftButtonDown" />
+                <Image Height="128" Name="limage1" Width="128" Source="/sendill_client;component/Images/UserDarkBlue1281.png" MouseEnter="limage1_MouseEnter" MouseLeave="limage1_MouseLeave" MouseLeftButtonDown="limage1_MouseLeftButtonDown" />
+                <Image Height="128" Name="limage2" Width="128" Source="/sendill_client;component/Images/SettingsDarkBlue.png" MouseEnter="limage2_MouseEnter" MouseLeave="limage2_MouseLeave" ImageFailed="limage2_ImageFailed" MouseLeftButtonDown="limage2_MouseLeftButtonDown" />
+                <Image Height="128" Name="image6" Width="128" Source="/sendill_client;component/Images/print_128.png" MouseEnter="image6_MouseEnter" MouseLeave="image6_MouseLeave" MouseLeftButtonDown="image6_MouseLeftButtonDown" />
+            </StackPanel>
             <!--*********************************************************************************************************-->
             <!-- Svæði 1 Nál fyrir bíla á stöðinni -->
             <!--*********************************************************************************************************-->
 
             <Border Grid.Column="1" BorderThickness="2" BorderBrush="#FF224591">
                 <StackPanel Name="spanCol1">
-            <TextBox Text="Stöðin" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
-                    <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF465A7D" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
-                <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
-                    <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea01" TextChanged="txtArea01_TextChanged" TextInput="txtArea01_TextInput" KeyDown="txtArea01_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea01_LostFocus" BorderBrush="#FF224591"></TextBox>
-                        <Button x:Name="btnPinOneMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True">
-                            <Image Source="Images\sendill_swapup_24_1_#FF45597C.png"/>
+                    <TextBox Text="Stöðin" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF465A7D" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
+                        <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea01" TextChanged="txtArea01_TextChanged" TextInput="txtArea01_TextInput" KeyDown="txtArea01_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea01_LostFocus" BorderBrush="#FF224591"></TextBox>
+                        <Button x:Name="btnPinOneMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True" Margin="5" BorderThickness="0" Click="btnPinOneMooveUp_Click" >
+                            <Image Source="mnu_arrow2424up.png"/>
                         </Button>
-                        <Button x:Name="btnPinOneMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True">
-                            <Image Source="Images\sendill_swapdown_24_1_#FF45597C.png"/>
+                        <Button x:Name="btnPinOneMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinOneMooveDown_Click" >
+                            <Image Source="mnu_arrow_2424down.png"/>
                         </Button>
-                        <Image Source="Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A1_filter">
-                            <Image.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Raða í stæði">
-                                        <MenuItem.Icon>
-                                            <Image Source="/sendill_client;component/Images/BoxLightBrown32.png" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
+                        <Button x:Name="btnPinOneTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinOneTakeOff_Click">
+                            <Button.ContextMenu>
+                                <ContextMenu Margin="-30,0,0,0">
+                                    <MenuItem x:Name="mnuItemPin1Car" Header="Skoða bíl " Click="mnuItemPin1Car_Click" FontSize="14" ContextMenuService.IsEnabled="False"/>
+
+                                    <MenuItem x:Name="mnuItemPin1Car01" Header="Skoða túra" Click="mnuItemPin1Car01_Click" FontSize="14"/>
+
+                                    <MenuItem x:Name="mnuItemPin1Car02" Header="Taka af stæði " Click="mnuItemPin1Car02_Click" FontSize="14"/>
+
+                                    <MenuItem x:Name="mnuItemPin1Car03" Header="Flytja í -> MIÐBÆJARSVÆÐI " FontSize="14" Click="mnuItemPin1Car03_Click" />
+
+                                    <MenuItem x:Name="mnuItemPin1Car04" Header="Flytja í -> ÁRBÆR BAUHAUS " FontSize="14"/>
+
+                                    <MenuItem x:Name="mnuItemPin1Car05" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14"/>
+
+                                    <MenuItem x:Name="mnuItemPin1Car06" Header="Flytja í -> RENNU " FontSize="14"/>
+
                                 </ContextMenu>
-                            </Image.ContextMenu>
-                        </Image>
+                            </Button.ContextMenu>
+                            <Image Source="mnu_upload.png"/>
+                        </Button>
                     </StackPanel>
-                    <ListBox Name="lboxPin1" Height="560" Background="#FFB9C3D5" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" >
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="White"/>
-                            </Style>
-                    </ListBox.ItemContainerStyle>
-            </ListBox>
-        </StackPanel>
+                    <ListBox Name="lboxPin1" Height="560" Background="#FFB9C3D5" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" SizeChanged="lboxPin1_SizeChanged" SelectionChanged="lboxPin1_SelectionChanged">
+                    </ListBox>
+                </StackPanel>
             </Border>
-            
+
             <!--*********************************************************************************************************-->
             <!-- Svæði 2 Nál fyrir bíla á svæði 2-->
             <!--*********************************************************************************************************-->
-            
+
             <Border Grid.Column="2" Grid.Row="1"  BorderThickness="2" BorderBrush="#FF224591">
-            <StackPanel Grid.Column="2" Grid.Row="1" Name="spanCol2">
-                <TextBox Text="Miðbær" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" SelectionBrush="#FFF9FAFC">
-                    <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF465A7D" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
-                <!--<StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
+                <StackPanel Grid.Column="2" Grid.Row="1" Name="spanCol2">
+                    <TextBox Text="Miðbær" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" SelectionBrush="#FFF9FAFC">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF465A7D" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <!--<StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                     <TextBox Margin="5,0,0,0" Background="White" MinWidth="25" BorderThickness="1" Width="74" Name="txtArea02" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" KeyDown="txtArea02_KeyDown" GotFocus="txtArea02_GotFocus" LostFocus="txtArea02_LostFocus" Height="25" BorderBrush="#FF475B7E" HorizontalAlignment="Left" />
                     <Image Source="/sendill_client;component/Images/offpin_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA2_off" />
                     <Image Source="/sendill_client;component/Images/CoffeeGreen_32_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA2_pause" />
@@ -384,22 +401,19 @@
                 </StackPanel>-->
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                         <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" Name="txtArea02" TextChanged="txtArea01_TextChanged" KeyDown="txtArea02_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea01_LostFocus" BorderBrush="#FF224591"></TextBox>
-                        <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Endurraða stæði" Name="comA2_off" MouseLeftButtonDown="comA2_off_MouseLeftButtonDown"/>
-                        <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A2_Pause" MouseLeftButtonDown="com_A2_Pause_MouseLeftButtonDown" />
-                        <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA2_reorder">
-                            <Image.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Raða í stæði">
-                                        <MenuItem.Icon>
-                                            <Image Source="/sendill_client;component/Images/BoxLightBrown32.png" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Image.ContextMenu>
-                        </Image>
+
+                        <Button x:Name="btnPinTwoMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True" Margin="5" BorderThickness="0">
+                            <Image Source="mnu_arrow2424up.png"/>
+                        </Button>
+                        <Button x:Name="btnPinTwoMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_arrow_2424down.png"/>
+                        </Button>
+                        <Button x:Name="btnPinTwoTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_upload.png"/>
+                        </Button>
                     </StackPanel>
-<!--<ListBox Name="lboxPin1" Height="605" Background="#FFB9C3D5" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" >-->
-             <ListBox  Height="245" Background="#FFBAC4D5" Name="lboxPin2" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" >
+                    <!--<ListBox Name="lboxPin1" Height="605" Background="#FFB9C3D5" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" >-->
+                    <ListBox  Height="245" Background="#FFBAC4D5" Name="lboxPin2" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" >
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
@@ -407,18 +421,18 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-            <!--*********************************************************************************************************-->
-            <!-- Svæði 4 Nál fyrir bíla á svæði 4-->
-            <!--*********************************************************************************************************-->
-            <TextBox Text="Árbær-Bauhaus" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
-            <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF465A7D" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
-                <!--<StackPanel Orientation="Horizontal" Background="#FFB3BED8" MinHeight="30">
+                    <!--*********************************************************************************************************-->
+                    <!-- Svæði 4 Nál fyrir bíla á svæði 4-->
+                    <!--*********************************************************************************************************-->
+                    <TextBox Text="Árbær-Bauhaus" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF465A7D" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <!--<StackPanel Orientation="Horizontal" Background="#FFB3BED8" MinHeight="30">
                     <TextBox Margin="20,0,0,0" Background="#FFB3BED8" MinWidth="25" BorderThickness="0" Width="80" Name="txtArea03" Text="[ Númer ]" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" GotFocus="txtArea03_GotFocus" LostFocus="txtArea03_LostFocus" KeyDown="txtArea03_KeyDown"></TextBox>
                     <Image Source="/sendill_client;component/Images/offpin_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA4_off" />
                     <Image Source="/sendill_client;component/Images/pause_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA4_pause" />
@@ -426,19 +440,15 @@
                 </StackPanel>-->
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                         <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea04" KeyDown="txtArea04_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea04_LostFocus" BorderBrush="#FF224591"></TextBox>
-                        <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA4_off" MouseLeftButtonDown="comA4_off_MouseLeftButtonDown"/>
-                        <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A4_Pause" MouseLeftButtonDown="com_A4_Pause_MouseLeftButtonDown" />
-                        <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA4_reorder">
-                            <Image.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Raða í stæði">
-                                        <MenuItem.Icon>
-                                            <Image Source="/sendill_client;component/Images/BoxLightBrown32.png" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Image.ContextMenu>
-                        </Image>
+                        <Button x:Name="btnPinFourMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True" Margin="5" BorderThickness="0">
+                            <Image Source="mnu_arrow2424up.png"/>
+                        </Button>
+                        <Button x:Name="btnPinFourMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_arrow_2424down.png"/>
+                        </Button>
+                        <Button x:Name="btnPinFourTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_upload.png"/>
+                        </Button>
                     </StackPanel>
                     <ListBox  Height="245" Background="#FFC0CAD9" Name="lboxPin4" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}">
                         <ListBox.ItemContainerStyle>
@@ -448,24 +458,24 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-            </StackPanel>
+                </StackPanel>
             </Border>
-            
+
             <!--*********************************************************************************************************-->
             <!-- Þeiðja nál og renna -->
             <!--*********************************************************************************************************-->
 
             <Border Grid.Column="3" Grid.Row="1"  BorderThickness="2" BorderBrush="#FF224591">
-        <StackPanel Name="spanCol3">
-                <TextBox Text="Breiðholt - IKEA" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" SelectionBrush="#FFF5F9FC">
-                    <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF475B7E" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
-                <!--<StackPanel Orientation="Horizontal" Background="#FFB3BED8" MinHeight="30" Name="comA3_reorder">
+                <StackPanel Name="spanCol3">
+                    <TextBox Text="Breiðholt - IKEA" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" SelectionBrush="#FFF5F9FC">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF475B7E" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <!--<StackPanel Orientation="Horizontal" Background="#FFB3BED8" MinHeight="30" Name="comA3_reorder">
                     <TextBox Margin="20,0,0,0" Background="#FFB3BED8" MinWidth="25" BorderThickness="0" Width="80" Name="txtArea04" Text="[ Númer ]" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" KeyDown="txtArea04_KeyDown" LostFocus="txtArea04_LostFocus" GotFocus="txtArea04_GotFocus"></TextBox>
                     <Image Source="/sendill_client;component/Images/offpin_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA3_off" />
                     <Image Source="/sendill_client;component/Images/pause_32.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA3_pause" />
@@ -473,19 +483,15 @@
                 </StackPanel>-->
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                         <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" DataContextChanged="TextBox_DataContextChanged" Name="txtArea03" KeyDown="txtArea03_KeyDown" Text="" VerticalContentAlignment="Center" GotFocus="txtArea01_GotFocus" Foreground="#FF224591" FontSize="14" LostFocus="txtArea03_LostFocus" BorderBrush="#FF224591"></TextBox>
-                        <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA3_off" MouseLeftButtonDown="comA3_off_MouseLeftButtonDown" />
-                        <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="com_A3_Pause" MouseLeftButtonDown="com_A3_Pause_MouseLeftButtonDown" />
-                        <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA3_reorder">
-                            <Image.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Raða í stæði">
-                                        <MenuItem.Icon>
-                                            <Image Source="/sendill_client;component/Images/BoxLightBrown32.png" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Image.ContextMenu>
-                        </Image>
+                        <Button x:Name="btnPinThreeMooveUp" Style="{StaticResource BorderlessButton}" IsEnabled="True" Margin="5" BorderThickness="0">
+                            <Image Source="mnu_arrow2424up.png"/>
+                        </Button>
+                        <Button x:Name="btnPinThreeMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_arrow_2424down.png"/>
+                        </Button>
+                        <Button x:Name="btnPinThreeTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                            <Image Source="mnu_upload.png"/>
+                        </Button>
                     </StackPanel>
                     <ListBox  Height="246" Background="#FFBFC9D9" Name="lboxPin3" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}"  >
                         <ListBox.ItemContainerStyle>
@@ -495,22 +501,22 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                <TextBox Text="Renna" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" >
-                    <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF45597C" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
-                <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
+                    <TextBox Text="Renna" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" >
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF45597C" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
+                    <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                         <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" Name="txtArea05" Text="" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" BorderBrush="#FF224591" KeyDown="txtArea05_KeyDown" ></TextBox>
                         <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA5_off" MouseLeftButtonDown="comA5_off_MouseLeftButtonDown"/>
                         <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA5_pause"/>
                         <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA5_reorder"/>
-                </StackPanel>
+                    </StackPanel>
 
-                    <ListBox  Height="251" Background="#FFC4CEDD" Name="lboxPin5" ItemsSource="{Binding}" ItemTemplate="{StaticResource TourOnPin}" Style="{StaticResource pinListboxStyle}">
+                    <ListBox  Height="251" Background="#FFC4CEDD" Name="lboxPin5" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
@@ -518,46 +524,46 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-            
-        </StackPanel >
-                </Border>
+
+                </StackPanel >
+            </Border>
 
             <!--*********************************************************************************************************-->
-            <!-- Túrar og biðtúrar -->
+            <!-- Túrar -->
             <!--*********************************************************************************************************-->
 
             <Border Grid.Column="4" Grid.Row="1"  BorderThickness="2" BorderBrush="#FF224591" >
                 <StackPanel Name="spanCol4">
-            <TextBox Text="Vaktin" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" TextChanged="TextBox_TextChanged">
-                    <TextBox.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF465A7D" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
+                    <TextBox Text="Túrar" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" TextChanged="TextBox_TextChanged">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF465A7D" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
                         <TextBox Margin="5,5,5,5" Background="White" MinWidth="25" BorderThickness="1" Width="80" Name="txtArea06" Text="" VerticalContentAlignment="Center" Foreground="#FF224591" FontSize="14" BorderBrush="#FF224591" KeyDown="txtArea05_KeyDown" ></TextBox>
                         <Image Source="/sendill_client;component/Images/mnu_refresh.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA6_off" MouseLeftButtonDown="comA5_off_MouseLeftButtonDown"/>
                         <Image Source="/sendill_client;component/Images/mnu_upload.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA6_pause"/>
                         <Image Source="/sendill_client;component/Images/toolbar_filter.png" MinHeight="0" Margin="5" Height="24" Width="24" ToolTip="Taka af stæði" Name="comA6_reorder"/>
                     </StackPanel>
-            <!--*********************************************************************************************************-->
-            <!-- Túrar og biðtúrar -->
-            <!--*********************************************************************************************************-->
+                    <!--*********************************************************************************************************-->
+                    <!-- Túrar og biðtúrar -->
+                    <!--*********************************************************************************************************-->
                     <ListBox  Height="248" Background="#FFBAC4D5" Name="lbox6" ItemsSource="{Binding}" ItemTemplate="{StaticResource TourOnPin}" Style="{StaticResource pinListboxStyle}">
 
-            </ListBox>
-                <TextBox Text="Biðtúrar" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
-                    <TextBox.Background> 
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FF475B7E" Offset="0" />
-                            <GradientStop Color="White" Offset="1" />
-                        </LinearGradientBrush>
-                    </TextBox.Background>
-                </TextBox>
+                    </ListBox>
+                    <TextBox Text="Biðtúrar" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
+                        <TextBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF475B7E" Offset="0" />
+                                <GradientStop Color="White" Offset="1" />
+                            </LinearGradientBrush>
+                        </TextBox.Background>
+                    </TextBox>
                     <StackPanel Orientation="Horizontal" Background="White" MinHeight="30">
-              
+
                         <Button x:Name="btnNewTour" CommandParameter="{Binding idcar}" Click="btnNewTour_Click"  Style="{StaticResource BorderlessButton}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="Images/tour_new.png" MinHeight="0" Margin="2,2,6,2" Height="24" />
@@ -567,8 +573,8 @@
                     </StackPanel>
                     <ListBox  Height="249" Background="#FFBFC9D9" Name="lbox7">
 
-            </ListBox>
-        </StackPanel>
+                    </ListBox>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

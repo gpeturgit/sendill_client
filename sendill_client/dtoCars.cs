@@ -51,6 +51,7 @@ namespace sendill_client
         public string dmobile { get; set; }
         public double? heightofbox { get; set; }
         public bool isdel { get; set; }
+        public bool isChanged { get; set; }
         public int size { get; set; }
 
     }

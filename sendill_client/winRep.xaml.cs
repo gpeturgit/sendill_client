@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Forms;
+
 
 
 namespace sendill_client
@@ -24,10 +26,10 @@ namespace sendill_client
             InitializeComponent();
         }
 
-        private void label1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hlaða inn skýrslu með viðskiptamannaskrá.");
-
+            ReportsApplication2.Form1 wrep = new ReportsApplication2.Form1();
+            wrep.Show();
         }
     }
 }

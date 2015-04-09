@@ -3,23 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tex="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Bílar" Height="740" Width="1024" WindowState="Maximized">
+        xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+        Title="Bílar" Height="768" Width="1024">
 
-<Window.Resources>
+    <Window.Resources>
         <CollectionViewSource x:Key="MasterView" />
 
 
-         <!--**************************************************************************************************************-->
+        <!--**************************************************************************************************************-->
         <!--Styles-->
         <!--**************************************************************************************************************-->
-    
+
         <Style x:Key="pinListboxStyle">
             <Style.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="WhiteSmoke" />
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="WhiteSmoke" />
             </Style.Resources>
         </Style>
-    
+
         <!--**************************************************************************************************************-->
         <!--Name : Borderless buttons. -->
         <!--Name : Takki sem stækkar og minnkar um 20% við mousover og onclick. -->
@@ -62,17 +63,18 @@
             </Setter>
         </Style>
     </Window.Resources>
+
     <Grid Height="704" Name="mainGrid" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="120" />
             <RowDefinition Height="260*" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        
+
         <!--*********************************************************************************************************-->
         <!--Modal form Car detail-->
         <!--*********************************************************************************************************-->
-        
+
         <wpfx:ChildWindow Name="childWinCar" Height="600" Width="800" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsModal="True" >
             <Grid>
                 <Grid>
@@ -84,21 +86,21 @@
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
                         <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"></Image>
-                        <TextBlock Name="txtTourHeader" Text="Túrar" TextAlignment="Left" VerticalAlignment="Center" Width="162" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
+                        <TextBlock Name="txtTourHeader" Text="Bílar og bílstjórar." TextAlignment="Left" VerticalAlignment="Center" Width="162" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
                         <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
                     </StackPanel>
-                    <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-                        <Button Name="carToolbarComRecNew" Margin="10,0,0,5"  BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+                    <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1" >
+                        <Button Name="carToolbarComRecNew" Margin="10,0,0,5"  BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecNew_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/sendill_client;component/Images/ToolbarRecNew.png" Height="20" Width="20"></Image>
                             </StackPanel>
                         </Button>
-                        <Button Name="carToolbarComRecDelete" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" >
+                        <Button Name="carToolbarComRecDelete" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecDelete_Click" >
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/sendill_client;component/Images/ToolbarRecDelete.png" Height="20" Width="20"></Image>
                             </StackPanel>
                         </Button>
-                        <Button Name="carToolbarComRecSave" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}"  >
+                        <Button Name="carToolbarComRecSave" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecSave_Click"  >
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="/sendill_client;component/Images/ToolbarRecSave.png" Height="20" Width="20"></Image>
                             </StackPanel>
@@ -141,20 +143,23 @@
                             <RowDefinition Height="10" />
                             <RowDefinition Height="26" />
                             <RowDefinition Height="10" />
+                            <RowDefinition Height="26" />
+                            <RowDefinition Height="25" />
                         </Grid.RowDefinitions>
                         <Label Content="Númer" Grid.Column="1" Grid.Row="1" />
-                        <TextBox Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1" />
+                        <TextBox Name="txtId" Text="{Binding id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="1" />
                         <Label Content="Kallnúmer" Grid.Column="1" Grid.Row="3"/>
-                        <TextBox Text="{Binding stationid, Mode=OneWay}" Grid.Column="2" Grid.Row="3" />
+                        <TextBox Text="{Binding stationid}" Grid.Column="2" Grid.Row="3" />
                         <Label Content="Bílnúmer" Grid.Column="1" Grid.Row="5" />
-                        <TextBox Text="{Binding carnumber, Mode=OneWay}" Grid.Column="2" Grid.Row="5" />
+                        <TextBox Text="{Binding carnumber}" Grid.Column="2" Grid.Row="5" />
                         <Label Content="Kóði" Grid.Column="4" Grid.Row="1"/>
-                        <TextBox Text="{Binding code, Mode=OneWay}" Grid.Column="5" Grid.Row="1" />
-                        <Label Content="Listaður" Grid.Column="4" Grid.Row="3" />
-                        <TextBox Text="{Binding listed, Mode=OneWay}" Grid.Column="5" Grid.Row="3" />
+                        <TextBox Text="{Binding code}" Grid.Column="5" Grid.Row="1" />
+                        <TextBox Text="{Binding size}" Grid.Column="2" Grid.Row="7" Margin="0,0,26,0" Grid.ColumnSpan="2" Visibility="Hidden" />
+                        <ComboBox Grid.Column="4" HorizontalAlignment="Left" Margin="101,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="120" x:Name="comboCarType" SelectedValue="{Binding size}" Grid.ColumnSpan="2"/>
+                        <Label Content="Flokkur" Grid.Column="4" Grid.Row="7" Margin="0,0,0.333,0"/>
                         <Label Content="Nafn bíls" Grid.Column="4" Grid.Row="5"/>
-                        <TextBox Text="{Binding carname, Mode=OneWay}" Grid.Column="5" Grid.Row="5" />
-
+                        <TextBox Text="{Binding carname}" Grid.Column="5" Grid.Row="5" />
+                        <CheckBox IsChecked="{Binding listed, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.Row="3" VerticalAlignment="Center" />
                     </Grid>
                     <TabControl Grid.Row="3" FontSize="12">
                         <TabItem Header="Eigandi">
@@ -280,8 +285,6 @@
                                 <TextBox Text="{Binding width, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.Row="5" />
                                 <Label Content="Hæð að kassa" Grid.Column="4" Grid.Row="7"/>
                                 <TextBox Text="{Binding heightofbox, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="5" Grid.Row="7" />
-                                <Label Content="Hæð að kassa" Grid.Column="4" Grid.Row="9"/>
-                                <TextBox Text="{Binding size,  Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="5" Grid.Row="9" />
                             </Grid>
                         </TabItem>
                     </TabControl>
@@ -289,36 +292,44 @@
             </Grid>
 
         </wpfx:ChildWindow>
-        <StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0" >
+        <Custom:Ribbon x:Name="CarRibbon" VerticalAlignment="Top" Grid.Row="0" ShowQuickAccessToolBarOnTop="False">
+            <Custom:RibbonTab Header="Bílar og bílstjórar" >
+                <Custom:RibbonGroup Header="Túr" Height="82" Margin="4">
+                    <Custom:RibbonControlGroup >
+                        <Custom:RibbonButton Height="56" Width="50" Label="Skoða" LargeImageSource="/sendill_client;component/Images/RibTour4848.png" Click="RibbonButton_Click" />
+                    </Custom:RibbonControlGroup>
+                </Custom:RibbonGroup>
+                </Custom:RibbonTab>
+        </Custom:Ribbon>
+        <!--<StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0" >
             <TextBlock Text="Bílar og bílstjórar" TextAlignment="Left" VerticalAlignment="Center" Width="176" FontSize="22" FontFamily="Segoe UI" Foreground="White" Margin="10" />
-        </StackPanel>
-        <DataGrid AutoGenerateColumns="False" Name="dataGridCar" Grid.Row="1" RowBackground="FloralWhite" AlternatingRowBackground="Wheat" HorizontalAlignment="Left" Width="1002" ItemsSource="{Binding Source={StaticResource MasterView}}">
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn>
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
+        </StackPanel>-->
+        <DataGrid AutoGenerateColumns="False" Name="dataGridCar" Grid.Row="1" RowBackground="FloralWhite" AlternatingRowBackground="Wheat" HorizontalAlignment="Left" Width="1002" ItemsSource="{Binding Source={StaticResource MasterView}}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <Button Name="columnButtonEdit" Style="{StaticResource BorderlessButton}" CommandParameter="{Binding Path=id}" Content="Skoða" Click="columnButtonEdit_Click"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Númer" Binding="{Binding stationid}" />
-                        <DataGridTextColumn Header="Tegund" Binding="{Binding carnumber}" />
-                        <DataGridTextColumn Header="Bílnúmer" Binding="{Binding carname}" />
-                        <DataGridTextColumn Header="Kóði" Binding="{Binding code}" />
-                        <DataGridTextColumn Header="Eigannd" Binding="{Binding owner}" />
-                        <DataGridTextColumn Header="Farsími" Binding="{Binding mobile}" />
-                        <DataGridTextColumn Header="Ökumaður" Binding="{Binding driver}" />
-                        <DataGridTextColumn Header="Farsími" Binding="{Binding dmobile}" />
-                        <DataGridTextColumn Header="Flokkur" Binding="{Binding size}" />
-                        <DataGridCheckBoxColumn Header="Eytt" Binding="{Binding isdel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Númer" Binding="{Binding stationid}" />
+                <DataGridTextColumn Header="Tegund" Binding="{Binding carnumber}" />
+                <DataGridTextColumn Header="Bílnúmer" Binding="{Binding carname}" />
+                <DataGridTextColumn Header="Kóði" Binding="{Binding code}" />
+                <DataGridTextColumn Header="Eigannd" Binding="{Binding owner}" />
+                <DataGridTextColumn Header="Farsími" Binding="{Binding mobile}" />
+                <DataGridTextColumn Header="Ökumaður" Binding="{Binding driver}" />
+                <DataGridTextColumn Header="Farsími" Binding="{Binding dmobile}" />
+                <DataGridTextColumn Header="Flokkur" Binding="{Binding size}" />
             </DataGrid.Columns>
-                </DataGrid>
+        </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Content="Nýr" Grid.Row="2" Height="29" HorizontalAlignment="Left" Name="comSave" VerticalAlignment="Top" Width="100" IsEnabled="True" Click="comSave_Click" />
-            <Button Content="Geyma" Grid.Row="2" Height="30" HorizontalAlignment="Right" Name="comNew" VerticalAlignment="Top" Width="100" Click="button1_Click" />
-            <Button Content="Loka" Grid.Row="2" Height="30" HorizontalAlignment="Right" Name="comClose" VerticalAlignment="Top" Width="100" Click="comClose_Click" />
+            <Button Content="Nýr" Height="29" HorizontalAlignment="Left" x:Name="comSave" VerticalAlignment="Top" Width="100" IsEnabled="True" Click="comSave_Click" Visibility="Hidden" />
+            <Button Content="Geyma" Grid.Row="2" Height="30" HorizontalAlignment="Right" x:Name="comNew" VerticalAlignment="Top" Width="100" Click="button1_Click" Visibility="Hidden" />
+            <Button Content="Loka" Grid.Row="2" Height="30" HorizontalAlignment="Right" x:Name="comClose" VerticalAlignment="Top" Width="100" Click="comClose_Click" Visibility="Hidden" />
 
-        
+
         </StackPanel>
     </Grid>
 </Window>

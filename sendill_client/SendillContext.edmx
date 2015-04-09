@@ -4,295 +4,391 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="dbsendillModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-  <EntityContainer Name="dbsendillModelStoreContainer">
-    <EntitySet Name="tbl_cars" EntityType="dbsendillModel.Store.tbl_cars" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="BÍLAR" EntityType="dbsendillModel.Store.BÍLAR" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_customers" EntityType="dbsendillModel.Store.tbl_customers" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_driver_customers" EntityType="dbsendillModel.Store.tbl_driver_customers" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_driver_ledger_rec" EntityType="dbsendillModel.Store.tbl_driver_ledger_rec" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_driver_ledger_record_type" EntityType="dbsendillModel.Store.tbl_driver_ledger_record_type" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_driver_ledgers" EntityType="dbsendillModel.Store.tbl_driver_ledgers" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_driver_users" EntityType="dbsendillModel.Store.tbl_driver_users" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_ledger_entry_types" EntityType="dbsendillModel.Store.tbl_ledger_entry_types" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_pinnames" EntityType="dbsendillModel.Store.tbl_pinnames" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_pins" EntityType="dbsendillModel.Store.tbl_pins" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_tours" EntityType="dbsendillModel.Store.tbl_tours" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_vsk_periods" EntityType="dbsendillModel.Store.tbl_vsk_periods" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="tbl_vsk_types" EntityType="dbsendillModel.Store.tbl_vsk_types" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="FK_tbl_cars_tbl_driver_ledgers" Association="dbsendillModel.Store.FK_tbl_cars_tbl_driver_ledgers">
-      <End Role="tbl_cars" EntitySet="tbl_cars" />
-      <End Role="tbl_driver_ledgers" EntitySet="tbl_driver_ledgers" />
-    </AssociationSet>
-    <AssociationSet Name="FK_tbl_carstbl_driver_customers" Association="dbsendillModel.Store.FK_tbl_carstbl_driver_customers">
-      <End Role="tbl_cars" EntitySet="tbl_cars" />
-      <End Role="tbl_driver_customers" EntitySet="tbl_driver_customers" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="tbl_cars">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="stationid" Type="smallint" Nullable="true" />
-    <Property Name="carnumber" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="listed" Type="bit" Nullable="true" />
-    <Property Name="carname" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="car1" Type="bit" Nullable="true" />
-    <Property Name="car2" Type="bit" Nullable="true" />
-    <Property Name="car3" Type="bit" Nullable="true" />
-    <Property Name="car4" Type="bit" Nullable="true" />
-    <Property Name="car5" Type="bit" Nullable="true" />
-    <Property Name="car6" Type="bit" Nullable="true" />
-    <Property Name="car7" Type="bit" Nullable="true" />
-    <Property Name="car8" Type="bit" Nullable="true" />
-    <Property Name="car9" Type="bit" Nullable="true" />
-    <Property Name="car10" Type="bit" Nullable="true" />
-    <Property Name="length" Type="float" Nullable="true" />
-    <Property Name="back_door_width" Type="float" Nullable="true" />
-    <Property Name="back_door_height" Type="float" Nullable="true" />
-    <Property Name="side_door_width" Type="float" Nullable="true" />
-    <Property Name="side_door_height" Type="float" Nullable="true" />
-    <Property Name="weight_limit" Type="float" Nullable="true" />
-    <Property Name="lift_size" Type="smallint" Nullable="true" />
-    <Property Name="Volume" Type="float" Nullable="true" />
-    <Property Name="width" Type="float" Nullable="true" />
-    <Property Name="model" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="max_carry" Type="float" Nullable="true" />
-    <Property Name="owner" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="kt" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="address" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="town" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="postcode" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="phone" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="mobile" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="driver" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="dkt" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="daddress" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="dtown" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="dpostcode" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="dphone" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="dmobile" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="heightofbox" Type="float" Nullable="true" />
-  </EntityType>
-  <EntityType Name="BÍLAR">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="A_Hurda_breidd" Type="float" Nullable="true" />
-    <Property Name="A_Hurda_haed" Type="float" Nullable="true" />
-    <Property Name="Bilnumer" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Breidd" Type="float" Nullable="true" />
-    <Property Name="Burdargeta" Type="float" Nullable="true" />
-    <Property Name="Dregur_startar" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Fjoldi" Type="float" Nullable="true" />
-    <Property Name="Flytur_lengst" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Heimili_bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Heimili_eiganda" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="H_simi_bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Hurda_breidd" Type="float" Nullable="true" />
-    <Property Name="Hurda_haed" Type="float" Nullable="true" />
-    <Property Name="H_simi_bilstjora2" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="H_simi_eiganda" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="H_simi_eiganda2" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Kassahæð" Type="float" Nullable="true" />
-    <Property Name="Koda_flokkar" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Kt_Bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Kt_eiganda" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Lengd" Type="float" Nullable="true" />
-    <Property Name="Lyfta" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Lyfta_staerd" Type="float" Nullable="true" />
-    <Property Name="Nafn_bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Nafn_eiganda" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Nr" Type="float" Nullable="true" />
-    <Property Name="Postnr_bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Postnr_eiganda" Type="float" Nullable="true" />
-    <Property Name="Rummal" Type="float" Nullable="true" />
-    <Property Name="Simi_i_bil" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Skilaboð" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Skilaboð_dags" Type="datetime" Nullable="true" />
-    <Property Name="Skilaboð_timi" Type="datetime" Nullable="true" />
-    <Property Name="Skuldar" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Stadur_bilstjora" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Stadur_eiganda" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Stardar_Flokkur" Type="float" Nullable="true" />
-    <Property Name="Óskoðaður" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Tegurnd" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="Vinnu_field" Type="float" Nullable="true" />
-  </EntityType>
-  <EntityType Name="tbl_customers">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="custname" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="kt" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="address" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="town" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="postcode" Type="nvarchar" Nullable="true" MaxLength="20" />
-    <Property Name="phone" Type="nvarchar" Nullable="true" MaxLength="20" />
-    <Property Name="fax" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="email" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="vefur" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="contact1" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="phone1" Type="nvarchar" Nullable="true" MaxLength="20" />
-    <Property Name="mobile1" Type="nvarchar" Nullable="true" MaxLength="20" />
-    <Property Name="contact2" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="phone2" Type="nvarchar" Nullable="true" MaxLength="20" />
-    <Property Name="mobile2" Type="nvarchar" Nullable="true" MaxLength="20" />
-  </EntityType>
-  <EntityType Name="tbl_driver_customers">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="name" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="address" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="postgode" Type="nvarchar" Nullable="true" MaxLength="5" />
-    <Property Name="address1" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="phone" Type="nvarchar" Nullable="true" MaxLength="11" />
-    <Property Name="mobile" Type="nvarchar" Nullable="true" MaxLength="11" />
-    <Property Name="email" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="login" Type="nvarchar" Nullable="true" MaxLength="15" />
-    <Property Name="password" Type="nvarchar" Nullable="true" MaxLength="15" />
-    <Property Name="tbl_carsID" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="tbl_driver_ledger_rec">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="ldate" Type="datetime" Nullable="true" />
-    <Property Name="id_customer" Type="int" Nullable="true" />
-    <Property Name="id_ledger" Type="int" Nullable="true" />
-    <Property Name="id_period" Type="int" Nullable="true" />
-    <Property Name="id_record_type" Type="int" Nullable="true" />
-  </EntityType>
-  <EntityType Name="tbl_driver_ledger_record_type">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="15" />
-    <Property Name="debit" Type="bit" Nullable="true" />
-    <Property Name="description" Type="varchar" Nullable="true" MaxLength="100" />
-  </EntityType>
-  <EntityType Name="tbl_driver_ledgers">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="datefrom" Type="datetime" Nullable="false" />
-    <Property Name="dateto" Type="datetime" Nullable="false" />
-    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="15" />
-    <Property Name="income" Type="real" Nullable="true" />
-    <Property Name="cost" Type="real" Nullable="true" />
-    <Property Name="vsk" Type="real" Nullable="true" />
-    <Property Name="note" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="owner_id" Type="int" Nullable="false" />
-    <Property Name="period_id" Type="int" Nullable="false" />
-    <Property Name="is_open" Type="bit" Nullable="false" />
-  </EntityType>
-  <EntityType Name="tbl_driver_users">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="name" Type="nvarchar" Nullable="true" MaxLength="50" />
-    <Property Name="login" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="password" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="15" />
-    <Property Name="isdelete" Type="bit" Nullable="true" />
-    <Property Name="contact_id" Type="int" Nullable="true" />
-  </EntityType>
-  <EntityType Name="tbl_ledger_entry_types">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="description" Type="nvarchar" Nullable="true" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="tbl_pinnames">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="names" Type="nvarchar" Nullable="true" MaxLength="100" />
-    <Property Name="rows" Type="smallint" Nullable="true" />
-  </EntityType>
-  <EntityType Name="tbl_pins">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="idpin" Type="smallint" Nullable="true" />
-    <Property Name="idcar" Type="int" Nullable="true" />
-    <Property Name="foodbreak" Type="bit" Nullable="true" />
-    <Property Name="carcode" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="line" Type="smallint" Nullable="true" />
-  </EntityType>
-  <EntityType Name="tbl_tours">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="id_customers" Type="smallint" Nullable="true" />
-    <Property Name="id_cars" Type="smallint" Nullable="true" />
-    <Property Name="id_owner" Type="int" Nullable="true" />
-    <Property Name="timedate" Type="datetime" Nullable="true" />
-    <Property Name="customer" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="address" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="contact" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="phione" Type="nvarchar" Nullable="true" MaxLength="255" />
-    <Property Name="note" Type="nvarchar" Nullable="true" MaxLength="255" />
-  </EntityType>
-  <EntityType Name="tbl_vsk_periods">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="date_from" Type="nchar" Nullable="true" MaxLength="10" />
-    <Property Name="date_to" Type="nchar" Nullable="true" MaxLength="10" />
-    <Property Name="description" Type="nchar" Nullable="true" MaxLength="10" />
-  </EntityType>
-  <EntityType Name="tbl_vsk_types">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="code" Type="nvarchar" Nullable="true" MaxLength="10" />
-    <Property Name="calcnum" Type="real" Nullable="true" />
-    <Property Name="description" Type="nvarchar" Nullable="true" MaxLength="50" />
-  </EntityType>
-  <Association Name="FK_tbl_cars_tbl_driver_ledgers">
-    <End Role="tbl_cars" Type="dbsendillModel.Store.tbl_cars" Multiplicity="1" />
-    <End Role="tbl_driver_ledgers" Type="dbsendillModel.Store.tbl_driver_ledgers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbl_cars">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="tbl_driver_ledgers">
-        <PropertyRef Name="owner_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_tbl_carstbl_driver_customers">
-    <End Role="tbl_cars" Type="dbsendillModel.Store.tbl_cars" Multiplicity="1" />
-    <End Role="tbl_driver_customers" Type="dbsendillModel.Store.tbl_driver_customers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="tbl_cars">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="tbl_driver_customers">
-        <PropertyRef Name="tbl_carsID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="dbsendillModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="BÍLAR">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="A_Hurda_breidd" Type="float" />
+          <Property Name="A_Hurda_haed" Type="float" />
+          <Property Name="Bilnumer" Type="nvarchar" MaxLength="255" />
+          <Property Name="Breidd" Type="float" />
+          <Property Name="Burdargeta" Type="float" />
+          <Property Name="Dregur_startar" Type="nvarchar" MaxLength="255" />
+          <Property Name="Fjoldi" Type="float" />
+          <Property Name="Flytur_lengst" Type="nvarchar" MaxLength="255" />
+          <Property Name="Heimili_bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Heimili_eiganda" Type="nvarchar" MaxLength="255" />
+          <Property Name="H_simi_bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Hurda_breidd" Type="float" />
+          <Property Name="Hurda_haed" Type="float" />
+          <Property Name="H_simi_bilstjora2" Type="nvarchar" MaxLength="255" />
+          <Property Name="H_simi_eiganda" Type="nvarchar" MaxLength="255" />
+          <Property Name="H_simi_eiganda2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Kassahæð" Type="float" />
+          <Property Name="Koda_flokkar" Type="nvarchar" MaxLength="255" />
+          <Property Name="Kt_Bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Kt_eiganda" Type="nvarchar" MaxLength="255" />
+          <Property Name="Lengd" Type="float" />
+          <Property Name="Lyfta" Type="nvarchar" MaxLength="255" />
+          <Property Name="Lyfta_staerd" Type="float" />
+          <Property Name="Nafn_bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Nafn_eiganda" Type="nvarchar" MaxLength="255" />
+          <Property Name="Nr" Type="float" />
+          <Property Name="Postnr_bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Postnr_eiganda" Type="float" />
+          <Property Name="Rummal" Type="float" />
+          <Property Name="Simi_i_bil" Type="nvarchar" MaxLength="255" />
+          <Property Name="Skilaboð" Type="nvarchar" MaxLength="255" />
+          <Property Name="Skilaboð_dags" Type="datetime" />
+          <Property Name="Skilaboð_timi" Type="datetime" />
+          <Property Name="Skuldar" Type="nvarchar" MaxLength="255" />
+          <Property Name="Stadur_bilstjora" Type="nvarchar" MaxLength="255" />
+          <Property Name="Stadur_eiganda" Type="nvarchar" MaxLength="255" />
+          <Property Name="Stardar_Flokkur" Type="float" />
+          <Property Name="Óskoðaður" Type="nvarchar" MaxLength="255" />
+          <Property Name="Tegurnd" Type="nvarchar" MaxLength="255" />
+          <Property Name="Vinnu_field" Type="float" />
+        </EntityType>
+        <EntityType Name="tbl_cars">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stationid" Type="smallint" />
+          <Property Name="carnumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="code" Type="nvarchar" MaxLength="255" />
+          <Property Name="listed" Type="bit" />
+          <Property Name="carname" Type="nvarchar" MaxLength="255" />
+          <Property Name="car1" Type="bit" />
+          <Property Name="car2" Type="bit" />
+          <Property Name="car3" Type="bit" />
+          <Property Name="car4" Type="bit" />
+          <Property Name="car5" Type="bit" />
+          <Property Name="car6" Type="bit" />
+          <Property Name="car7" Type="bit" />
+          <Property Name="car8" Type="bit" />
+          <Property Name="car9" Type="bit" />
+          <Property Name="car10" Type="bit" />
+          <Property Name="length" Type="float" />
+          <Property Name="back_door_width" Type="float" />
+          <Property Name="back_door_height" Type="float" />
+          <Property Name="side_door_width" Type="float" />
+          <Property Name="side_door_height" Type="float" />
+          <Property Name="weight_limit" Type="float" />
+          <Property Name="lift_size" Type="smallint" />
+          <Property Name="Volume" Type="float" />
+          <Property Name="width" Type="float" />
+          <Property Name="model" Type="nvarchar" MaxLength="255" />
+          <Property Name="max_carry" Type="float" />
+          <Property Name="owner" Type="nvarchar" MaxLength="255" />
+          <Property Name="kt" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" />
+          <Property Name="town" Type="nvarchar" MaxLength="255" />
+          <Property Name="postcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="phone" Type="nvarchar" MaxLength="255" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="driver" Type="nvarchar" MaxLength="255" />
+          <Property Name="dkt" Type="nvarchar" MaxLength="255" />
+          <Property Name="daddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="dtown" Type="nvarchar" MaxLength="255" />
+          <Property Name="dpostcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="dphone" Type="nvarchar" MaxLength="255" />
+          <Property Name="dmobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="heightofbox" Type="float" />
+          <Property Name="size" Type="smallint" />
+        </EntityType>
+        <EntityType Name="tbl_customers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="custname" Type="nvarchar" MaxLength="100" />
+          <Property Name="kt" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="100" />
+          <Property Name="town" Type="nvarchar" MaxLength="100" />
+          <Property Name="postcode" Type="nvarchar" MaxLength="20" />
+          <Property Name="phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="fax" Type="nvarchar" MaxLength="255" />
+          <Property Name="email" Type="nvarchar" MaxLength="255" />
+          <Property Name="vefur" Type="nvarchar" MaxLength="255" />
+          <Property Name="contact1" Type="nvarchar" MaxLength="100" />
+          <Property Name="phone1" Type="nvarchar" MaxLength="20" />
+          <Property Name="mobile1" Type="nvarchar" MaxLength="20" />
+          <Property Name="contact2" Type="nvarchar" MaxLength="100" />
+          <Property Name="phone2" Type="nvarchar" MaxLength="20" />
+          <Property Name="mobile2" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="tbl_driver_customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="address" Type="nvarchar" MaxLength="50" />
+          <Property Name="postgode" Type="nvarchar" MaxLength="5" />
+          <Property Name="address1" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone" Type="nvarchar" MaxLength="11" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="11" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="login" Type="nvarchar" MaxLength="15" />
+          <Property Name="password" Type="nvarchar" MaxLength="15" />
+          <Property Name="tbl_carsID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_driver_ledger_rec">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ldate" Type="datetime" />
+          <Property Name="id_customer" Type="int" />
+          <Property Name="id_ledger" Type="int" />
+          <Property Name="id_period" Type="int" />
+          <Property Name="id_record_type" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_driver_ledger_record_type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="15" />
+          <Property Name="debit" Type="bit" />
+          <Property Name="description" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="tbl_driver_ledgers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="datefrom" Type="datetime" Nullable="false" />
+          <Property Name="dateto" Type="datetime" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="income" Type="real" />
+          <Property Name="cost" Type="real" />
+          <Property Name="vsk" Type="real" />
+          <Property Name="note" Type="nvarchar" MaxLength="50" />
+          <Property Name="owner_id" Type="int" Nullable="false" />
+          <Property Name="period_id" Type="int" Nullable="false" />
+          <Property Name="is_open" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_driver_users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="login" Type="nvarchar" MaxLength="10" />
+          <Property Name="password" Type="nvarchar" MaxLength="10" />
+          <Property Name="code" Type="nvarchar" MaxLength="15" />
+          <Property Name="isdelete" Type="bit" />
+          <Property Name="contact_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_ledger_entry_types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="10" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_pinnames">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="names" Type="nvarchar" MaxLength="100" />
+          <Property Name="rows" Type="smallint" />
+        </EntityType>
+        <EntityType Name="tbl_pins">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idpin" Type="smallint" />
+          <Property Name="idcar" Type="int" />
+          <Property Name="foodbreak" Type="bit" />
+          <Property Name="carcode" Type="nvarchar" MaxLength="10" />
+          <Property Name="line" Type="smallint" />
+        </EntityType>
+        <EntityType Name="tbl_tours">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_customers" Type="smallint" />
+          <Property Name="id_cars" Type="smallint" />
+          <Property Name="id_owner" Type="int" />
+          <Property Name="timedate" Type="datetime" />
+          <Property Name="customer" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" />
+          <Property Name="contact" Type="nvarchar" MaxLength="255" />
+          <Property Name="phione" Type="nvarchar" MaxLength="255" />
+          <Property Name="note" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tbl_vsk_periods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="10" />
+          <Property Name="date_from" Type="nchar" MaxLength="10" />
+          <Property Name="date_to" Type="nchar" MaxLength="10" />
+          <Property Name="description" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tbl_vsk_types">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="code" Type="nvarchar" MaxLength="10" />
+          <Property Name="calcnum" Type="real" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Sendill.dbo.tblNewCar' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tblNewCar">
+          <Key>
+            <PropertyRef Name="size" />
+          </Key>
+          <Property Name="stationid" Type="smallint" />
+          <Property Name="carnumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="code" Type="nvarchar" MaxLength="255" />
+          <Property Name="listed" Type="smallint" />
+          <Property Name="carname" Type="nvarchar" MaxLength="255" />
+          <Property Name="car1" Type="bit" />
+          <Property Name="car2" Type="bit" />
+          <Property Name="car3" Type="bit" />
+          <Property Name="car4" Type="bit" />
+          <Property Name="car5" Type="bit" />
+          <Property Name="car6" Type="bit" />
+          <Property Name="car7" Type="bit" />
+          <Property Name="car8" Type="bit" />
+          <Property Name="car9" Type="bit" />
+          <Property Name="car10" Type="bit" />
+          <Property Name="length" Type="float" />
+          <Property Name="back_door_width" Type="float" />
+          <Property Name="back_door_height" Type="float" />
+          <Property Name="side_door_width" Type="float" />
+          <Property Name="side_door_height" Type="float" />
+          <Property Name="weight_limit" Type="float" />
+          <Property Name="lift_size" Type="smallint" />
+          <Property Name="Volume" Type="float" />
+          <Property Name="width" Type="float" />
+          <Property Name="model" Type="nvarchar" MaxLength="255" />
+          <Property Name="max_carry" Type="float" />
+          <Property Name="owner" Type="nvarchar" MaxLength="255" />
+          <Property Name="kt" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" />
+          <Property Name="town" Type="nvarchar" MaxLength="255" />
+          <Property Name="postcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="phone" Type="nvarchar" MaxLength="255" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="driver" Type="nvarchar" MaxLength="255" />
+          <Property Name="dkt" Type="nvarchar" MaxLength="255" />
+          <Property Name="daddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="dtown" Type="nvarchar" MaxLength="255" />
+          <Property Name="dpostcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="dphone" Type="nvarchar" MaxLength="255" />
+          <Property Name="dmobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="heightofbox" Type="float" />
+          <Property Name="size" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tbl_cars_tbl_driver_ledgers">
+          <End Role="tbl_cars" Type="Self.tbl_cars" Multiplicity="1" />
+          <End Role="tbl_driver_ledgers" Type="Self.tbl_driver_ledgers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cars">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tbl_driver_ledgers">
+              <PropertyRef Name="owner_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_carstbl_driver_customers">
+          <End Role="tbl_cars" Type="Self.tbl_cars" Multiplicity="1" />
+          <End Role="tbl_driver_customers" Type="Self.tbl_driver_customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_cars">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tbl_driver_customers">
+              <PropertyRef Name="tbl_carsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbsendillModelStoreContainer">
+          <EntitySet Name="BÍLAR" EntityType="Self.BÍLAR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_cars" EntityType="Self.tbl_cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_customers" EntityType="Self.tbl_customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_driver_customers" EntityType="Self.tbl_driver_customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_driver_ledger_rec" EntityType="Self.tbl_driver_ledger_rec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_driver_ledger_record_type" EntityType="Self.tbl_driver_ledger_record_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_driver_ledgers" EntityType="Self.tbl_driver_ledgers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_driver_users" EntityType="Self.tbl_driver_users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ledger_entry_types" EntityType="Self.tbl_ledger_entry_types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_pinnames" EntityType="Self.tbl_pinnames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_pins" EntityType="Self.tbl_pins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_tours" EntityType="Self.tbl_tours" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_vsk_periods" EntityType="Self.tbl_vsk_periods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_vsk_types" EntityType="Self.tbl_vsk_types" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblNewCar" EntityType="Self.tblNewCar" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[tblNewCar].[stationid] AS [stationid], 
+[tblNewCar].[carnumber] AS [carnumber], 
+[tblNewCar].[code] AS [code], 
+[tblNewCar].[listed] AS [listed], 
+[tblNewCar].[carname] AS [carname], 
+[tblNewCar].[car1] AS [car1], 
+[tblNewCar].[car2] AS [car2], 
+[tblNewCar].[car3] AS [car3], 
+[tblNewCar].[car4] AS [car4], 
+[tblNewCar].[car5] AS [car5], 
+[tblNewCar].[car6] AS [car6], 
+[tblNewCar].[car7] AS [car7], 
+[tblNewCar].[car8] AS [car8], 
+[tblNewCar].[car9] AS [car9], 
+[tblNewCar].[car10] AS [car10], 
+[tblNewCar].[length] AS [length], 
+[tblNewCar].[back_door_width] AS [back_door_width], 
+[tblNewCar].[back_door_height] AS [back_door_height], 
+[tblNewCar].[side_door_width] AS [side_door_width], 
+[tblNewCar].[side_door_height] AS [side_door_height], 
+[tblNewCar].[weight_limit] AS [weight_limit], 
+[tblNewCar].[lift_size] AS [lift_size], 
+[tblNewCar].[Volume] AS [Volume], 
+[tblNewCar].[width] AS [width], 
+[tblNewCar].[model] AS [model], 
+[tblNewCar].[max_carry] AS [max_carry], 
+[tblNewCar].[owner] AS [owner], 
+[tblNewCar].[kt] AS [kt], 
+[tblNewCar].[address] AS [address], 
+[tblNewCar].[town] AS [town], 
+[tblNewCar].[postcode] AS [postcode], 
+[tblNewCar].[phone] AS [phone], 
+[tblNewCar].[mobile] AS [mobile], 
+[tblNewCar].[driver] AS [driver], 
+[tblNewCar].[dkt] AS [dkt], 
+[tblNewCar].[daddress] AS [daddress], 
+[tblNewCar].[dtown] AS [dtown], 
+[tblNewCar].[dpostcode] AS [dpostcode], 
+[tblNewCar].[dphone] AS [dphone], 
+[tblNewCar].[dmobile] AS [dmobile], 
+[tblNewCar].[heightofbox] AS [heightofbox], 
+[tblNewCar].[size] AS [size]
+FROM [dbo].[tblNewCar] AS [tblNewCar]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tbl_cars_tbl_driver_ledgers" Association="Self.FK_tbl_cars_tbl_driver_ledgers">
+            <End Role="tbl_cars" EntitySet="tbl_cars" />
+            <End Role="tbl_driver_ledgers" EntitySet="tbl_driver_ledgers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_carstbl_driver_customers" Association="Self.FK_tbl_carstbl_driver_customers">
+            <End Role="tbl_cars" EntitySet="tbl_cars" />
+            <End Role="tbl_driver_customers" EntitySet="tbl_driver_customers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbsendillModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -319,6 +415,7 @@
             <End Role="tbl_cars" EntitySet="tbl_cars" />
             <End Role="tbl_driver_customers" EntitySet="tbl_driver_customers" />
           </AssociationSet>
+          <EntitySet Name="tblNewCars" EntityType="dbsendillModel.tblNewCar" />
         </EntityContainer>
         <EntityType Name="tbl_cars">
           <Key>
@@ -368,6 +465,7 @@
           <Property Name="heightofbox" Type="Double" />
           <NavigationProperty Name="tbl_driver_ledgers" Relationship="dbsendillModel.FK_tbl_cars_tbl_driver_ledgers" FromRole="tbl_cars" ToRole="tbl_driver_ledgers" />
           <NavigationProperty Name="tbl_driver_customers" Relationship="dbsendillModel.FK_tbl_carstbl_driver_customers" FromRole="tbl_cars" ToRole="tbl_driver_customers" />
+          <Property Name="size" Type="Int16" />
         </EntityType>
         <EntityType Name="BÍLAR">
           <Key>
@@ -405,8 +503,8 @@
           <Property Type="Double" Name="Rummal" />
           <Property Type="String" Name="Simi_i_bil" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Skilaboð" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="Skilaboð_dags" />
-          <Property Type="DateTime" Name="Skilaboð_timi" />
+          <Property Type="DateTime" Name="Skilaboð_dags" Precision="3" />
+          <Property Type="DateTime" Name="Skilaboð_timi" Precision="3" />
           <Property Type="String" Name="Skuldar" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Stadur_bilstjora" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Stadur_eiganda" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -458,7 +556,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" />
-          <Property Type="DateTime" Name="ldate" />
+          <Property Type="DateTime" Name="ldate" Precision="3" />
           <Property Type="Int32" Name="id_customer" />
           <Property Type="Int32" Name="id_ledger" />
           <Property Type="Int32" Name="id_period" />
@@ -478,8 +576,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="datefrom" Nullable="false" />
-          <Property Type="DateTime" Name="dateto" Nullable="false" />
+          <Property Type="DateTime" Name="datefrom" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="dateto" Nullable="false" Precision="3" />
           <Property Type="String" Name="name" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Type="Single" Name="income" />
           <Property Type="Single" Name="cost" />
@@ -537,7 +635,7 @@
           <Property Type="Int16" Name="id_customers" />
           <Property Type="Int16" Name="id_cars" />
           <Property Type="Int32" Name="id_owner" />
-          <Property Type="DateTime" Name="timedate" />
+          <Property Type="DateTime" Name="timedate" Precision="3" />
           <Property Type="String" Name="customer" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="address" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="contact" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -587,6 +685,53 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="tblNewCar">
+          <Key>
+            <PropertyRef Name="size" />
+          </Key>
+          <Property Name="stationid" Type="Int16" />
+          <Property Name="carnumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="listed" Type="Int16" />
+          <Property Name="carname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="car1" Type="Boolean" />
+          <Property Name="car2" Type="Boolean" />
+          <Property Name="car3" Type="Boolean" />
+          <Property Name="car4" Type="Boolean" />
+          <Property Name="car5" Type="Boolean" />
+          <Property Name="car6" Type="Boolean" />
+          <Property Name="car7" Type="Boolean" />
+          <Property Name="car8" Type="Boolean" />
+          <Property Name="car9" Type="Boolean" />
+          <Property Name="car10" Type="Boolean" />
+          <Property Name="length" Type="Double" />
+          <Property Name="back_door_width" Type="Double" />
+          <Property Name="back_door_height" Type="Double" />
+          <Property Name="side_door_width" Type="Double" />
+          <Property Name="side_door_height" Type="Double" />
+          <Property Name="weight_limit" Type="Double" />
+          <Property Name="lift_size" Type="Int16" />
+          <Property Name="Volume" Type="Double" />
+          <Property Name="width" Type="Double" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="max_carry" Type="Double" />
+          <Property Name="owner" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="kt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="town" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="postcode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="driver" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dkt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="daddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dtown" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dpostcode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dphone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dmobile" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="heightofbox" Type="Double" />
+          <Property Name="size" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -596,7 +741,8 @@
     <EntitySetMapping Name="tbl_cars">
       <EntityTypeMapping TypeName="IsTypeOf(dbsendillModel.tbl_cars)">
         <MappingFragment StoreEntitySet="tbl_cars">
-          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="stationid" ColumnName="stationid" />
           <ScalarProperty Name="carnumber" ColumnName="carnumber" />
           <ScalarProperty Name="code" ColumnName="code" />
@@ -846,6 +992,54 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="tblNewCars">
+            <EntityTypeMapping TypeName="dbsendillModel.tblNewCar">
+              <MappingFragment StoreEntitySet="tblNewCar">
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="heightofbox" ColumnName="heightofbox" />
+                <ScalarProperty Name="dmobile" ColumnName="dmobile" />
+                <ScalarProperty Name="dphone" ColumnName="dphone" />
+                <ScalarProperty Name="dpostcode" ColumnName="dpostcode" />
+                <ScalarProperty Name="dtown" ColumnName="dtown" />
+                <ScalarProperty Name="daddress" ColumnName="daddress" />
+                <ScalarProperty Name="dkt" ColumnName="dkt" />
+                <ScalarProperty Name="driver" ColumnName="driver" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="postcode" ColumnName="postcode" />
+                <ScalarProperty Name="town" ColumnName="town" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="kt" ColumnName="kt" />
+                <ScalarProperty Name="owner" ColumnName="owner" />
+                <ScalarProperty Name="max_carry" ColumnName="max_carry" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="width" ColumnName="width" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="lift_size" ColumnName="lift_size" />
+                <ScalarProperty Name="weight_limit" ColumnName="weight_limit" />
+                <ScalarProperty Name="side_door_height" ColumnName="side_door_height" />
+                <ScalarProperty Name="side_door_width" ColumnName="side_door_width" />
+                <ScalarProperty Name="back_door_height" ColumnName="back_door_height" />
+                <ScalarProperty Name="back_door_width" ColumnName="back_door_width" />
+                <ScalarProperty Name="length" ColumnName="length" />
+                <ScalarProperty Name="car10" ColumnName="car10" />
+                <ScalarProperty Name="car9" ColumnName="car9" />
+                <ScalarProperty Name="car8" ColumnName="car8" />
+                <ScalarProperty Name="car7" ColumnName="car7" />
+                <ScalarProperty Name="car6" ColumnName="car6" />
+                <ScalarProperty Name="car5" ColumnName="car5" />
+                <ScalarProperty Name="car4" ColumnName="car4" />
+                <ScalarProperty Name="car3" ColumnName="car3" />
+                <ScalarProperty Name="car2" ColumnName="car2" />
+                <ScalarProperty Name="car1" ColumnName="car1" />
+                <ScalarProperty Name="carname" ColumnName="carname" />
+                <ScalarProperty Name="listed" ColumnName="listed" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="carnumber" ColumnName="carnumber" />
+                <ScalarProperty Name="stationid" ColumnName="stationid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -859,13 +1053,15 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="SendillContext" ZoomLevel="71">
+      <Diagram Name="SendillContext" ZoomLevel="77">
         <EntityTypeShape EntityType="dbsendillModel.tbl_cars" Width="2" PointX="0.75" PointY="0.75" Height="9.4800423177083335" IsExpanded="true" />
         <EntityTypeShape EntityType="dbsendillModel.BÍLAR" Width="1.5" PointX="12.375" PointY="3.25" Height="8.9031380208333317" />
         <EntityTypeShape EntityType="dbsendillModel.tbl_customers" Width="1.5" PointX="7.75" PointY="0.75" Height="4.0956022135416656" />
@@ -888,6 +1084,7 @@
           <ConnectorPoint PointX="2.75" PointY="3.4131982421875" />
           <ConnectorPoint PointX="3.375" PointY="3.4131982421875" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="dbsendillModel.tblNewCar" Width="1.5" PointX="0.75" PointY="11.75" />
       </Diagram>
     </Diagrams>
   </Designer>

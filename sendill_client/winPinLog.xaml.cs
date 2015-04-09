@@ -22,7 +22,8 @@ namespace sendill_client
         public winPinLog()
         {
             InitializeComponent();
-            LoadToursToList();
+            //LoadToursToList();
+            //LoadCarsToList();
             
         }
 
@@ -38,6 +39,28 @@ namespace sendill_client
             catch (IOException)
             {
             }
+        }
+        private void LoadCarsToList()
+        {
+            DBManager db = new DBManager();
+            
+            MessageBox.Show("hhhhh");
+ 
+        }
+
+        private void LoadLogFromMem()
+        {
+             var window2 = Application.Current.Windows
+            .Cast<Window>()
+            .FirstOrDefault(window => window is MainWindow) as MainWindow;
+             var memlist = window2.memListPinStatus;
+             dgMain.ItemsSource = memlist;
+
+        }
+
+        private void comNew_Click(object sender, RoutedEventArgs e)
+        {
+            LoadLogFromMem();
         }
 
     }

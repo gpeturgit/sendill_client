@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Sendill" Height="768" Width="1024" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:my="clr-namespace:sendill_client" Loaded="Window_Loaded">
-<Window.Resources>
+    <Window.Resources>
         <!--**************************************************************************************************************-->
         <!--Styles-->
         <!--**************************************************************************************************************-->
@@ -53,7 +53,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--**************************************************************************************************************-->    
+        <!--**************************************************************************************************************-->
         <CollectionViewSource x:Key="dtoTourViewSource" d:DesignSource="{d:DesignInstance my:dtoTour, CreateList=True}" />
     </Window.Resources>
     <Grid>
@@ -78,7 +78,7 @@
                     <Image Source="/sendill_client;component/Images/ToolbarRecDelete.png" Height="20" Width="20"></Image>
                 </StackPanel>
             </Button>
-            <Button Name="carToolbarComRecSave" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}"  >
+            <Button Name="carToolbarComRecSave" Margin="5,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="carToolbarComRecSave_Click"  >
                 <StackPanel Orientation="Horizontal">
                     <Image Source="/sendill_client;component/Images/ToolbarRecSave.png" Height="20" Width="20"></Image>
                 </StackPanel>
@@ -137,32 +137,32 @@
 
             <!--** Dálkar eitt og tvö ******************************************************************************************************************************-->
 
-            
+
             <!--R0C0 Label Númer Primary key-->
-            <Label Content="Númer" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Númer túrs" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R0C1 Label Númer Primary key-->
-            <TextBox Grid.Column="1" Grid.Row="0" Height="23" HorizontalAlignment="Left" Margin="3" Name="idTextBox1" Text="{Binding Path=id, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="0" Height="23" HorizontalAlignment="Left" Margin="3" Name="idTextBox1" Text="{Binding Path=id, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" IsEnabled="False" TextChanged="idTextBox1_TextChanged" />
 
             <!--R1C0 Label Stærðarflokkur-->
             <Label Content="Stærðarflokkur:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R1C1 Content Stærðarflokkur-->
-            <TextBox Grid.Column="1" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="3" Name="carsizeTextBox" Text="{Binding Path=carsize, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="1" Height="24" HorizontalAlignment="Left" Margin="2.6,4,0,4" Name="carsizeTextBox" Text="{Binding Path=carsize, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="50" IsEnabled="False" />
             <!--R2C0 Label Heimilisfang-->
-            <Label Content="Heimilisfang:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Áfangastaður :" Grid.Row="4" HorizontalAlignment="Left" Margin="3,4.2,0,2.8" VerticalAlignment="Center" />
             <!--R2C1 Content Heimilisfang-->
-            <TextBox Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="3" Name="taddressTextBox" Text="{Binding Path=taddress, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="4" Height="24" HorizontalAlignment="Left" Margin="2.6,5.2,0,2.8" Name="taddressTextBox" Text="{Binding Path=taddress, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="207" />
             <!--R3C0 Label Svæði-->
-            <Label Content="Svæði" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Svæði :" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Left" Margin="2.6,3,0,3.8" VerticalAlignment="Center" />
             <!--R3C1 Content Svæði-->
-            <TextBox Grid.Column="1" Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="3" Name="idpinTextBox" Text="{Binding Path=idpin, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="3" Grid.Row="6" Height="24" HorizontalAlignment="Left" Margin="2.6,5.4,0,3.4" Name="idpinTextBox" Text="{Binding Path=idpin, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
             <!--R4C0 Label Dagsettning-->
-            <Label Content="Dagsettning" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Dagsettning :" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="3,3,0,4" VerticalAlignment="Center" />
             <!--R4C1 Content Dagsettning-->
-            <DatePicker Grid.Column="1" Grid.Row="4" Height="25" HorizontalAlignment="Left" Margin="3" Name="tdatetimeDatePicker" SelectedDate="{Binding Path=tdatetime, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="115" />
+            <DatePicker Grid.Column="1" Grid.Row="3" Height="25" HorizontalAlignment="Left" Margin="2.6,3,0,4" Name="tdatetimeDatePicker" SelectedDate="{Binding Path=tdatetime, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="115" IsEnabled="False" />
             <!--R5C0 Label Tími-->
-            <Label Content="Tími" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Tími :" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R5C1 Content ´Tími-->
-            <TextBox Grid.Column="1" Grid.Row="5" Height="23" HorizontalAlignment="Left" Margin="3" Name="timeTextBox" Text="{Binding Path=time, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="5" Height="23" HorizontalAlignment="Left" Margin="3" Name="timeTextBox" Text="{Binding Path=time, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" IsEnabled="False" />
             <!--R6C0 Label Viðskiptavinur-->
             <Label Content="Viðskiptavinur :" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R6C1 Content Viðskiptavinur-->
@@ -173,53 +173,53 @@
             <TextBox Grid.Column="1" Grid.Row="7" Height="23" HorizontalAlignment="Left" Margin="3" Name="tcontactTextBox" Text="{Binding Path=tcontact, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="200" />
 
             <!--R8C0 Label Athugasemdir-->
-            <Label Content="Athugasemdir" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" />
+            <Label Content="Athugasemdir :" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" />
             <!--78C1 Content Athugasemdir-->
-            <TextBox Grid.Column="1" Grid.Row="8" Height="50" HorizontalAlignment="Left" Margin="3,3,0,3" Name="tnoteTextBox" Text="{Binding Path=tnote, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" TextWrapping="Wrap" Width="370" UseLayoutRounding="True" Grid.ColumnSpan="3" Grid.RowSpan="2" />
-            
+            <TextBox Grid.Column="1" Grid.Row="8" Height="50" HorizontalAlignment="Left" Margin="2.6,3,0,3" Name="tnoteTextBox" Text="{Binding Path=tnote, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" TextWrapping="Wrap" Width="462" UseLayoutRounding="True" Grid.ColumnSpan="3" Grid.RowSpan="2" />
+
             <!--R9C0 Label Símanúmer-->
-            <Label Content="Símanúmer" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Símanúmer :" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R9C1 Content Símanúmer-->
             <TextBox Grid.Column="3" Grid.Row="7" Height="23" HorizontalAlignment="Left" Margin="3" Name="tphoneTextBox" Text="{Binding Path=tphone, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
-
+            <ComboBox Grid.Column="3" HorizontalAlignment="Left" Margin="165.6,6,-159.2,16" Grid.Row="8" Width="120" x:Name="comboCarType" SelectedValue="{Binding size}" SelectionChanged="comboCarType_SelectionChanged" Visibility="Hidden"/>
             <!--** Dálkar tvö og þrjú ******************************************************************************************************************************-->
 
             <!--R0C2 Label Lyfta-->
-            <Label Content="Lyfta:" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Lyfta:" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
             <!--R0C3 Content Lyfta-->
-            <CheckBox Content="" Grid.Column="3" Grid.Row="0" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car1, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car1CheckBox" VerticalAlignment="Center" />
+            <CheckBox Content="" Grid.Column="3" Grid.Row="0" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car1, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car1CheckBox" VerticalAlignment="Center" Visibility="Hidden" />
 
             <!--R1C2 Label Dregur-->
-            <Label Content="Dregur:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Dregur:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
             <!--R1C3 Content Dregur-->
-            <CheckBox Content="" Grid.Column="3" Grid.Row="1" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car2, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car2CheckBox" VerticalAlignment="Center" />
+            <CheckBox Content="" Grid.Column="3" Grid.Row="1" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car2, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car2CheckBox" VerticalAlignment="Center" Visibility="Hidden" />
 
 
             <!--R2C2 Label Krókur-->
-            <Label Content="Krókur:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Krókur:" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
             <!--R2C3 Content Krókur-->
-            <CheckBox Content="" Grid.Column="3" Grid.Row="2" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car3, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car3CheckBox" VerticalAlignment="Center" />
+            <CheckBox Content="" Grid.Column="3" Grid.Row="2" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car3, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car3CheckBox" VerticalAlignment="Center" Visibility="Hidden" />
 
 
             <!--R3C2 Label Þungaburður-->
-            <Label Content="Þungaburður:" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Þungaburður:" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
             <!--R3C3 Content Þungaburður-->
-            <CheckBox Content="" Grid.Column="3" Grid.Row="3" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car4, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car4CheckBox" VerticalAlignment="Center" />
+            <CheckBox Content="" Grid.Column="3" Grid.Row="3" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car4, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car4CheckBox" VerticalAlignment="Center" Visibility="Hidden" />
 
 
             <!--R4C2 Label Rafmagnstjakkur-->
-            <Label Content="Rafmagnstjakkur:" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Rafmagnstjakkur:" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
             <!--R4C3 Content Rafmagnstjakkur-->
-            <CheckBox Content="" Grid.Column="3" Grid.Row="4" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car5, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car5CheckBox" VerticalAlignment="Center" />
+            <CheckBox Content="" Grid.Column="3" Grid.Row="4" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=car5, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="3" Name="car5CheckBox" VerticalAlignment="Center" Visibility="Hidden" />
 
             <!--R7C2 Label Bíll númer-->
-            <Label Content="Bílnúmer:" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
+            <Label Content="Stöðvarnúmer :" Grid.Row="2" HorizontalAlignment="Left" Margin="3,3,0,3" VerticalAlignment="Center" />
             <!--R7C3 Content Bíll númer-->
-            <TextBox Grid.Column="3" Grid.Row="6" Height="23" HorizontalAlignment="Left" Margin="3" Name="idcarTextBox1" Text="{Binding Path=idcar, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <TextBox Grid.Column="1" Grid.Row="2" Height="23" HorizontalAlignment="Left" Margin="2.6,4,0,5" Name="idcarTextBox1" Text="{Binding Path=idcar, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" IsEnabled="False" />
             <!--R8C2 Label Is Deleted-->
             <!--R8C3 Content Is Deleted-->
-            <Label Content="Fastur viðskiptavinur:" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
-            <TextBox Grid.Column="3" Grid.Row="5" Height="23" HorizontalAlignment="Left" Margin="3" Name="idcustomerTextBox" Text="{Binding Path=idcustomer, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
+            <Label Content="Fastur viðskiptavinur :" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" Visibility="Hidden" />
+            <TextBox Grid.Column="3" Grid.Row="5" Height="23" HorizontalAlignment="Left" Margin="3" Name="idcustomerTextBox" Text="{Binding Path=idcustomer, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" Visibility="Hidden" />
 
 
 
@@ -227,7 +227,7 @@
 
 
         </Grid>
-        <Label Content="isdel:" Grid.Row="2" HorizontalAlignment="Left" Margin="729,150,0,473" VerticalAlignment="Center" />
-        <CheckBox Content="" Grid.Row="2" Height="16" HorizontalAlignment="Left" IsChecked="{Binding Path=isdel, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="788,165,0,468" Name="isdelCheckBox" VerticalAlignment="Center" />
+        <Label Content="isdel:" Grid.Row="2" HorizontalAlignment="Left" Margin="729,150,0,473" VerticalAlignment="Center" Visibility="Hidden" />
+        <CheckBox Content="  Pantaður túr" Grid.Row="2" Height="26" HorizontalAlignment="Left" IsChecked="{Binding Path=isdel, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Margin="358,186,0,446.667" Name="isdelCheckBox" VerticalAlignment="Center" Padding="1,0,0,0" VerticalContentAlignment="Center" Visibility="Visible" RenderTransformOrigin="0.481,-0.388"/>
     </Grid>
 </Window>

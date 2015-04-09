@@ -3,14 +3,62 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:sendill_client" x:Class="sendill_client.winTurar"
-        Title="Túrar" Height="740" Width="1024" WindowState="Maximized">
+        xmlns:Custom="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+    Title="Túrar" Height="768" Width="1024" WindowState="Normal">
+    <Window.Resources>
+        <ItemsPanelTemplate x:Key="VSPCustomers">
+            <VirtualizingStackPanel/>
+        </ItemsPanelTemplate>
+        <!--**************************************************************************************************************-->
+        <!--Name : Borderless buttons. -->
+        <!--Name : Takki sem stækkar og minnkar um 20% við mousover og onclick. -->
+        <!--Name : Borderless button. -->
+        <!--**************************************************************************************************************-->
+
+        <Style x:Key="BorderlessButton" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="border" Background="{TemplateBinding Background}">
+                            <ContentPresenter Name="content" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"
+                                      RecognizesAccessKey="True"
+                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="content" Property="RenderTransform" >
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="content" Property="RenderTransform" >
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX=".95" ScaleY=".95" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="135" />
             <RowDefinition Height="260*" />
         </Grid.RowDefinitions>
-        <wpfx:ChildWindow x:Name="PopupNewTourWindow" Caption="Sráning nýrra túra" Height="350" IsModal="True" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="3" >
+        <wpfx:ChildWindow x:Name="PopupNewTourWindow" Caption="Sráning nýrra túra" Height="350" IsModal="True" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="2" >
             <Grid x:Name="ChildWinGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
@@ -35,8 +83,6 @@
                 <Label x:Name="lblPhone" Content="Sími :" Grid.Column="1" Grid.Row="4"/>
                 <Label x:Name="lblListedCustomer" Content="Fastur viðskiptavinur :" Grid.Column="1" Grid.Row="5"/>
                 <Label x:Name="lblNote" Content="Athugasemdir :" Grid.Column="1" Grid.Row="6"/>
-
-
                 <TextBox x:Name="txtIdCar" Grid.Column="2" Grid.Row="1"/>
                 <TextBox x:Name="txtAddress" Grid.Column="2" Grid.Row="2"/>
                 <TextBox x:Name="txtContact" Grid.Column="2" Grid.Row="3"/>
@@ -48,38 +94,76 @@
                     <Button x:Name="comChildSave" Width="75" Click="comChildSave_Click" Content="Geyma"/>
                     <Button x:Name="comChildCancel" Width="75" Click="comChildCancel_Click" Content="Hætta við"/>
                 </StackPanel>
-
-
-
             </Grid>
         </wpfx:ChildWindow>
-        <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
+        <Custom:Ribbon x:Name="TourRibbon" VerticalAlignment="Top" Grid.Row="0" ShowQuickAccessToolBarOnTop="False">
+            <Custom:RibbonTab Header="Túrar" >
+                <Custom:RibbonGroup Header="Túr" Height="82" Margin="4">
+                    <Custom:RibbonControlGroup >
+                        <Custom:RibbonButton Height="56" Width="50" Label="Skoða" LargeImageSource="/sendill_client;component/Images/RibTour4848.png" Click="RibbonButton_Click" />
+                    </Custom:RibbonControlGroup>
+                </Custom:RibbonGroup>
+                <Custom:RibbonGroup Header="Leita eftir dagsettningu" Height="82">
+                    <StackPanel Orientation="Vertical" Margin="4">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Frá :" Height="28" x:Name="label1" />
+                            <DatePicker Height="25" x:Name="datePicker1" SelectedDateChanged="datePicker1_SelectedDateChanged" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Til  :" Height="28" x:Name="label2" />
+                            <DatePicker Height="25" x:Name="datePicker2" SelectedDateChanged="datePicker2_SelectedDateChanged" />
+                        </StackPanel>
+                    </StackPanel>             
+                </Custom:RibbonGroup>
+                <Custom:RibbonGroup Header="Leita eftir dagsettningu" Height="82">
+                    <StackPanel Orientation="Vertical" Margin="4">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Stöðvarnúmer  :" x:Name="label3" Height="28" />
+                            <ComboBox x:Name="comboFilterName" Height="25" Width="140" IsEditable="True" IsReadOnly="True" Text="Veldu stöðvarnúmer" SelectionChanged="comboFilterName_SelectionChanged" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Viðskiptavinur  :" x:Name="label4" Height="28"/>
+                            <ComboBox x:Name="comboFilterCustomer" Width="180" Height="25" IsEditable="True" IsReadOnly="True" Text="Veldu viðskiptavin" IsTextSearchCaseSensitive="false" ItemsPanel="{StaticResource VSPCustomers}" ItemsSource="{Binding}" SelectionChanged="comboFilterCustomer_SelectionChanged" />
+                        </StackPanel>
+                    </StackPanel>
+                </Custom:RibbonGroup>
+                <Custom:RibbonGroup Header="Leita eftir textainnslætti" Height="82">
+                    <StackPanel Orientation="Vertical" Margin="4">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Ekið frá  :" x:Name="lblSerchByText" Height="28" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtSearchByText" Height="25" Width="125" TextChanged="txtSearchByText_TextChanged"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Custom:RibbonGroup>
+                <Custom:RibbonGroup Header="Takmarkanir" Height="82" Margin="4">
+                    <Custom:RibbonControlGroup >
+                        <Custom:RibbonButton x:Name="rComFilter" Height="56" Width="60" Label="Uppfæra" LargeImageSource="/sendill_client;component/Images\toolbar_filter.png" Click="rComFilter_Click" />
+                        <Custom:RibbonButton x:Name="rComFilterOff" Height="56" Width="60" Label="Hreinsa" LargeImageSource="/sendill_client;component/Images/ToolbarDeleteFilter.png" Click="rComFilterOff_Click" />
+                    </Custom:RibbonControlGroup>
+                </Custom:RibbonGroup>
+                <Custom:RibbonGroup Header="Prenta" Height="82" Margin="4">
+                    <Custom:RibbonControlGroup>
+                        <Custom:RibbonButton x:Name="rComReportList" Height="56" Width="60" Label="Lista" LargeImageSource="/sendill_client;component/Images\Printer4848.png" Click="rComReportList_Click" />
+                        <Custom:RibbonButton x:Name="rComReportRec" Height="56" Width="60" Label="Túr" LargeImageSource="/sendill_client;component/Images/Printer4848.png" Click="rComReportRec_Click" />
+                    </Custom:RibbonControlGroup>
+                </Custom:RibbonGroup>
+
+            </Custom:RibbonTab>
+            </Custom:Ribbon>
+
+        <!--<StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
             <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"/>
             <TextBlock Text="Túrar" TextAlignment="Left" VerticalAlignment="Center" Width="94" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
-        </StackPanel>
+        </StackPanel>-->
         <!--<StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="DarkBlue" Orientation="Horizontal" Grid.Row="0">        
         </ToolBar>-->
-
-        <StackPanel HorizontalAlignment="Stretch" x:Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-            <Button x:Name="comTBarNew" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarNew_Click">
-                <Image Source="/sendill_client;component/Images/newDarkBlue32.png"/>
-            </Button>
-            <Button x:Name="comTBarSave" Margin="0,0,0,0" Width="35" BorderThickness="1" FontSize="16" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Click="comTBarSave_Click">
-                <Image Source="/sendill_client;component/Images/saveDarkBlue32.png" />
-            </Button>
-            <Button x:Name="comTBarDelete" BorderBrush="{x:Null}" Foreground="DarkBlue" Margin="0,0,0,0" Width="35" BorderThickness="0" FontSize="16" Background="#FFB9C9DA" >
-                <Image Source="/sendill_client;component/Images/deleteDarkBlue32.png"/>
-            </Button>
-            <Label Content="Frá :" Height="28" x:Name="label1" />
-            <DatePicker Height="25" x:Name="datePicker1" Width="115" />
-            <Label Content="Til :" Height="28" x:Name="label2" />
-            <DatePicker Height="25" x:Name="datePicker2" Width="115" />
-        </StackPanel>
-        <DataGrid AutoGenerateColumns="False" x:Name="dataGridTurar" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
+        <DataGrid AutoGenerateColumns="False" x:Name="dataGridTurar" Grid.Row="1" RowBackground="#FFB9C9DA" AlternatingRowBackground="#FFDEDEE7"  >
             <DataGrid.Columns>
 
-                <DataGridTextColumn Header="Dagsetning" Binding="{Binding tdatetime, Mode=OneWay, StringFormat=t, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                <DataGridTextColumn Header="Tími" Binding="{Binding tdatetime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                <DataGridTextColumn Header="Dagsetning" Binding="{Binding tdatetime, Mode=OneWay, StringFormat='dd/MM/yyyy', UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                <DataGridTextColumn Header="Tími" Binding="{Binding tdatetime, Mode=OneWay, StringFormat='hh:mm', UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                 <DataGridTextColumn Header="Stöðvarnúmer" Binding="{Binding idcar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
                 <DataGridTextColumn Header="Ekið frá" Binding="{Binding taddress}" Width="250" />
                 <DataGridTextColumn Header="Umbeðið af" Binding="{Binding tcontact, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250" />
