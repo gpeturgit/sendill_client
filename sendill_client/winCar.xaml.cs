@@ -26,7 +26,8 @@ namespace sendill_client
     /// </summary>
     public partial class winCar : Window
     {
-
+        public int global_id_car;
+        public bool is_detail_form_call;
         List<dtoCars> ocar = new List<dtoCars>();
         public winCar()
         {
@@ -39,16 +40,32 @@ namespace sendill_client
             CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
             masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid",System.ComponentModel.ListSortDirection.Ascending));
             masterviewsource.Source = ocar;
-            
+            //_rec = memListCar.FirstOrDefault(c => c.id == pid);
             mainGrid.DataContext = masterviewsource;
 
             comboCarType.ItemsSource = CreateCroup();
             comboCarType.DisplayMemberPath = "name";
             comboCarType.SelectedValuePath = "type";
+            
 
         }
 
+        private void LoadCarDetail()
+        {
+            CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
+            masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid", System.ComponentModel.ListSortDirection.Ascending));
 
+            String mstr = global_id_car.ToString() + "  " + is_detail_form_call;
+            MessageBox.Show(mstr);
+
+            int i = ocar.FindIndex(l => l.id == (Int16?)global_id_car);
+            masterviewsource.Source = ocar;
+            mainGrid.DataContext = masterviewsource;
+            masterviewsource.View.MoveCurrentToFirst();
+            masterviewsource.View.MoveCurrentToPosition(i-1);
+            childWinCar.Show();
+
+        }
 
         private void comClose_Click(object sender, RoutedEventArgs e)
         {
@@ -195,7 +212,15 @@ namespace sendill_client
             masterviewsource.Source = ocar;
             mainGrid.DataContext = masterviewsource;
 
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            MessageBox.Show("Þetta eru parametrarnir " + global_id_car.ToString() + is_detail_form_call.ToString()); if (is_detail_form_call == true)
+            {
+                LoadCarDetail();
+            }
         }
     }
 

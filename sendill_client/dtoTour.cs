@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace sendill_client
 {
@@ -31,7 +32,6 @@ namespace sendill_client
         public bool? car3 { get; set; }          //Krókur
         public bool? car4 { get; set; }          //Þungaburður
         public bool? car5 { get; set; }          //Rafmagnstjakkur
-
 
     }
 }

@@ -24,7 +24,7 @@ namespace sendill_client
             InitializeComponent();
             //LoadToursToList();
             //LoadCarsToList();
-            
+            //LoadLogFromMem();
         }
 
 
@@ -58,10 +58,40 @@ namespace sendill_client
 
         }
 
+
+
         private void comNew_Click(object sender, RoutedEventArgs e)
         {
-            LoadLogFromMem();
+            //LoadLogFromMem();
+            SQLManager sm = new SQLManager();
+            sm.LogRecCreate("New row to log added");
+            //int imtCount = sm.DapperLogGetAll().Count()+1;
+            //dtoLog objLog = new dtoLog();
+            //objLog.ID = imtCount;
+            //objLog.logtimestamp = DateTime.Now;
+            //objLog.logtext = "Búið að ýta á comNew_Click#";
+            //string mssg=sm.DapperLogCreate(objLog);
+            //MessageBox.Show("Tókst Dopper insert");
+            //var mlist = sm.DapperLogGetAll();
+            //dgMain.ItemsSource = mlist;
+
+
         }
+
+        private void comPrev_Click(object sender, RoutedEventArgs e)
+        {
+            SQLManager sm = new SQLManager();
+            var listLog = sm.DapperLogGetAll();
+            dgMain.ItemsSource = listLog;
+        }
+
+        private void comNext_Click(object sender, RoutedEventArgs e)
+        {
+            DBManager dm = new DBManager();
+            dgMain.ItemsSource=dm.GetPinStatus();
+        }
+
+
 
     }
 }

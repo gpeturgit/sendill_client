@@ -30,7 +30,7 @@ namespace sendill_client
         public double? sidedoorlength { get; set; }
         public double? sidedoorheight { get; set; }
         public double? weightlimit { get; set; }
-        public Int16? liftsize { get; set; }
+        public Int16 liftsize { get; set; }
         public double? volume { get; set; }
         public double? width { get; set; }
         public string model { get; set; }

@@ -25,7 +25,6 @@ namespace sendill_client
         public bool globl_new_tour;
         public int global_car_id;
         public int global_pin_id;
-        bool isOrderedTour;
 
         public winNewTour()
         {
@@ -36,34 +35,16 @@ namespace sendill_client
         {
 
             System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
+            
 
             var window2 = Application.Current.Windows
             .Cast<Window>()
             .FirstOrDefault(window => window is MainWindow) as MainWindow;
             ltour = window2.memListTour;
-            MessageBox.Show(globl_new_tour.ToString());
-            if (globl_new_tour == true)
-            {
-                DBManager dm = new DBManager();
-                var ocar = dm.GetSingleCarPar_Id(global_car_id);
-                dtoTour _ltour = new dtoTour();
-                _ltour.id = ltour.Count + 1;
-                _ltour.idcar = (int)ocar.id;
-                _ltour.idpin = global_pin_id;
-                _ltour.carsize = ocar.size;
-                ltour.Add(_ltour);
-                dtoTourViewSource.Source = ltour;
-                dtoTourViewSource.View.MoveCurrentToLast();
-                
-            }
-            else
-            {
-                MessageBox.Show("Else");
-                dtoTourViewSource.Source = ltour;
-                this.DataContext = dtoTourViewSource;
-                dtoTourViewSource.View.MoveCurrentToLast();
-                
-            }
+            var mtour = window2.memListCar;
+            dtoTourViewSource.Source = ltour;
+            this.DataContext = dtoTourViewSource;
+            dtoTourViewSource.View.MoveCurrentToLast();
             comboCarType.ItemsSource = CreateCarGroups();
             comboCarType.DisplayMemberPath = "name";
             comboCarType.SelectedValuePath = "type";
@@ -165,10 +146,10 @@ namespace sendill_client
             var idel = isdelCheckBox.IsChecked.Value;
             if (globl_new_tour == true)
             {
-                var window2 = Application.Current.Windows
-                .Cast<Window>()
-                .FirstOrDefault(window => window is MainWindow) as MainWindow;
-                window2.funcAddNewTour(ptour);
+                //var window2 = Application.Current.Windows
+                //.Cast<Window>()
+                //.FirstOrDefault(window => window is MainWindow) as MainWindow;
+                //window2.funcAddNewTour(ptour);
                 DBManager dm = new DBManager();
                 var rmsg = dm.SaveToursToFile(ptour);
             }

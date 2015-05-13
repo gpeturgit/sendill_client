@@ -18,6 +18,8 @@ using System.Data.SqlClient;
 using System.Windows.Threading;
 using System.Runtime.Caching;
 using System.Diagnostics;
+using System.Timers;
+
 
 namespace sendill_client
 {
@@ -28,13 +30,11 @@ namespace sendill_client
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public DataTable memTableCars;
         public DataTable memTableCustomers;
         public DataTable memTableTurar;
         public bool isStartup;
         public string extDataChange;
-
         public dtoTour global_dtotour;
         
         public List<dtoPin>   memListPin1  =  new List<dtoPin>();
@@ -47,6 +47,7 @@ namespace sendill_client
         public List<dtoTour> memListPin6 = new List<dtoTour>();
         public List<dtoPinStatus> memListPinStatus = new List<dtoPinStatus>();
         public List<dtoPinStatus> memListPinStatusLog = new List<dtoPinStatus>();
+        public List<appSysSettings> memAppSysSettings = new List<appSysSettings>();
         public System.Collections.IList selectedItem;
         public int pin1_id = 0;
         public int pin2_id = 0;
@@ -55,13 +56,14 @@ namespace sendill_client
         public int pin5_id = 0;
         public int _pinid;
         public int carid;
+        
 
         public MainWindow()
         {
             InitializeComponent();
             
-            LoadCarsToMem();
-            LoadCustomersToMem();
+            //LoadCarsToMem();
+            //LoadCustomersToMem();
             LoadCarsToList();
 
             System.Windows.Controls.ContextMenu mnuNightService = new System.Windows.Controls.ContextMenu();
@@ -71,7 +73,82 @@ namespace sendill_client
             mnuNightService.Items.Add(mitem01);            
             isStartup=true;
             LoadToursToList();
+            LoadAppSysSettingsToList();
+            global::sendill_client.Properties.Settings.Default.SendillAccConn ="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\dbsendill\\dbsendill.mdb";
+            OnSettingExecute();
+            
             //funcFillToursOnPin();
+        }
+
+        public void OnSettingExecute()
+        {
+
+            appSysSettings settings = memAppSysSettings.Find(item => item.CODE == "APPSTATUS");
+            if(settings.VALUE=="SHUTDOWN")
+            { 
+                settings.VALUE = "RUNNING";
+                string message = SaveAppSysRunSettings();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate(message);
+                //LoadPinStatusToList();
+                //LoadPin1StatusToList();
+                //lboxPin1.ItemsSource = memListPin1;
+            }
+            else
+            {
+                //LoadPinStatusToList();
+                LoadPin1StatusToList();
+                lboxPin1.ItemsSource = memListPin1;
+            }
+        }
+
+        public void OnTimer(Object source, ElapsedEventArgs e)
+        {
+            //DBManager dm = new DBManager();
+            //dm.memListPin = memListPin1;
+            //string rv1 = dm.SavePin1StatusToFile();
+            //Debug.WriteLine(rv1);
+
+            //FileStream fst2 = new FileStream(@"C:\dbsendill\list_pin2.bin", FileMode.Create);
+
+            //BinaryFormatter bff2 = new BinaryFormatter();
+            //bff2.Serialize(fst2, memListPin2);
+            //fst2.Close();
+            //string rvalue2 = " memListPin2 uppfærður";
+            //Debug.WriteLine(rvalue2);
+
+
+           // FileStream fst3 = new FileStream(@"C:\dbsendill\list_pin3.bin", FileMode.Create);
+
+           // BinaryFormatter bff3 = new BinaryFormatter();
+           // bff3.Serialize(fst3, memListPin3);
+           // fst3.Close();
+           // string rvalue3 = " memListPin3 uppfærður";
+           // Debug.WriteLine(rvalue3);
+
+           // FileStream fst4 = new FileStream(@"C:\dbsendill\list_pin4.bin", FileMode.Create);
+
+           // BinaryFormatter bff4 = new BinaryFormatter();
+           // bff4.Serialize(fst4, memListPin4);
+           // fst4.Close();
+           // string rvalue4 = " memListPin4 uppfærður";
+           // Debug.WriteLine(rvalue4);
+
+           // FileStream fst5 = new FileStream(@"C:\dbsendill\list_pin5.bin", FileMode.Create);
+
+           // BinaryFormatter bff5 = new BinaryFormatter();
+           // bff5.Serialize(fst5, memListPin5);
+           // fst5.Close();
+           // string rvalue5 = " memListPin5 uppfærður";
+           // Debug.WriteLine(rvalue5);
+
+           //FileStream fst6 = new FileStream(@"C:\dbsendill\list_PinStatus.bin", FileMode.Create);
+
+           // BinaryFormatter bff6 = new BinaryFormatter();
+           // bff6.Serialize(fst6, memListPinStatus);
+           // fst6.Close();
+           // string rvalue6 = " memListPinStatus uppfærður";
+           // Debug.WriteLine(rvalue6);
         }
 
 
@@ -233,204 +310,387 @@ namespace sendill_client
 
         private void btnSendToTour_Click(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
-            int id = (int)b.CommandParameter;
-            var ops = (from mpin in memListPinStatus
-                          where mpin.carid == id
-                          select mpin).FirstOrDefault();
-            var pinnum = ops.pinid;
-            //
-            if (pinnum==0)
+        try
             {
-              ListBoxItem  lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
-              lbi.IsSelected = true;
-              int i = lboxPin1.SelectedIndex;
-              int ic = lboxPin1.Items.Count;
-              dtoPin sitem = memListPin1[i];
-              memListPin1.RemoveAt(i);
-              lboxPin1.DataContext = memListPin1;
-              lboxPin1.Items.Refresh();
-              memListPinStatus.Remove(ops);
-              ops.pinid = 5;
-              ops.pinpos = memListPin6.Count;
-              memListPinStatus.Add(ops);
-              memListPinStatusLog.Add(ops);
+                string logmsg;
+                DBManager dm = new DBManager();
+                SQLManager sqm = new SQLManager();
+                dtoPin sitem = new dtoPin();
+                Button b = sender as Button;
+                int id = (int)b.CommandParameter;
+                var ops = (from mpin in memListPinStatus
+                              where mpin.carid == id
+                              select mpin).FirstOrDefault();
+                var pinnum = ops.pinid;
+                if (pinnum==0)
+                {
+                  ListBoxItem  lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+                  lbi.IsSelected = true;
+                  int i = lboxPin1.SelectedIndex;
+                  int ic = lboxPin1.Items.Count;
+                  sitem = (from lp in memListPin1
+                          where lp.idcar==id
+                          select lp).FirstOrDefault();
+                  memListPin1.Remove(sitem);
+                  lboxPin1.DataContext = memListPin1;
+                  lboxPin1.Items.Refresh();
+                  memListPinStatus.Remove(ops);
+                  ops.pinid = 5;
+                  ops.pinpos = memListPin6.Count;
+                  memListPinStatus.Add(ops);
+                  logmsg = SavePinStatusToFile();
+                  sqm.LogRecCreate(logmsg);
+                  memListPinStatusLog.Add(ops);
+                  logmsg = "Bíll númer " + ops.carid.ToString() + " sendur i túr.";
+                  sqm.LogRecCreate(logmsg);
+                  logmsg = SavePin1StatusToFile();
+                  sqm.LogRecCreate(logmsg);
+                  var listsel = from c in memListPinStatus
+                               where c.pinid ==0
+                               select c;
+                  foreach (var item in listsel)
+                  {
+                      if(item.pinpos>ops.pinpos)
+                      {
+                          item.pinpos = item.pinpos - 1;
+                      }
+                  }
+                  logmsg = SavePinStatusToFile();
+                  sqm.LogRecCreate(logmsg);
+                }
+            //update og log lokið.
+                if (pinnum==1)
+                {
+                    sitem = (from lp in memListPin2
+                             where lp.idcar == id
+                             select lp).FirstOrDefault();
+                    memListPin2.Remove(sitem);
+                    lboxPin2.DataContext = memListPin2;
+                    lboxPin2.Items.Refresh();
+                    memListPinStatus.Remove(ops);
+                    ops.pinid = 5;
+                    ops.pinpos = memListPin6.Count;
+                    memListPinStatus.Add(ops);
+                    memListPinStatusLog.Add(ops);
+                    string rv1 = SavePin2StatusToFile();
+                
+                }
+                if (pinnum == 2)
+                {
+                    sitem = (from lp in memListPin3
+                             where lp.idcar == id
+                             select lp).FirstOrDefault();
+                    memListPin3.Remove(sitem);
+                    lboxPin3.DataContext = memListPin3;
+                    lboxPin3.Items.Refresh();
+                    memListPinStatus.Remove(ops);
+                    ops.pinid = 5;
+                    ops.pinpos = memListPin6.Count;
+                    memListPinStatus.Add(ops);
+                    memListPinStatusLog.Add(ops);
+                    string rv1 = SavePin3StatusToFile();
+
+                }
+                if (pinnum == 3)
+                {
+                    sitem = (from lp in memListPin4
+                             where lp.idcar == id
+                             select lp).FirstOrDefault();
+                    memListPin4.Remove(sitem);
+                    lboxPin4.DataContext = memListPin4;
+                    lboxPin4.Items.Refresh();
+                    memListPinStatus.Remove(ops);
+                    ops.pinid = 5;
+                    ops.pinpos = memListPin6.Count;
+                    memListPinStatus.Add(ops);
+                    memListPinStatusLog.Add(ops);
+
+                }
+                if (pinnum == 4)
+                {
+                    sitem = (from lp in memListPin5
+                             where lp.idcar == id
+                             select lp).FirstOrDefault();
+                    memListPin5.Remove(sitem);
+                    lboxPin5.DataContext = memListPin5;
+                    lboxPin5.Items.Refresh();
+                    memListPinStatus.Remove(ops);
+                    ops.pinid = 5;
+                    ops.pinpos = memListPin6.Count;
+                    memListPinStatus.Add(ops);
+                    memListPinStatusLog.Add(ops);
+
+                }
+
+
+                dtoTour _ltour = new dtoTour();
+                _ltour.id = memListTour.Count + 1;
+                _ltour.idcar = sitem.idcar;
+                _ltour.idpin = sitem.idpin;
+                _ltour.carsize = sitem.carsize;
+                memListTour.Add(_ltour);
+
+                winNewTour _editTour = new winNewTour();
+                _editTour.global_car_id = id;
+                _editTour.globl_new_tour = true;
+                _editTour.global_pin_id = pinnum;
+                _editTour.Show();
+            }
+
+            catch (Exception ex)
+            {
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                dtoLog obj_log = new dtoLog();
+                obj_log.ID = sm.DapperLogGetAll().Count() + 1;
+                obj_log.logtimestamp = DateTime.Now;
+                obj_log.logtext = "ERROR þegar verið er að senda bíl í túr.  " + ex.ToString();
+                sm.LogRecCreate(obj_log.logtext.ToString());
 
             }
-            if (pinnum==1)
-            {
-                ListBoxItem lbi = (ListBoxItem)lboxPin2.ItemContainerGenerator.ContainerFromIndex(0);
-                lbi.IsSelected = true;
-            }
-            if (pinnum == 2)
-            {
-                ListBoxItem lbi = (ListBoxItem)lboxPin3.ItemContainerGenerator.ContainerFromIndex(0);
-                lbi.IsSelected = true;
-            }
-            if (pinnum == 3)
-            {
-                ListBoxItem lbi = (ListBoxItem)lboxPin4.ItemContainerGenerator.ContainerFromIndex(0);
-                lbi.IsSelected = true;
-            }
-            if (pinnum == 4)
-            {
-                ListBoxItem lbi = (ListBoxItem)lboxPin5.ItemContainerGenerator.ContainerFromIndex(0);
-                lbi.IsSelected = true;
-            }
-
-            winNewTour _editTour = new winNewTour();
-            _editTour.global_car_id = id;
-            _editTour.globl_new_tour = true;
-            _editTour.global_pin_id = pinnum;
-            _editTour.Show();
-            
         }
-
-
-
-
 
         private void btnCoffeebreak_Click(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
-            int id = (int)b.CommandParameter;
-            var pinnum = (from mpin in memListPinStatus
-                          where mpin.carid == id
-                          select mpin).FirstOrDefault().pinid;
-            var pinpos = (from mpin in memListPinStatus
-                          where mpin.carid == id
-                          select mpin).FirstOrDefault().pinpos;
-
-            if (pinnum == 0)
+            try
             {
-                var _pin = lboxPin1.Items[pinpos] as dtoPin;
-                if (_pin.pbreak == true)
+                string logmsg;
+                Button b = sender as Button;
+                int id = (int)b.CommandParameter;
+                var pinnum = (from mpin in memListPinStatus
+                              where mpin.carid == id
+                              select mpin).FirstOrDefault().pinid;
+                var pinpos = (from mpin in memListPinStatus
+                              where mpin.carid == id
+                              select mpin).FirstOrDefault().pinpos;
+                var pinitem = (from mpin in memListPinStatus
+                               where mpin.carid == id
+                               select mpin).FirstOrDefault();
+
+                if (pinnum == 0)
                 {
-                    _pin.pbreak = false;
+                    var _pin = lboxPin1.Items[pinitem.pinpos] as dtoPin;
+                    if (_pin.pbreak == true)
+                    {
+                        _pin.pbreak = false;
+                        pinitem.onbreak = false;
+                    }
+                    else
+                    {
+                        _pin.pbreak = true;
+                        pinitem.onbreak = true;
+                    }
+                    lboxPin1.Items.Refresh();
+                    logmsg = SavePin1StatusToFile();
                 }
-                else
+
+                if (pinnum == 1)
                 {
-                    _pin.pbreak = true;
+                    var _pin = lboxPin2.Items[pinpos] as dtoPin;
+                    if (_pin.pbreak == true)
+                    {
+                        _pin.pbreak = false;
+                    }
+                    else
+                    {
+                        _pin.pbreak = true;
+                    }
+                    lboxPin2.Items.Refresh();
                 }
-                lboxPin1.Items.Refresh();
+
+                if (pinnum == 2)
+                {
+                    var _pin = lboxPin3.Items[pinpos] as dtoPin;
+                    if (_pin.pbreak == true)
+                    {
+                        _pin.pbreak = false;
+                    }
+                    else
+                    {
+                        _pin.pbreak = true;
+                    }
+                    lboxPin3.Items.Refresh();
+                }
+
+                if (pinnum == 3)
+                {
+                    var _pin = lboxPin4.Items[pinpos] as dtoPin;
+                    if (_pin.pbreak == true)
+                    {
+                        _pin.pbreak = false;
+                    }
+                    else
+                    {
+                        _pin.pbreak = true;
+                    }
+                    lboxPin4.Items.Refresh();
+                }
+
+                if (pinnum == 4)
+                {
+                    var _pin = lboxPin5.Items[pinpos] as dtoPin;
+                    if (_pin.pbreak == true)
+                    {
+                        _pin.pbreak = false;
+                    }
+                    else
+                    {
+                        _pin.pbreak = true;
+                    }
+                    lboxPin5.Items.Refresh();
+                    //dtoLog obj_log = new dtoLog();
+                    //obj_log.ID = sm.DapperLogGetAll().Count() + 1;
+                    //obj_log.logtimestamp = DateTime.Now;
+                    //obj_log.logtext = "Bíll merktur á nál " + pinnum.ToString();
+                    //sm.DapperLogCreate(obj_log);
+                }
+                SQLManager sm = new SQLManager();
+                logmsg = SavePinStatusToFile();
+                sm.LogRecCreate(logmsg);
             }
-
-            if (pinnum == 1)
+            catch(Exception ex)
             {
-                var _pin = lboxPin2.Items[pinpos] as dtoPin;
-                if (_pin.pbreak == true)
-                {
-                    _pin.pbreak = false;
-                }
-                else
-                {
-                    _pin.pbreak = true;
-                }
-                lboxPin2.Items.Refresh();
-            }
-
-            if (pinnum == 2)
-            {
-                var _pin = lboxPin3.Items[pinpos] as dtoPin;
-                if (_pin.pbreak == true)
-                {
-                    _pin.pbreak = false;
-                }
-                else
-                {
-                    _pin.pbreak = true;
-                }
-                lboxPin3.Items.Refresh();
-            }
-
-            if (pinnum == 3)
-            {
-                var _pin = lboxPin4.Items[pinpos] as dtoPin;
-                if (_pin.pbreak == true)
-                {
-                    _pin.pbreak = false;
-                }
-                else
-                {
-                    _pin.pbreak = true;
-                }
-                lboxPin4.Items.Refresh();
-            }
-
-            if (pinnum == 4)
-            {
-                var _pin = lboxPin3.Items[pinpos] as dtoPin;
-                if (_pin.pbreak == true)
-                {
-                    _pin.pbreak = false;
-                }
-                else
-                {
-                    _pin.pbreak = true;
-                }
-                lboxPin3.Items.Refresh();
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                dtoLog obj_log = new dtoLog();
+                obj_log.ID=sm.DapperLogGetAll().Count()+1;
+                obj_log.logtimestamp=DateTime.Now;
+                obj_log.logtext="ERROR þegar verið er að merkja bíl á nál.  "+ ex.ToString();
+                sm.LogRecCreate(obj_log.logtext.ToString());
             }
         }
 
         #endregion
 
+        #region 1 Nálar - Svæði1 - Stöðin
 
-
-        #region Nálar - Svæði1 - Stöðin
-
+        //#1** Búð að lagfæra þegar enginn bíll er valinn. **//
         private void btnPinOneMooveDown_Click(object sender, RoutedEventArgs e)
         {
 
-            if (memListPin1.Count > 1)
+            try
             {
-                //txtReorderHeader.Text = "  Endurraða Stöðin";
-                //childWinReorderPin.Show();
-                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
-                //_pinid = 0;
-                int i = lboxPin1.SelectedIndex;
-                int ic = lboxPin1.Items.Count;
-                dtoPin sitem = memListPin1[i];
-
-                if (i==memListPin1.Count-1)
+                if (memListPin1.Count > 1)
                 {
-                    MessageBox.Show("Þetta er síðasti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (lboxPin1.SelectedIndex > -1) //#1
+                    {
+                        int i = lboxPin1.SelectedIndex;
+                        int ic = lboxPin1.Items.Count;
+                        dtoPin sitem = memListPin1[i];
+
+                        if (i == memListPin1.Count - 1)
+                        {
+                            MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else
+                        {
+                            memListPin1.RemoveAt(i);
+                            memListPin1.Insert(i + 1, sitem);
+                            lboxPin1.DataContext = memListPin1;
+                            lboxPin1.Items.Refresh();
+                            string strLogMessage = SavePin1StatusToFile();
+                            SQLManager sm = new SQLManager();
+                            sm.LogRecCreate(strLogMessage);
+                            strLogMessage = "Car number " + sitem.idcar.ToString() + " færður niður á nál 1.";
+                            sm.LogRecCreate(strLogMessage);
+                            var ipinpos = (from mpin in memListPinStatus
+                                           where mpin.carid == sitem.idcar
+                                           select mpin).FirstOrDefault().pinpos;
+                            var pinitem = (from mpin in memListPinStatus
+                                           where mpin.carid == sitem.idcar
+                                           select mpin).FirstOrDefault();
+                            memListPinStatus.Remove(pinitem);
+                            ipinpos = ipinpos + 1;
+                            pinitem.pinpos = ipinpos;
+                            var listsel = from c in memListPinStatus
+                                          where c.pinid == 0
+                                          select c;
+                            foreach (var item in listsel)
+                            {
+                                if (item.pinpos==ipinpos)
+                                {
+                                    item.pinpos = ipinpos - 1;
+                                }
+                            }
+                            memListPinStatus.Add(pinitem);
+                            strLogMessage = SavePinStatusToFile();
+                            sm.LogRecCreate(strLogMessage);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Það er enginn bíll valinn.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {
-                    memListPin1.RemoveAt(i);
-                    memListPin1.Insert(i + 1, sitem);
-                    lboxPin1.DataContext = memListPin1;
-                    lboxPin1.Items.Refresh();
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
+            catch(Exception ex)
             {
                 MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
-            }      
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate(strEx);
+            }
         }
 
+        //#2** Búð að lagfæra þegar enginn bíll er valinn. **//
         private void btnPinOneMooveUp_Click(object sender, RoutedEventArgs e)
         {
             if (memListPin1.Count > 1)
             {
-                //txtReorderHeader.Text = "  Endurraða Stöðin";
-                //childWinReorderPin.Show();
-                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
-                //_pinid = 0;
-                int i = lboxPin1.SelectedIndex;
-                int ic = lboxPin1.Items.Count;
-                dtoPin sitem = memListPin1[i];
-
-                if(i==0)
+                if (lboxPin1.SelectedIndex > -1) //#2
                 {
-                    MessageBox.Show("Það er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    int i = lboxPin1.SelectedIndex;
+                    int ic = lboxPin1.Items.Count;
+                    dtoPin sitem = memListPin1[i];
+
+                    if (i == 0)
+                    {
+                        MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin1.RemoveAt(i);
+                        memListPin1.Insert(i - 1, sitem);
+                        lboxPin1.DataContext = memListPin1;
+                        lboxPin1.Items.Refresh();
+                        string strLogMessage = SavePin1StatusToFile();
+                        SQLManager sm = new SQLManager();
+                        sm.LogRecCreate(strLogMessage);
+                        strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " færður upp á nál 1.";
+                        sm.LogRecCreate(strLogMessage);
+                        var ipinpos = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault().pinpos;
+                        var pinitem = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault();
+                        memListPinStatus.Remove(pinitem);
+                        ipinpos = ipinpos - 1;
+                        pinitem.pinpos = ipinpos;
+                        var listsel = from c in memListPinStatus
+                                      where c.pinid == 0
+                                      select c;
+                        foreach (var item in listsel)
+                        {
+                            if (item.pinpos == ipinpos)
+                            {
+                                item.pinpos = ipinpos + 1;
+                            }
+                        }
+                        memListPinStatus.Add(pinitem);
+                        strLogMessage = SavePinStatusToFile();
+                        sm.LogRecCreate(strLogMessage);
+
+
+                    }
                 }
                 else
                 {
-                    memListPin1.RemoveAt(i);
-                    memListPin1.Insert(i - 1, sitem);
-                    lboxPin1.DataContext = memListPin1;
-                    lboxPin1.Items.Refresh();
+                    MessageBox.Show("Það er enginn bíll valinn.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Hand);
                 }
             }
             else
@@ -443,10 +703,6 @@ namespace sendill_client
         {
             if (memListPin1.Count > 1)
             {
-                //txtReorderHeader.Text = "  Endurraða Stöðin";
-                //childWinReorderPin.Show();
-                //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
-                //_pinid = 0;
 
                 int i = lboxPin1.SelectedIndex;
                 int ic = lboxPin1.Items.Count;
@@ -475,17 +731,27 @@ namespace sendill_client
 
         private void txtArea01_KeyDown(object sender, KeyEventArgs e)
         {
-            
+            string _carnum;
+  
             if (e.Key == Key.Enter)
             {
+                _carnum = txtArea01.Text;
+                try
+                {
+                    int tmp = Convert.ToInt32(_carnum);
+                }
+                catch (Exception h)
+                {
+                    txtArea01.Clear();
+                    txtArea01.Text = "";
+                }
+                
                 if (txtArea01.Text.ToString().Length == 0)
                 {
-                    MessageBox.Show("Reyturinn fyrir stöðvarnúmerið er tómur. Sláðu inn númer til að setja á nálina.");
+                    MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.", "Villa við innslátt." , MessageBoxButton.OK, MessageBoxImage.Hand);
                 }
                 else
                 {
-                    string _carnum;
-                    _carnum = txtArea01.Text;
                     txtArea01.Clear();
                     txtArea01.Text = "";
                     int lcar = (from lc in memListCar
@@ -494,6 +760,33 @@ namespace sendill_client
                     int caronpin=(from lps in memListPinStatus
                                 where lps.carid == Convert.ToInt32(_carnum)
                                 select lps).Count();
+                    if (caronpin == 1)
+                    {
+                        int i = (from lps in memListPinStatus
+                                 where lps.carid == Convert.ToInt32(_carnum)
+                                 select lps).FirstOrDefault().pinid;
+                        if (i == 5)
+                        {
+                            dtoPinStatus _status = (from lps in memListPinStatus
+                                                    where lps.carid == Convert.ToInt32(_carnum)
+                                                    select lps).FirstOrDefault();
+                            memListPinStatus.Remove(_status);
+                            dtoTour _plist = (from t in memListPin6
+                                              where t.idcar == Convert.ToInt32(_carnum)
+                                              select t).FirstOrDefault();
+                            memListPin6.Remove(_plist);
+                            lbox6.DataContext = memListPin6;
+                            lbox6.Items.Refresh();
+                            caronpin = 0;
+
+                            SQLManager sm = new SQLManager();
+                            string strLogMessage = SavePin6StatusToFile();
+                            sm.LogRecCreate(strLogMessage);
+                            strLogMessage = "Bíll númer " + _carnum + " tekinn af túralista.";
+                            sm.LogRecCreate(strLogMessage);
+
+                        }
+                    }
                     if (caronpin == 0)
                     {
                         if (lcar == 1)
@@ -515,6 +808,8 @@ namespace sendill_client
                             pin1.car3 = carlist.FirstOrDefault().car3;
                             pin1.car4 = carlist.FirstOrDefault().car4;
                             pin1.car5 = carlist.FirstOrDefault().car5;
+                            pin1.car6 = carlist.FirstOrDefault().car6;
+                            pin1.car7 = carlist.FirstOrDefault().car7;
                             memListPin1.Add(pin1);
 
                             //Settur status inní lista yfir status
@@ -524,8 +819,16 @@ namespace sendill_client
                             pinStatus.pinid = pin1.idpin;
                             pinStatus.pinpos = memListPin1.Count-1;
                             memListPinStatus.Add(pinStatus);
-                            //var list = from c in memListPin1
-                            //           select c;
+
+                            SQLManager sm = new SQLManager();
+                            string strLogMessage =SavePinStatusToFile();
+                            sm.LogRecCreate(strLogMessage);
+                            strLogMessage = "Bíll númer " + pinStatus.carid + " settur á stöðulista yfir nálar.";
+                            sm.LogRecCreate(strLogMessage);
+                            strLogMessage = SavePin1StatusToFile();
+                            sm.LogRecCreate(strLogMessage);
+                            strLogMessage = "Bíll númer " + pinStatus.carid + " settur á Stöðvarnálina.";
+                            sm.LogRecCreate(strLogMessage);
                             lboxPin1.DataContext = memListPin1;
                             lboxPin1.Items.Refresh();
                             
@@ -544,21 +847,16 @@ namespace sendill_client
         }
 
         // Svæði1 - ListItem events
-
-
-
         private void btnCarOnPin_Click(object sender, RoutedEventArgs e)
         {
-            Button b = sender as Button;
-            int id = (int)b.CommandParameter;
-            ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
-            lbi.IsSelected = true;
+            //Button b = sender as Button;
+            //int id = (int)b.CommandParameter;
+            //ListBoxItem lbi = (ListBoxItem)lboxPin1.ItemContainerGenerator.ContainerFromIndex(0);
+            //lbi.IsSelected = true;
             //winNewTour _editTour = new winNewTour();
             //_editTour.Show();
-            winCar _viewCar = new winCar();
-            _viewCar.Show();
-
-
+            //winCar _viewCar = new winCar();
+            //_viewCar.Show();
         }
 
         private void cmdSendToTour_Click(object sender, RoutedEventArgs e)
@@ -567,10 +865,6 @@ namespace sendill_client
         }
 
         // ListItem events
-
-        //Context menu
-        // Upplýsingar um bíl
-
 
         // Hreynsa textbox
 
@@ -636,24 +930,29 @@ namespace sendill_client
 
         private void mnuItemPin1Car_Click(object sender, RoutedEventArgs e)
         {
-            if (memListPin1.Count()==0)
-            {
-                MessageBox.Show("Það er enginn bíll valinn. ");
-            }
-            else
+            if (lboxPin1.SelectedItems.Count > 0)
             {
             int i = lboxPin1.SelectedIndex;
             int ic = lboxPin1.Items.Count;
             dtoPin sitem = memListPin1[i];
-            winCarDetail frmcar = new winCarDetail();
-            frmcar.pub_icar = sitem.idcar;
+            winCar frmcar = new winCar();
+            frmcar.global_id_car= sitem.idcar;
+            frmcar.is_detail_form_call = true; //Ná í bílinn.
             frmcar.Show();
+            }
+            else
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
             }
 
         }
         // Opnar glugga yfyr túra sem bíll hefur farið.
         private void mnuItemPin1Car01_Click(object sender, RoutedEventArgs e)
         {
+            if (memListPin1.Count() == 0)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+            }
             int i = lboxPin1.SelectedIndex;
             int ic = lboxPin1.Items.Count;
             dtoPin sitem = memListPin1[i];
@@ -662,9 +961,11 @@ namespace sendill_client
             childWinTours.Show();
         }
 
-
+        //Tekur valinn bíl af nálinni.
         private void mnuItemPin1Car02_Click(object sender, RoutedEventArgs e)
         {
+            try
+            { 
             if (memListPin1.Count()==0)
             {
                 MessageBox.Show("Það er enginn bíll valinn. ");
@@ -678,214 +979,557 @@ namespace sendill_client
             memListPin1.Remove(sitem);
             lboxPin1.ItemsSource = null;
             lboxPin1.ItemsSource = memListPin1;
-            lboxPin1.Items.Refresh();           
+            lboxPin1.Items.Refresh();
+
+            SQLManager sm = new SQLManager();
+            string strLogMessage = SavePin1StatusToFile();
+            sm.LogRecCreate(strLogMessage);
+            strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " tekinn af nál 1.";
+            sm.LogRecCreate(strLogMessage);
+
             int scarid = sitem.idcar;
-            MessageBox.Show("Áður en statusitem er fundið");
             itemPinStatus = (from t in memListPinStatus
                        where t.carid == scarid
                        select t).FirstOrDefault();
-            MessageBox.Show("Áður en item er uppfært");
-            //Debug.WriteLine("Áður en item er uppfært");
             var listPinStatus = from ls in memListPinStatus
                                 where ls.pinid == 0 && ls.pinpos>itemPinStatus.pinpos
                                 select ls;
-            //Debug.WriteLine("Fjölldi itema er : "+listPinStatus.Count().ToString());
             foreach (var stat in listPinStatus)
             {
-                stat.pinpos = stat.pinpos + 1;
+                stat.pinpos = stat.pinpos - 1;
             }
-            memListPinStatus.Remove(itemPinStatus);  
+                memListPinStatus.Remove(itemPinStatus);
+                strLogMessage = SavePinStatusToFile();
+                sm.LogRecCreate(strLogMessage);
+                strLogMessage = "Bíll númer " + itemPinStatus.carid.ToString()+" tekinn af stöðulista.";
+                sm.LogRecCreate(strLogMessage);
             }
-
-
-            //    int scarid;
-            //    dtoPinStatus itemPinStatus = new dtoPinStatus();
-            //    foreach (dtoPin selcar in selectedcars)
-            //    {
-            //        foreach(var car in memListPin1)
-            //        {
-            //            if (car.pline > selcar.pline)
-            //            {
-            //                car.pline = car.pline - 1;
-            //            }
-            //        }
-            //        memListPin1.Remove(selcar);
-            //        lboxPin1.Items.Refresh();
-            //        //scarid = selcar.idcar;
-            //        //var list = from t in memListPinStatus
-            //        //        where t.carid == scarid
-            //        //        select t;
-            //        //foreach(var i in list)
-            //        //{
-            //        //    itemPinStatus=i;
-            //        //}
-            //        //memListPinStatus.Remove(itemPinStatus);                 
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Það er enginn bíll valinn. ");
-            //}
-        }
-
-        private void mnuItemPin1Car03_Click(object sender, RoutedEventArgs e)
-        {
-            if (memListPin1.Count() == 0)
+            }
+             catch
             {
                 MessageBox.Show("Það er enginn bíll valinn. ");
             }
-            else
+
+        }
+        //Færir bíl af nál eitt yfir á nál tvö.
+        private void mnuItemPin1Car03_Click(object sender, RoutedEventArgs e)
+        {
+            
+            SQLManager sm = new SQLManager();
+            try
             {
-                dtoPinStatus itemPinStatus = new dtoPinStatus();
-                int i = lboxPin1.SelectedIndex;
-                int ic = lboxPin1.Items.Count;
-                dtoPin sitem = memListPin1[i];
-                memListPin1.Remove(sitem);
-                memListPin2.Add(sitem);
-                lboxPin1.ItemsSource = null;
-                lboxPin1.ItemsSource = memListPin1;
-                lboxPin1.Items.Refresh();
-                lboxPin2.ItemsSource = null;
-                lboxPin2.ItemsSource = memListPin2;
-                lboxPin2.Items.Refresh();
-                int scarid = sitem.idcar;
-                MessageBox.Show("Áður en statusitem er fundið");
-                itemPinStatus = (from t in memListPinStatus
-                                 where t.carid == scarid
-                                 select t).FirstOrDefault();
+                if (memListPin1.Count() == 0)
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+                else
+                {
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    int i = lboxPin1.SelectedIndex;
+                    int ic = lboxPin1.Items.Count;
+                    dtoPin sitem = memListPin1[i];
+                    memListPin1.Remove(sitem);
+                    //Uppfæra skrána memListPin1.bin minnislita fyrir nál 1.
+                    string strLogMessage = SavePin1StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " tekinn af nál 1.";
+                    sm.LogRecCreate(strLogMessage);
+                    memListPin2.Add(sitem);
+                    //Uppfæra skrána memListPin2.bin minnislita fyri nál 2.
+                    strLogMessage = SavePin2StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál 2.";
+                    sm.LogRecCreate(strLogMessage);
+                    //Uppfæra listbox.
+                    lboxPin1.ItemsSource = null;
+                    lboxPin1.ItemsSource = memListPin1;
+                    lboxPin1.Items.Refresh();
+                    //lboxPin2.ItemsSource = null;
+                    lboxPin2.ItemsSource = memListPin2;
+                    lboxPin2.Items.Refresh();
+                    int scarid = sitem.idcar;
+                    itemPinStatus = (from t in memListPinStatus
+                                     where t.carid == scarid
+                                     select t).FirstOrDefault();
+                    itemPinStatus.pinid = 1;
+
+                    var listPinStatus = from ls in memListPinStatus
+                                        where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                        select ls;
+                    foreach (var stat in listPinStatus)
+                    {
+                        stat.pinpos = stat.pinpos - 1;
+                    }
+                    itemPinStatus.pinpos = memListPin2.Count - 1;
+                    strLogMessage = SavePinStatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál tvö í stöðulista.";
+                    sm.LogRecCreate(strLogMessage);
+
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+                sm.LogRecCreate("Kerfisvilla " + ex.ToString());
+
             }
         }
 
+        //*** Færa bíl af nál eitt yfir á nál þrjú.
+        private void mnuItemPin1Car04_Click(object sender, RoutedEventArgs e)
+        {
 
+            SQLManager sm = new SQLManager();
+            try
+            {
+                if (memListPin1.Count() == 0)
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+                else
+                {
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    int i = lboxPin1.SelectedIndex;
+                    int ic = lboxPin1.Items.Count;
+                    dtoPin sitem = memListPin1[i];
+                    memListPin1.Remove(sitem);
+                    //Uppfæra skrána memListPin1.bin minnislita fyrir nál 1.
+                    string strLogMessage = SavePin1StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " tekinn af nál 1.";
+                    sm.LogRecCreate(strLogMessage);
+                    memListPin3.Add(sitem);
+                    //Uppfæra skrána memListPin3.bin minnislista fyri nál 3.
+                    strLogMessage = SavePin3StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál 3.";
+                    sm.LogRecCreate(strLogMessage);
+                    //Uppfæra listbox.
+                    lboxPin1.ItemsSource = null;
+                    lboxPin1.ItemsSource = memListPin1;
+                    lboxPin1.Items.Refresh();
+                    //lboxPin2.ItemsSource = null;
+                    lboxPin3.ItemsSource = memListPin3;
+                    lboxPin3.Items.Refresh();
+                    int scarid = sitem.idcar;
+                    itemPinStatus = (from t in memListPinStatus
+                                     where t.carid == scarid
+                                     select t).FirstOrDefault();
+                    itemPinStatus.pinid = 2;
 
+                    var listPinStatus = from ls in memListPinStatus
+                                        where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                        select ls;
+                    foreach (var stat in listPinStatus)
+                    {
+                        stat.pinpos = stat.pinpos - 1;
+                    }
+                    itemPinStatus.pinpos = memListPin3.Count - 1;
+                    strLogMessage = SavePinStatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál þrjú í stöðulista.";
+                    sm.LogRecCreate(strLogMessage);
 
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+                sm.LogRecCreate("Kerfisvilla " + ex.ToString());
 
+            }
 
+        }
 
+        private void mnuItemPin1Car05_Click(object sender, RoutedEventArgs e)
+        {
 
+            SQLManager sm = new SQLManager();
+            try
+            {
+                if (memListPin1.Count() == 0)
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+                else
+                {
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    int i = lboxPin1.SelectedIndex;
+                    int ic = lboxPin1.Items.Count;
+                    dtoPin sitem = memListPin1[i];
+                    memListPin1.Remove(sitem);
+                    //Uppfæra skrána memListPin1.bin minnislita fyrir nál 1.
+                    string strLogMessage = SavePin1StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " tekinn af nál 1.";
+                    sm.LogRecCreate(strLogMessage);
+                    memListPin4.Add(sitem);
+                    //Uppfæra skrána memListPin3.bin minnislista fyri nál 4.
+                    strLogMessage = SavePin4StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál 4.";
+                    sm.LogRecCreate(strLogMessage);
+                    //Uppfæra listbox.
+                    //lboxPin1.ItemsSource = null;
+                    lboxPin1.ItemsSource = memListPin1;
+                    lboxPin1.Items.Refresh();
+                    //lboxPin2.ItemsSource = null;
+                    lboxPin4.ItemsSource = memListPin4;
+                    lboxPin4.Items.Refresh();
+                    int scarid = sitem.idcar;
+                    itemPinStatus = (from t in memListPinStatus
+                                     where t.carid == scarid
+                                     select t).FirstOrDefault();
+                    itemPinStatus.pinid = 3;
 
+                    var listPinStatus = from ls in memListPinStatus
+                                        where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                        select ls;
+                    foreach (var stat in listPinStatus)
+                    {
+                        stat.pinpos = stat.pinpos - 1;
+                    }
+                    itemPinStatus.pinpos = memListPin4.Count - 1;
+                    strLogMessage = SavePinStatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál fjögur í stöðulista.";
+                    sm.LogRecCreate(strLogMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+                sm.LogRecCreate("Kerfisvilla " + ex.ToString());
+            }
+        }
 
+        private void mnuItemPin1Car06_Click(object sender, RoutedEventArgs e)
+        {
 
+            SQLManager sm = new SQLManager();
+            try
+            {
+                if (memListPin1.Count() == 0)
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+                else
+                {
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    int i = lboxPin1.SelectedIndex;
+                    int ic = lboxPin1.Items.Count;
+                    dtoPin sitem = memListPin1[i];
+                    memListPin1.Remove(sitem);
+                    //Uppfæra skrána memListPin1.bin minnislita fyrir nál 1.
+                    string strLogMessage = SavePin1StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " tekinn af nál 1.";
+                    sm.LogRecCreate(strLogMessage);
+                    memListPin5.Add(sitem);
+                    //Uppfæra skrána memListPin3.bin minnislista fyri nál 4.
+                    strLogMessage = SavePin5StatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál 5.";
+                    sm.LogRecCreate(strLogMessage);
+                    //Uppfæra listbox.
+                    lboxPin1.ItemsSource = memListPin1;
+                    lboxPin1.Items.Refresh();
+                    lboxPin5.ItemsSource = memListPin5;
+                    lboxPin5.Items.Refresh();
+                    int scarid = sitem.idcar;
+                    itemPinStatus = (from t in memListPinStatus
+                                     where t.carid == scarid
+                                     select t).FirstOrDefault();
+                    itemPinStatus.pinid = 4;
 
-
-
-
-
-
+                    var listPinStatus = from ls in memListPinStatus
+                                        where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                        select ls;
+                    foreach (var stat in listPinStatus)
+                    {
+                        stat.pinpos = stat.pinpos - 1;
+                    }
+                    itemPinStatus.pinpos = memListPin5.Count - 1;
+                    strLogMessage = SavePinStatusToFile();
+                    sm.LogRecCreate(strLogMessage);
+                    strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " settur á nál fjögur í stöðulista.";
+                    sm.LogRecCreate(strLogMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Það er enginn bíll valinn. ");
+                sm.LogRecCreate("Kerfisvilla " + ex.ToString());
+            }
+        }
         #endregion
 
         #endregion
-
 
         #region Nálar - Svæði2 - Miðbær
 
         //Svæði 2 Byrjar 
-                private void txtArea02_KeyDown(object sender, KeyEventArgs e)
+
+        //#1** Búð að lagfæra þegar enginn bíll er valinn. **//
+
+        
+        //Tekur bíl af nálinni
+
+
+        private void btnPinTwoMooveDown_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (memListPin2.Count > 1)
                 {
-                    if (e.Key == Key.Enter)
+                    int i = lboxPin2.SelectedIndex;
+                    int ic = lboxPin2.Items.Count;
+                    dtoPin sitem = memListPin2[i];
+                    if (i == memListPin2.Count - 1)
                     {
-                        string _carnum;
-                        string _value = "";
-                        bool _istrue;
-                        _carnum = txtArea02.Text;
-                        if (_carnum==_value)
+                        MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin2.RemoveAt(i);
+                        memListPin2.Insert(i + 1, sitem);
+                        lboxPin2.DataContext = memListPin2;
+                        lboxPin2.Items.Refresh();
+                        string strLogMessage = SavePin2StatusToFile();
+                        SQLManager sm = new SQLManager();
+                        sm.LogRecCreate(strLogMessage);
+                        strLogMessage = "Car number " + sitem.idcar.ToString() + " færður niður á nál 2.";
+                        sm.LogRecCreate(strLogMessage);
+                        var ipinpos = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault().pinpos;
+                        var pinitem = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault();
+                        memListPinStatus.Remove(pinitem);
+                        ipinpos = ipinpos + 1;
+                        pinitem.pinpos = ipinpos;
+                        var listsel = from c in memListPinStatus
+                                      where c.pinid == 1
+                                      select c;
+                        foreach (var item in listsel)
                         {
-                            _istrue = true;
-                        }
-                        else
-                        {
-                            _istrue = false;
-                        }
-
-                        if (_istrue == false)
-                        {
-                            txtArea02.Clear();
-                            txtArea02.Text = "";
-                            int lcar = (from lc in memListCar
-                                        where lc.stationid == Convert.ToInt32(_carnum)
-                                        select lc).Count();
-                            int caronpin = (from lps in memListPinStatus
-                                            where lps.carid == Convert.ToInt32(_carnum)
-                                            select lps).Count();
-                            if (caronpin == 0)
+                            if (item.pinpos == ipinpos)
                             {
-                                if (lcar == 1)
-                                {
-                                    var carlist = from vlcar in memListCar
-                                                  where vlcar.stationid == Convert.ToInt32(_carnum)
-                                                  select vlcar;
-                                    pin2_id = pin2_id + 1;
-                                    dtoPin pin2 = new dtoPin();
-                                    pin2.id = pin2_id;
-                                    pin2.idcar = Convert.ToInt32(_carnum);
-                                    pin2.idpin = 1;
-                                    pin2.pbreak = false;
-                                    pin2.pcarcode = carlist.FirstOrDefault().code;
-                                    pin2.owner = carlist.FirstOrDefault().owner;
-                                    pin2.carsize = carlist.FirstOrDefault().size;
-                                    pin2.car1 = carlist.FirstOrDefault().car1;
-                                    pin2.car2 = carlist.FirstOrDefault().car2;
-                                    pin2.car3 = carlist.FirstOrDefault().car3;
-                                    pin2.car4 = carlist.FirstOrDefault().car4;
-                                    pin2.car5 = carlist.FirstOrDefault().car5;
-                                    memListPin2.Add(pin2);
-                                    dtoPinStatus pinStatus = new dtoPinStatus();
-                                    pinStatus.carid = pin2.idcar;
-                                    pinStatus.pinid = pin2.idpin;
-                                    memListPinStatus.Add(pinStatus);
+                                item.pinpos = ipinpos - 1;
+                            }
+                        }
+                        memListPinStatus.Add(pinitem);
+                        strLogMessage = SavePinStatusToFile();
+                        sm.LogRecCreate(strLogMessage);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate(strEx);
+            }
+        }
 
-                                    lboxPin2.DataContext = memListPin2;
-                                    lboxPin2.Items.Refresh();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
-                                }
+        
+        private void btnPinTwoMooveUp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (memListPin2.Count > 1)
+                {
+                    int i = lboxPin2.SelectedIndex;
+                    int ic = lboxPin2.Items.Count;
+                    dtoPin sitem = memListPin2[i];
+                    if (i == 0)
+                    {
+                        MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin2.RemoveAt(i);
+                        memListPin2.Insert(i - 1, sitem);
+                        lboxPin2.DataContext = memListPin2;
+                        lboxPin2.Items.Refresh();
+                        string strLogMessage = SavePin2StatusToFile();
+                        SQLManager sm = new SQLManager();
+                        sm.LogRecCreate(strLogMessage);
+                        strLogMessage = "Bíll númer " + sitem.idcar.ToString() + " færður upp á nál 1.";
+                        sm.LogRecCreate(strLogMessage);
+                        var ipinpos = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault().pinpos;
+                        var pinitem = (from mpin in memListPinStatus
+                                       where mpin.carid == sitem.idcar
+                                       select mpin).FirstOrDefault();
+                        memListPinStatus.Remove(pinitem);
+                        ipinpos = ipinpos - 1;
+                        pinitem.pinpos = ipinpos;
+                        var listsel = from c in memListPinStatus
+                                      where c.pinid == 1
+                                      select c;
+                        foreach (var item in listsel)
+                        {
+                            if (item.pinpos == ipinpos)
+                            {
+                                item.pinpos = ipinpos + 1;
+                            }
+                        }
+                        memListPinStatus.Add(pinitem);
+                        strLogMessage = SavePinStatusToFile();
+                        sm.LogRecCreate(strLogMessage);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch(Exception ex)
+            {
+
+                MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate(strEx);
+
+            }
+        }
+
+        
+
+        private void txtArea02_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                string _carnum;
+                if (e.Key == Key.Enter)
+                {
+                    _carnum = txtArea02.Text;
+                    try
+                    {
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
+                    {
+                        txtArea02.Clear();
+                        txtArea02.Text = "";
+                    }
+
+                    if (txtArea02.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
+                    }
+                    else
+                    {
+                        txtArea02.Clear();
+                        txtArea02.Text = "";
+                        int lcar = (from lc in memListCar
+                                    where lc.stationid == Convert.ToInt32(_carnum)
+                                    select lc).Count();
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+                        if (caronpin == 1)
+                        {
+                            int i = (from lps in memListPinStatus
+                                     where lps.carid == Convert.ToInt32(_carnum)
+                                     select lps).FirstOrDefault().pinid;
+                            if (i == 5)
+                            {
+                                dtoPinStatus _status = (from lps in memListPinStatus
+                                                        where lps.carid == Convert.ToInt32(_carnum)
+                                                        select lps).FirstOrDefault();
+                                memListPinStatus.Remove(_status);
+                                dtoTour _plist = (from t in memListPin6
+                                                  where t.idcar == Convert.ToInt32(_carnum)
+                                                  select t).FirstOrDefault();
+                                memListPin6.Remove(_plist);
+                                lbox6.DataContext = memListPin6;
+                                lbox6.Items.Refresh();
+                                SQLManager sm = new SQLManager();
+                                string strLogMessage = SavePin6StatusToFile();
+                                sm.LogRecCreate(strLogMessage);
+                                strLogMessage = "Bíll númer " + _carnum + " tekinn af túralista.";
+                                sm.LogRecCreate(strLogMessage);
+
+
+                                caronpin = 0;
+                            }
+                        }
+                        if (caronpin == 0)
+                        {
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+                                pin2_id = pin2_id + 1;
+                                dtoPin pin2 = new dtoPin();
+                                pin2.id = pin2_id;
+                                pin2.idcar = Convert.ToInt32(_carnum);
+                                pin2.idpin = 1;
+                                pin2.pbreak = false;
+                                pin2.pcarcode = carlist.FirstOrDefault().code;
+                                pin2.owner = carlist.FirstOrDefault().owner;
+                                pin2.carsize = carlist.FirstOrDefault().size;
+                                pin2.car1 = carlist.FirstOrDefault().car1;
+                                pin2.car2 = carlist.FirstOrDefault().car2;
+                                pin2.car3 = carlist.FirstOrDefault().car3;
+                                pin2.car4 = carlist.FirstOrDefault().car4;
+                                pin2.car5 = carlist.FirstOrDefault().car5;
+                                pin2.car6 = carlist.FirstOrDefault().car6;
+                                pin2.car7 = carlist.FirstOrDefault().car7;
+                                memListPin2.Add(pin2);
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin2.idcar;
+                                pinStatus.pinid = pin2.idpin;
+                                pinStatus.pinpos = memListPin2.Count - 1;
+                                memListPinStatus.Add(pinStatus);
+
+                                SQLManager sm = new SQLManager();
+                                string strLogMessage = SavePinStatusToFile();
+                                sm.LogRecCreate(strLogMessage);
+                                strLogMessage = "Bíll númer " + pinStatus.carid + " settur á stöðulista yfir nálar.";
+                                sm.LogRecCreate(strLogMessage);
+                                strLogMessage = SavePin2StatusToFile();
+                                sm.LogRecCreate(strLogMessage);
+                                strLogMessage = "Bíll númer " + pinStatus.carid + " settur á Stöðvarnálina.";
+                                sm.LogRecCreate(strLogMessage);
+
+                                lboxPin2.DataContext = memListPin2;
+                                lboxPin2.Items.Refresh();
                             }
                             else
                             {
-                                MessageBox.Show("Bíllinn er á nál.");
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
                             }
                         }
                         else
                         {
-                            MessageBox.Show("Engin tala var sleginn inn");
+                            MessageBox.Show("Bíllinn er á nál.");
                         }
                     }
                 }
-                //    if (e.Key == Key.Enter)
-                //    {
-                //        string _carnum;
-                //        _carnum = txtArea01.Text;
-                //        txtArea01.Clear();
-                //        txtArea01.Text = "";
-                //        int lcar = (from lc in memListCar
-                //                    where lc.stationid == Convert.ToInt32(_carnum)
-                //                    select lc).Count();
-                //        if (lcar == 1)
-                //        {
-                //            var carlist = from vlcar in memListCar
-                //                          where vlcar.stationid == Convert.ToInt32(_carnum)
-                //                          select vlcar;
-                //            pin1_id = pin1_id + 1;
-                //            dtoPin pin1 = new dtoPin();
-                //            pin1.id = pin1_id;
-                //            pin1.idcar = Convert.ToInt32(_carnum);
-                //            pin1.idpin = pin1_id;
-                //            pin1.pbreak = true;
-                //            pin1.pcarcode = carlist.FirstOrDefault().code;
-                //            memListPin1.Add(pin1);
+            }
+            catch(Exception ex)
+            {
 
-                //            //var list = from c in memListPin1
-                //            //           select c;
-                //            lboxPin1.DataContext = memListPin1;
-                //            lboxPin1.Items.Refresh();
-                //        }
-                //        else
-                //        {
-                //            MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
-                //        }
-                //}
+                MessageBox.Show("Villa í innslættinum","Sláðu inn númer stöðvarnúmer bíls.", MessageBoxButton.OK, MessageBoxImage.Error);
+                string strEx = ex.ToString();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate(strEx);
+
+            }
+        }
 
                 private void txtArea02_GotFocus(object sender, RoutedEventArgs e)
                 {
@@ -897,6 +1541,7 @@ namespace sendill_client
                     txtArea02.Text = "";
                 }
 
+                #region Ónotaður kódi
                 //Þetta er fyrir endurröðun
                 private void comA2_off_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
                 {
@@ -952,8 +1597,6 @@ namespace sendill_client
                             {
                                 Debug.WriteLine(a.pinid + " - " + a.carid);
                             }
-
-
                         }
                     }
                     else
@@ -961,14 +1604,156 @@ namespace sendill_client
                         MessageBox.Show("Það er enginn bíll valinn. ");
                     }
                 }
+                #endregion
 
+                #region Menu action
+
+                private void mnuItemPin2Car02_Click(object sender, RoutedEventArgs e)
+                {
+                    try
+                    {
+                        if (memListPin2.Count() == 0)
+                        {
+                            MessageBox.Show("Það er enginn bíll valinn. ");
+                        }
+                        else
+                        {
+                            dtoPinStatus itemPinStatus = new dtoPinStatus();
+                            int i = lboxPin2.SelectedIndex;
+                            int ic = lboxPin2.Items.Count;
+                            dtoPin sitem = memListPin2[i];
+                            memListPin2.Remove(sitem);
+                            lboxPin2.ItemsSource = null;
+                            lboxPin2.ItemsSource = memListPin2;
+                            lboxPin2.Items.Refresh();
+                            int scarid = sitem.idcar;
+                            itemPinStatus = (from t in memListPinStatus
+                                             where t.carid == scarid
+                                             select t).FirstOrDefault();
+                            var listPinStatus = from ls in memListPinStatus
+                                                where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                                select ls;
+                            foreach (var stat in listPinStatus)
+                            {
+                                stat.pinpos = stat.pinpos + 1;
+                            }
+                            memListPinStatus.Remove(itemPinStatus);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Það er enginn bíll valinn. ");
+                    }
+                }
+
+
+                #endregion
                 // Svæði 2 endar
             #endregion
 
-
-            #region Nálar Svæði3 - Breiðholt - Ikea
+        #region Nálar Svæði3 - Breiðholt - Ikea
 
             // Svæði 3 byrjar
+
+                private void mnuItemPin3Car02_Click(object sender, RoutedEventArgs e)
+                {
+                    try
+                    {
+                        if (memListPin3.Count() == 0)
+                        {
+                            MessageBox.Show("Það er enginn bíll valinn. ");
+                        }
+                        else
+                        {
+                            dtoPinStatus itemPinStatus = new dtoPinStatus();
+                            int i = lboxPin3.SelectedIndex;
+                            int ic = lboxPin3.Items.Count;
+                            dtoPin sitem = memListPin3[i];
+                            memListPin3.Remove(sitem);
+                            lboxPin3.ItemsSource = null;
+                            lboxPin3.ItemsSource = memListPin3;
+                            lboxPin3.Items.Refresh();
+                            int scarid = sitem.idcar;
+                            itemPinStatus = (from t in memListPinStatus
+                                             where t.carid == scarid
+                                             select t).FirstOrDefault();
+                            var listPinStatus = from ls in memListPinStatus
+                                                where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                                select ls;
+                            foreach (var stat in listPinStatus)
+                            {
+                                stat.pinpos = stat.pinpos + 1;
+                            }
+                            memListPinStatus.Remove(itemPinStatus);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Það er enginn bíll valinn. ");
+                    }
+
+                }
+
+                private void btnPinThreeMooveUp_Click(object sender, RoutedEventArgs e)
+                {
+                    if (memListPin3.Count > 1)
+                    {
+                        //txtReorderHeader.Text = "  Endurraða Stöðin";
+                        //childWinReorderPin.Show();
+                        //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                        //_pinid = 0;
+                        int i = lboxPin3.SelectedIndex;
+                        int ic = lboxPin3.Items.Count;
+                        dtoPin sitem = memListPin3[i];
+
+                        if (i == 0)
+                        {
+                            MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else
+                        {
+                            memListPin3.RemoveAt(i);
+                            memListPin3.Insert(i - 1, sitem);
+                            lboxPin3.DataContext = memListPin3;
+                            lboxPin3.Items.Refresh();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
+                private void btnPinThreeMooveDown_Click(object sender, RoutedEventArgs e)
+                {
+                    if (memListPin3.Count > 1)
+                    {
+                        //txtReorderHeader.Text = "  Endurraða Stöðin";
+                        //childWinReorderPin.Show();
+                        //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                        //_pinid = 0;
+                        int i = lboxPin3.SelectedIndex;
+                        int ic = lboxPin3.Items.Count;
+                        dtoPin sitem = memListPin3[i];
+
+                        if (i == memListPin3.Count - 1)
+                        {
+                            MessageBox.Show("Þetta er síðasti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else
+                        {
+                            memListPin3.RemoveAt(i);
+                            memListPin3.Insert(i + 1, sitem);
+                            lboxPin3.DataContext = memListPin3;
+                            lboxPin3.Items.Refresh();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+
             private void txtArea03_GotFocus(object sender, RoutedEventArgs e)
             {
                 txtArea03.Clear();
@@ -985,57 +1770,200 @@ namespace sendill_client
                 {
                     string _carnum;
                     _carnum = txtArea03.Text;
-
-                    txtArea03.Clear();
-                    txtArea03.Text = "";
-                    int lcar = (from lc in memListCar
-                                where lc.stationid == Convert.ToInt32(_carnum)
-                                select lc).Count();
-
-                    int caronpin = (from lps in memListPinStatus
-                                    where lps.carid == Convert.ToInt32(_carnum)
-                                    select lps).Count();
-                    if (caronpin == 0)
+                    try
                     {
-                    if (lcar == 1)
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
                     {
-                        var carlist = from vlcar in memListCar
-                                      where vlcar.stationid == Convert.ToInt32(_carnum)
-                                      select vlcar;
-                        pin3_id = pin3_id + 1;
-                        dtoPin pin3 = new dtoPin();
-                        pin3.id = pin3_id;
-                        pin3.idcar = Convert.ToInt32(_carnum);
-                        pin3.idpin = 2;
-                        pin3.pbreak = false;
-                        pin3.pcarcode = carlist.FirstOrDefault().code;
-                        pin3.owner = carlist.FirstOrDefault().owner;
-                        pin3.carsize = carlist.FirstOrDefault().size;
-                        pin3.car1 = carlist.FirstOrDefault().car1;
-                        pin3.car2 = carlist.FirstOrDefault().car2;
-                        pin3.car3 = carlist.FirstOrDefault().car3;
-                        pin3.car4 = carlist.FirstOrDefault().car4;
-                        pin3.car5 = carlist.FirstOrDefault().car5;
-                        memListPin3.Add(pin3);
-                        Debug.Write(pin3.id.ToString());
-                        dtoPinStatus pinStatus = new dtoPinStatus();
-                        pinStatus.carid = pin3.idcar;
-                        pinStatus.pinid = pin3.idpin;
-                        memListPinStatus.Add(pinStatus);
-                        lboxPin3.DataContext = memListPin3;
-                        lboxPin3.Items.Refresh();
+                        txtArea03.Clear();
+                        txtArea03.Text = "";
+                    }
 
+                    if (txtArea03.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
                     }
                     else
                     {
-                        MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                        txtArea03.Clear();
+                        txtArea03.Text = "";
+                        int lcar = (from lc in memListCar
+                                    where lc.stationid == Convert.ToInt32(_carnum)
+                                    select lc).Count();
+
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+
+                        if (caronpin == 1)
+                        {
+                            int i = (from lps in memListPinStatus
+                                     where lps.carid == Convert.ToInt32(_carnum)
+                                     select lps).FirstOrDefault().pinid;
+                            if (i == 5)
+                            {
+                                dtoPinStatus _status = (from lps in memListPinStatus
+                                                        where lps.carid == Convert.ToInt32(_carnum)
+                                                        select lps).FirstOrDefault();
+                                memListPinStatus.Remove(_status);
+                                dtoTour _plist = (from t in memListPin6
+                                                  where t.idcar == Convert.ToInt32(_carnum)
+                                                  select t).FirstOrDefault();
+                                memListPin6.Remove(_plist);
+                                lbox6.DataContext = memListPin6;
+                                lbox6.Items.Refresh();
+
+
+                                caronpin = 0;
+                            }
+                        }
+
+                        if (caronpin == 0)
+                        {
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+                                pin3_id = pin3_id + 1;
+                                dtoPin pin3 = new dtoPin();
+                                pin3.id = pin3_id;
+                                pin3.idcar = Convert.ToInt32(_carnum);
+                                pin3.idpin = 2;
+                                pin3.pbreak = false;
+                                pin3.pcarcode = carlist.FirstOrDefault().code;
+                                pin3.owner = carlist.FirstOrDefault().owner;
+                                pin3.carsize = carlist.FirstOrDefault().size;
+                                pin3.car1 = carlist.FirstOrDefault().car1;
+                                pin3.car2 = carlist.FirstOrDefault().car2;
+                                pin3.car3 = carlist.FirstOrDefault().car3;
+                                pin3.car4 = carlist.FirstOrDefault().car4;
+                                pin3.car5 = carlist.FirstOrDefault().car5;
+                                memListPin3.Add(pin3);
+                                Debug.Write(pin3.id.ToString());
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin3.idcar;
+                                pinStatus.pinid = pin3.idpin;
+                                pinStatus.pinpos = memListPin3.Count - 1;
+                                memListPinStatus.Add(pinStatus);
+                                lboxPin3.DataContext = memListPin3;
+                                lboxPin3.Items.Refresh();
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Bílinn er þegar á nál.");
+                        }
                     }
                 }
-                else
+            }
+
+            private void txtArea04_KeyUp(object sender, KeyEventArgs e)
+            {
+
+                if (e.Key == Key.Enter)
                 {
-                    MessageBox.Show("Bílinn er þegar á nál.");
+                    string _carnum;
+                    _carnum = txtArea04.Text;
+                    try
+                    {
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
+                    {
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+                    }
+
+                    if (txtArea04.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
+                    }
+                    else
+                    {
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+                        int lcar = (from lc in memListCar
+                                    where lc.stationid == Convert.ToInt32(_carnum)
+                                    select lc).Count();
+
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+
+                        if (caronpin == 1)
+                        {
+                            int i = (from lps in memListPinStatus
+                                     where lps.carid == Convert.ToInt32(_carnum)
+                                     select lps).FirstOrDefault().pinid;
+                            if (i == 5)
+                            {
+                                dtoPinStatus _status = (from lps in memListPinStatus
+                                                        where lps.carid == Convert.ToInt32(_carnum)
+                                                        select lps).FirstOrDefault();
+                                memListPinStatus.Remove(_status);
+                                dtoTour _plist = (from t in memListPin6
+                                                  where t.idcar == Convert.ToInt32(_carnum)
+                                                  select t).FirstOrDefault();
+                                memListPin6.Remove(_plist);
+                                lbox6.DataContext = memListPin6;
+                                lbox6.Items.Refresh();
+
+
+                                caronpin = 0;
+                            }
+                        }
+
+                        if (caronpin == 0)
+                        {
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+                                pin3_id = pin3_id + 1;
+                                dtoPin pin3 = new dtoPin();
+                                pin3.id = pin3_id;
+                                pin3.idcar = Convert.ToInt32(_carnum);
+                                pin3.idpin = 2;
+                                pin3.pbreak = false;
+                                pin3.pcarcode = carlist.FirstOrDefault().code;
+                                pin3.owner = carlist.FirstOrDefault().owner;
+                                pin3.carsize = carlist.FirstOrDefault().size;
+                                pin3.car1 = carlist.FirstOrDefault().car1;
+                                pin3.car2 = carlist.FirstOrDefault().car2;
+                                pin3.car3 = carlist.FirstOrDefault().car3;
+                                pin3.car4 = carlist.FirstOrDefault().car4;
+                                pin3.car5 = carlist.FirstOrDefault().car5;
+                                memListPin4.Add(pin3);
+                                Debug.Write(pin3.id.ToString());
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin3.idcar;
+                                pinStatus.pinid = pin3.idpin;
+                                pinStatus.pinpos = memListPin4.Count - 1;
+                                memListPinStatus.Add(pinStatus);
+                                lboxPin4.DataContext = memListPin4;
+                                lboxPin4.Items.Refresh();
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Bílinn er þegar á nál.");
+                        }
+                    }
+
                 }
-               }
             }
 
             //Þetta er fyrir endurröðun
@@ -1141,10 +2069,210 @@ namespace sendill_client
 
             #endregion
 
-
-            #region Nálar - Svæði4 - Árbær / Bauhaus
+        #region Nálar - Svæði4 - Árbær / Bauhaus
 
             //Svæði 4 byrjar
+
+            private void mnuItemPin4Car02_Click(object sender, RoutedEventArgs e)
+            {
+                try
+                {
+                    if (memListPin4.Count() == 0)
+                    {
+                        MessageBox.Show("Það er enginn bíll valinn. ");
+                    }
+                    else
+                    {
+                        dtoPinStatus itemPinStatus = new dtoPinStatus();
+                        int i = lboxPin4.SelectedIndex;
+                        int ic = lboxPin4.Items.Count;
+                        dtoPin sitem = memListPin4[i];
+                        memListPin4.Remove(sitem);
+                        lboxPin4.ItemsSource = null;
+                        lboxPin4.ItemsSource = memListPin4;
+                        lboxPin4.Items.Refresh();
+                        int scarid = sitem.idcar;
+                        itemPinStatus = (from t in memListPinStatus
+                                         where t.carid == scarid
+                                         select t).FirstOrDefault();
+                        var listPinStatus = from ls in memListPinStatus
+                                            where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                            select ls;
+                        foreach (var stat in listPinStatus)
+                        {
+                            stat.pinpos = stat.pinpos + 1;
+                        }
+                        memListPinStatus.Remove(itemPinStatus);
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+            }
+
+            private void btnPinFourMooveUp_Click(object sender, RoutedEventArgs e)
+            {
+                if (memListPin4.Count > 1)
+                {
+                    //txtReorderHeader.Text = "  Endurraða Stöðin";
+                    //childWinReorderPin.Show();
+                    //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                    //_pinid = 0;
+                    int i = lboxPin4.SelectedIndex;
+                    int ic = lboxPin4.Items.Count;
+                    dtoPin sitem = memListPin4[i];
+
+                    if (i == 0)
+                    {
+                        MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin4.RemoveAt(i);
+                        memListPin4.Insert(i - 1, sitem);
+                        lboxPin4.DataContext = memListPin4;
+                        lboxPin4.Items.Refresh();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            private void btnPinFourMooveDown_Click(object sender, RoutedEventArgs e)
+            {
+                if (memListPin4.Count > 1)
+                {
+                    //txtReorderHeader.Text = "  Endurraða Stöðin";
+                    //childWinReorderPin.Show();
+                    //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                    //_pinid = 0;
+                    int i = lboxPin4.SelectedIndex;
+                    int ic = lboxPin4.Items.Count;
+                    dtoPin sitem = memListPin4[i];
+
+                    if (i == memListPin4.Count - 1)
+                    {
+                        MessageBox.Show("Þetta er síðasti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin4.RemoveAt(i);
+                        memListPin4.Insert(i + 1, sitem);
+                        lboxPin4.DataContext = memListPin4;
+                        lboxPin4.Items.Refresh();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            private void txtArea04_KeyDown_1(object sender, KeyEventArgs e)
+            {
+                if (e.Key==Key.Enter)
+                {
+                    string _carnum;
+                    _carnum = txtArea04.Text;
+                    try
+                    {
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
+                    {
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+                    }
+
+                    if (txtArea04.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
+                    }
+                    else
+                    {
+
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+
+                    int lcar = (from lc in memListCar
+                                where lc.stationid == Convert.ToInt32(_carnum)
+                                select lc).Count();
+                    int caronpin = (from lps in memListPinStatus
+                                    where lps.carid == Convert.ToInt32(_carnum)
+                                    select lps).Count();
+                            if (caronpin == 1)
+                            {
+                                int i = (from lps in memListPinStatus
+                                         where lps.carid == Convert.ToInt32(_carnum)
+                                         select lps).FirstOrDefault().pinid;
+                                if (i == 5)
+                                {
+                                    dtoPinStatus _status = (from lps in memListPinStatus
+                                                            where lps.carid == Convert.ToInt32(_carnum)
+                                                            select lps).FirstOrDefault();
+                                    memListPinStatus.Remove(_status);
+                                    dtoTour _plist = (from t in memListPin6
+                                                      where t.idcar == Convert.ToInt32(_carnum)
+                                                      select t).FirstOrDefault();
+                                    memListPin6.Remove(_plist);
+                                    lbox6.DataContext = memListPin6;
+                                    lbox6.Items.Refresh();
+
+
+                                    caronpin = 0;
+                                }
+                            }
+
+                            if (caronpin == 0)
+                            {
+
+                                if (lcar == 1)
+                                {
+                                    var carlist = from vlcar in memListCar
+                                                  where vlcar.stationid == Convert.ToInt32(_carnum)
+                                                  select vlcar;
+
+                                    pin4_id = pin4_id + 1;
+                                    dtoPin pin4 = new dtoPin();
+                                    pin4.id = pin4_id;
+                                    pin4.idcar = Convert.ToInt32(_carnum);
+                                    pin4.idpin = 3;
+                                    pin4.pbreak = false;
+                                    pin4.pcarcode = carlist.FirstOrDefault().code;
+                                    pin4.owner = carlist.FirstOrDefault().owner;
+                                    pin4.carsize = carlist.FirstOrDefault().size;
+                                    pin4.car1 = carlist.FirstOrDefault().car1;
+                                    pin4.car2 = carlist.FirstOrDefault().car2;
+                                    pin4.car3 = carlist.FirstOrDefault().car3;
+                                    pin4.car4 = carlist.FirstOrDefault().car4;
+                                    pin4.car5 = carlist.FirstOrDefault().car5;
+
+                                    memListPin4.Add(pin4);
+                                    dtoPinStatus pinStatus = new dtoPinStatus();
+                                    pinStatus.carid = pin4.idcar;
+                                    pinStatus.pinid = pin4.idpin;
+                                    pinStatus.pinpos = memListPin4.Count - 1;
+                                    memListPinStatus.Add(pinStatus);
+
+                                    lboxPin4.DataContext = memListPin4;
+                                    lboxPin4.Items.Refresh();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                                }
+                            }
+
+                            else
+                            {
+                                MessageBox.Show("Bílinn er þegar á nál");
+                            }
+                }
+            }
+    }
 
             private void txtArea04_KeyDown(object sender, KeyEventArgs e)
             {
@@ -1152,70 +2280,119 @@ namespace sendill_client
                 {
                     string _carnum;
                     _carnum = txtArea04.Text;
-                    txtArea04.Clear();
-                    txtArea04.Text = "";
-                    int lcar = (from lc in memListCar
-                                where lc.stationid == Convert.ToInt32(_carnum)
-                                select lc).Count();
-                    int caronpin = (from lps in memListPinStatus
-                                    where lps.carid == Convert.ToInt32(_carnum)
-                                    select lps).Count();
-                    if (caronpin == 0)
+                    try
                     {
-                    
-
-                    if (lcar == 1)
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
                     {
-                        var carlist = from vlcar in memListCar
-                                      where vlcar.stationid == Convert.ToInt32(_carnum)
-                                      select vlcar;
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+                    }
 
-                        pin4_id = pin4_id + 1;
-                        dtoPin pin4 = new dtoPin();
-                        pin4.id = pin4_id;
-                        pin4.idcar = Convert.ToInt32(_carnum);
-                        pin4.idpin = 3;
-                        pin4.pbreak = false;
-                        pin4.pcarcode = carlist.FirstOrDefault().code;
-                        pin4.owner = carlist.FirstOrDefault().owner;
-                        pin4.carsize = carlist.FirstOrDefault().size;
-                        pin4.car1 = carlist.FirstOrDefault().car1;
-                        pin4.car2 = carlist.FirstOrDefault().car2;
-                        pin4.car3 = carlist.FirstOrDefault().car3;
-                        pin4.car4 = carlist.FirstOrDefault().car4;
-                        pin4.car5 = carlist.FirstOrDefault().car5;
-
-                        memListPin4.Add(pin4);
-                        dtoPinStatus pinStatus = new dtoPinStatus();
-                        pinStatus.carid = pin4.idcar;
-                        pinStatus.pinid = pin4.idpin;
-                        memListPinStatus.Add(pinStatus);
-
-                        lboxPin4.DataContext = memListPin4;
-                        lboxPin4.Items.Refresh();
+                    if (txtArea04.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
                     }
                     else
                     {
-                        MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
-                    }
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("Bílinn er þegar á nál");
+                        txtArea04.Clear();
+                        txtArea04.Text = "";
+
+                        int lcar = (from lc in memListCar
+                                    where lc.stationid == Convert.ToInt32(_carnum)
+                                    select lc).Count();
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+                        if (caronpin == 1)
+                        {
+                            int i = (from lps in memListPinStatus
+                                     where lps.carid == Convert.ToInt32(_carnum)
+                                     select lps).FirstOrDefault().pinid;
+                            if (i == 5)
+                            {
+                                dtoPinStatus _status = (from lps in memListPinStatus
+                                                        where lps.carid == Convert.ToInt32(_carnum)
+                                                        select lps).FirstOrDefault();
+                                memListPinStatus.Remove(_status);
+                                dtoTour _plist = (from t in memListPin6
+                                                  where t.idcar == Convert.ToInt32(_carnum)
+                                                  select t).FirstOrDefault();
+                                memListPin6.Remove(_plist);
+                                lbox6.DataContext = memListPin6;
+                                lbox6.Items.Refresh();
+
+
+                                caronpin = 0;
+                            }
+                        }
+
+                        if (caronpin == 0)
+                        {
+
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+
+                                pin4_id = pin4_id + 1;
+                                dtoPin pin4 = new dtoPin();
+                                pin4.id = pin4_id;
+                                pin4.idcar = Convert.ToInt32(_carnum);
+                                pin4.idpin = 3;
+                                pin4.pbreak = false;
+                                pin4.pcarcode = carlist.FirstOrDefault().code;
+                                pin4.owner = carlist.FirstOrDefault().owner;
+                                pin4.carsize = carlist.FirstOrDefault().size;
+                                pin4.car1 = carlist.FirstOrDefault().car1;
+                                pin4.car2 = carlist.FirstOrDefault().car2;
+                                pin4.car3 = carlist.FirstOrDefault().car3;
+                                pin4.car4 = carlist.FirstOrDefault().car4;
+                                pin4.car5 = carlist.FirstOrDefault().car5;
+
+                                memListPin4.Add(pin4);
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin4.idcar;
+                                pinStatus.pinid = pin4.idpin;
+                                pinStatus.pinpos = memListPin4.Count - 1;
+                                memListPinStatus.Add(pinStatus);
+
+                                lboxPin4.DataContext = memListPin4;
+                                lboxPin4.Items.Refresh();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            }
+                        }
+
+                        else
+                        {
+                            MessageBox.Show("Bílinn er þegar á nál");
+                        }
                     }
                 }
-           
             }
+    
+           
+            
 
             private void txtArea04_LostFocus(object sender, RoutedEventArgs e)
             {
                 txtArea04.Text = "";
             }
 
-            private void txtArea04_GotFocus(object sender, RoutedEventArgs e)
+            private void txtArea04_GotFocus_1(object sender, RoutedEventArgs e)
             {
                 txtArea04.Clear();
+            }
+
+            private void txtArea04_GotFocus(object sender, RoutedEventArgs e)
+            {
+                //txtArea04.Clear();
             }
 
             //Þetta er fyrir endurröðun
@@ -1291,73 +2468,204 @@ namespace sendill_client
 
             #endregion
 
+        #region Nálar - Svæði5 - Renna
 
-            #region Nálar - Svæði5 - Renna
+            private void mnuItemPin5Car02_Click(object sender, RoutedEventArgs e)
+            {
+                if (memListPin5.Count() == 0)
+                {
+                    MessageBox.Show("Það er enginn bíll valinn. ");
+                }
+                else
+                {
+                    dtoPinStatus itemPinStatus = new dtoPinStatus();
+                    int i = lboxPin5.SelectedIndex;
+                    int ic = lboxPin5.Items.Count;
+                    dtoPin sitem = memListPin5[i];
+                    memListPin5.Remove(sitem);
+                    lboxPin5.ItemsSource = null;
+                    lboxPin5.ItemsSource = memListPin5;
+                    lboxPin5.Items.Refresh();
+                    int scarid = sitem.idcar;
+                    itemPinStatus = (from t in memListPinStatus
+                                     where t.carid == scarid
+                                     select t).FirstOrDefault();
+                    var listPinStatus = from ls in memListPinStatus
+                                        where ls.pinid == 0 && ls.pinpos > itemPinStatus.pinpos
+                                        select ls;
+                    foreach (var stat in listPinStatus)
+                    {
+                        stat.pinpos = stat.pinpos + 1;
+                    }
+                    memListPinStatus.Remove(itemPinStatus);
+                }
+            }
 
+            private void btnPinFiveMooveUp_Click(object sender, RoutedEventArgs e)
+            {
+                if (memListPin5.Count > 1)
+                {
+                    //txtReorderHeader.Text = "  Endurraða Stöðin";
+                    //childWinReorderPin.Show();
+                    //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                    //_pinid = 0;
+                    int i = lboxPin5.SelectedIndex;
+                    int ic = lboxPin5.Items.Count;
+                    dtoPin sitem = memListPin5[i];
+
+                    if (i == 0)
+                    {
+                        MessageBox.Show("Þetta er fyrsti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin5.RemoveAt(i);
+                        memListPin5.Insert(i - 1, sitem);
+                        lboxPin5.DataContext = memListPin5;
+                        lboxPin5.Items.Refresh();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            private void btnPinFiveMooveDown_Click(object sender, RoutedEventArgs e)
+            {
+                if (memListPin5.Count > 1)
+                {
+                    //txtReorderHeader.Text = "  Endurraða Stöðin";
+                    //childWinReorderPin.Show();
+                    //childWinReorderPin_DataGrid.ItemsSource = memListPin1;
+                    //_pinid = 0;
+                    int i = lboxPin5.SelectedIndex;
+                    int ic = lboxPin5.Items.Count;
+                    dtoPin sitem = memListPin5[i];
+
+                    if (i == memListPin5.Count - 1)
+                    {
+                        MessageBox.Show("Þetta er síðasti bíllinn á nálinni.", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        memListPin5.RemoveAt(i);
+                        memListPin5.Insert(i + 1, sitem);
+                        lboxPin5.DataContext = memListPin5;
+                        lboxPin5.Items.Refresh();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Það er einn eða enginn bíll á nálinni", "Villa vegna endurröðunnar", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
 
 
             private void txtArea05_KeyDown(object sender, KeyEventArgs e)
             {
+                string _carnum;
                 if (e.Key == Key.Enter)
                 {
-                    string _carnum;
                     _carnum = txtArea05.Text;
-                    txtArea05.Clear();
-                    txtArea05.Text = "";
-                    int lcar = (from lc in memListCar
-                                where lc.stationid == Convert.ToInt32(_carnum)
-                                select lc).Count();
 
-                    int caronpin = (from lps in memListPinStatus
-                                where lps.carid == Convert.ToInt32(_carnum)
-                                select lps).Count();
-                    if (caronpin == 0)
+                    try
                     {
+                        int tmp = Convert.ToInt32(_carnum);
+                    }
+                    catch (Exception h)
+                    {
+                        txtArea05.Clear();
+                        txtArea05.Text = "";
+                    }
 
-
-                        if (lcar == 1)
-                        {
-                            var carlist = from vlcar in memListCar
-                                          where vlcar.stationid == Convert.ToInt32(_carnum)
-                                          select vlcar;
-
-                            pin5_id = pin5_id + 1;
-                            dtoPin pin5 = new dtoPin();
-                            pin5.id = pin4_id;
-                            pin5.idcar = Convert.ToInt32(_carnum);
-                            pin5.idpin = 4;
-                            pin5.pbreak = false;
-                            pin5.pcarcode = carlist.FirstOrDefault().code;
-                            pin5.owner = carlist.FirstOrDefault().owner;
-                            pin5.carsize = carlist.FirstOrDefault().size;
-                            pin5.car1 = carlist.FirstOrDefault().car1;
-                            pin5.car2 = carlist.FirstOrDefault().car2;
-                            pin5.car3 = carlist.FirstOrDefault().car3;
-                            pin5.car4 = carlist.FirstOrDefault().car4;
-                            pin5.car5 = carlist.FirstOrDefault().car5;
-                            pin5.pline = memListPin5.Count() + 1;
-
-                            // Bæta við status.
-
-                            memListPin5.Add(pin5);
-                            dtoPinStatus pinStatus = new dtoPinStatus();
-                            pinStatus.carid = pin5.idcar;
-                            pinStatus.pinid = pin5.idpin;
-                            memListPinStatus.Add(pinStatus);
-
-                            // Uppfæra lista.
-                            
-                            lboxPin5.DataContext = memListPin5;
-                            lboxPin5.Items.Refresh();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
-                        }
+                    if (txtArea05.Text.ToString().Length == 0)
+                    {
+                        MessageBox.Show("Það var villa í innslættinum. Sláðu inn númer til að setja á nálina.");
                     }
                     else
                     {
-                        MessageBox.Show(" Bíllinn er á nál. ");
+                        txtArea05.Clear();
+                        txtArea05.Text = "";
+                        int lcar = (from lc in memListCar
+                                    where lc.stationid == Convert.ToInt32(_carnum)
+                                    select lc).Count();
+
+                        int caronpin = (from lps in memListPinStatus
+                                        where lps.carid == Convert.ToInt32(_carnum)
+                                        select lps).Count();
+
+                        if (caronpin == 1)
+                        {
+                            int i = (from lps in memListPinStatus
+                                     where lps.carid == Convert.ToInt32(_carnum)
+                                     select lps).FirstOrDefault().pinid;
+                            if (i == 5)
+                            {
+                                dtoPinStatus _status = (from lps in memListPinStatus
+                                                        where lps.carid == Convert.ToInt32(_carnum)
+                                                        select lps).FirstOrDefault();
+                                memListPinStatus.Remove(_status);
+                                dtoTour _plist = (from t in memListPin6
+                                                  where t.idcar == Convert.ToInt32(_carnum)
+                                                  select t).FirstOrDefault();
+                                memListPin6.Remove(_plist);
+                                lbox6.DataContext = memListPin6;
+                                lbox6.Items.Refresh();
+
+
+                                caronpin = 0;
+                            }
+                        }
+
+
+                        if (caronpin == 0)
+                        {
+                            if (lcar == 1)
+                            {
+                                var carlist = from vlcar in memListCar
+                                              where vlcar.stationid == Convert.ToInt32(_carnum)
+                                              select vlcar;
+
+                                pin5_id = pin5_id + 1;
+                                dtoPin pin5 = new dtoPin();
+                                pin5.id = pin4_id;
+                                pin5.idcar = Convert.ToInt32(_carnum);
+                                pin5.idpin = 4;
+                                pin5.pbreak = false;
+                                pin5.pcarcode = carlist.FirstOrDefault().code;
+                                pin5.owner = carlist.FirstOrDefault().owner;
+                                pin5.carsize = carlist.FirstOrDefault().size;
+                                pin5.car1 = carlist.FirstOrDefault().car1;
+                                pin5.car2 = carlist.FirstOrDefault().car2;
+                                pin5.car3 = carlist.FirstOrDefault().car3;
+                                pin5.car4 = carlist.FirstOrDefault().car4;
+                                pin5.car5 = carlist.FirstOrDefault().car5;
+                                pin5.pline = memListPin5.Count() + 1;
+
+                                // Bæta við status.
+
+                                memListPin5.Add(pin5);
+                                dtoPinStatus pinStatus = new dtoPinStatus();
+                                pinStatus.carid = pin5.idcar;
+                                pinStatus.pinid = pin5.idpin;
+                                pinStatus.pinpos = memListPin5.Count - 1;
+                                memListPinStatus.Add(pinStatus);
+
+                                // Uppfæra lista.
+
+                                lboxPin5.DataContext = memListPin5;
+                                lboxPin5.Items.Refresh();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Þeð er enginn bíll með þetta stöðvarnúmer. Reyndu aftur.");
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(" Bíllinn er á nál. ");
+                        }
                     }
                 }
             }
@@ -1384,7 +2692,6 @@ namespace sendill_client
         
             #endregion
 
-
         #region Nálar - Túrar í bið
 
         
@@ -1393,13 +2700,11 @@ namespace sendill_client
 
         #endregion
 
-
-            #region Nálar - Bílar í túr
+        #region Nálar - Bílar í túr
 
         #endregion
 
-
-            #endregion
+        #endregion
 
             // End nálar
 
@@ -1498,7 +2803,7 @@ namespace sendill_client
             #endregion
 
 
-            void mitem01_Click(object sender, RoutedEventArgs e)
+        void mitem01_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Þetta er Nightservice menuitem1");
             //throw new NotImplementedException();
@@ -1510,6 +2815,7 @@ namespace sendill_client
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void image6_ImageFailed(object sender, ExceptionRoutedEventArgs e)
@@ -1605,12 +2911,60 @@ namespace sendill_client
                 {
                 }
             }
+
+            private void LoadAppSysSettingsToList()
+            {
+                try
+                {
+                    using (Stream stream = File.Open(@"C:\dbsendill\appsyssettings.bin", FileMode.Open))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        memAppSysSettings = (List<appSysSettings>)bin.Deserialize(stream);
+                    }
+                }
+                catch (IOException)
+                {
+                }
+            }
+
+            private void LoadPin1StatusToList()
+            {
+                try
+                {
+                    using (Stream stream = File.Open(@"C:\dbsendill\list_pin1.bin", FileMode.Open))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        memListPin1 = (List<dtoPin>)bin.Deserialize(stream);
+                    }
+                }
+                catch (IOException)
+                {
+                }
+            }
+
+            private void LoadPinStatusToList()
+            {
+                try
+                {
+                    using (Stream stream = File.Open(@"C:\dbsendill\list_pinstatus.bin", FileMode.Open))
+                    {
+                        BinaryFormatter bin = new BinaryFormatter();
+                        memListPinStatus = (List<dtoPinStatus>)bin.Deserialize(stream);
+                        MessageBox.Show(memListPinStatus.Count().ToString());
+                    }
+                }
+                catch (IOException)
+                {
+                }
+            }
+
+
             
 
 
         #endregion
 
-            #region Functions
+        #region Functions 
 
         public void funcFillToursOnPin()
             {
@@ -1638,20 +2992,120 @@ namespace sendill_client
             }
 
         public void funcAddNewTour(dtoTour par_tour)
-            {
-                memListPin6.Add(par_tour);
-                lbox6.ItemsSource = memListPin6;
-                lbox6.Items.Refresh();
-                
-                
-                
-                
-            }
+        {
+            memListPin6.Add(par_tour);
+            lbox6.ItemsSource = memListPin6;
+            lbox6.Items.Refresh();
+        }
 
+
+        public string SavePin1StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin1.bin", FileMode.Create))
+            {
+
+                    BinaryFormatter bff = new BinaryFormatter();
+                    bff.Serialize(fst, memListPin1);
+                    fst.Close();
+                    string rvalue = " memListPin1 uppfærður";
+                    return rvalue;
+            }
+        }
+
+        public string SavePin2StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin2.bin", FileMode.Create))
+            {
+
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPin2);
+                fst.Close();
+                string rvalue = " memListPin1 uppfærður";
+                return rvalue;
+            }
+        }
+
+        public string SavePin3StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin3.bin", FileMode.Create))
+            {
+
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPin3);
+                fst.Close();
+                string rvalue = " memListPin1 uppfærður";
+                return rvalue;
+            }
+        }
+
+        public string SavePin4StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin4.bin", FileMode.Create))
+            {
+
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPin4);
+                fst.Close();
+                string rvalue = " memListPin4 uppfærður";
+                return rvalue;
+            }
+        }
+
+        public string SavePin5StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin5.bin", FileMode.Create))
+            {
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPin5);
+                fst.Close();
+                string rvalue = " memListPin5 uppfærður";
+                return rvalue;
+            }
+        }
+
+        public string SavePin6StatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin6.bin", FileMode.Create))
+            {
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPin5);
+                fst.Close();
+                string rvalue = " memListPin6 uppfærður";
+                return rvalue;
+            }
+        }
+
+        public string SavePinStatusToFile()
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pinstatus.bin", FileMode.Create))
+            {
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPinStatus);
+                fst.Close();
+                string rvalue = " memListStatus uppfærður";
+                return rvalue;
+            }
+        }
+
+
+
+
+
+        public string SaveAppSysRunSettings()
+        {
+            FileStream fst = new FileStream(@"C:\dbsendill\appsyssettings.bin", FileMode.Create);
+
+            BinaryFormatter bff = new BinaryFormatter();
+            bff.Serialize(fst, memAppSysSettings);
+            fst.Close();
+            string rvalue = " Appsyssettings.bin uppfærð";
+            return rvalue;
+
+        }
             #endregion
      
 
-            #region Ónotaður kóði
+        #region Ónotaður kóði
 
             private void TextBox_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
             {
@@ -1814,9 +3268,29 @@ namespace sendill_client
                 //b.IsEnabled = false;
             }
 
+            private void lboxPin2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+
+            }
+
+            private void Window_Closed(object sender, EventArgs e)
+            {
+                var mysettings = memAppSysSettings.Find(item => item.CODE == "APPSTATUS");
+                mysettings.VALUE = "SHUTDOWN";
+                //appSysSettings apps = new appSysSettings();
+                //apps.TYPE = "RUN";
+                //apps.CODE = "APPSTATUS";
+                //apps.VALUE = "SHUTDOWN";
+                //memAppSysSettings.Add(apps);
+                string strLog = SaveAppSysRunSettings();
+                SQLManager sm = new SQLManager();
+                sm.LogRecCreate("AppSysSettings APPSTATUR=SHUTDOWN");
+            }
 
 
-            
+
+
+
 
     }
 }

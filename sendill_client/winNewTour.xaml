@@ -181,7 +181,7 @@
             <Label Content="Símanúmer :" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center" />
             <!--R9C1 Content Símanúmer-->
             <TextBox Grid.Column="3" Grid.Row="7" Height="23" HorizontalAlignment="Left" Margin="3" Name="tphoneTextBox" Text="{Binding Path=tphone, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="120" />
-            <ComboBox Grid.Column="3" HorizontalAlignment="Left" Margin="165.6,6,-159.2,16" Grid.Row="8" Width="120" x:Name="comboCarType" SelectedValue="{Binding size}" SelectionChanged="comboCarType_SelectionChanged" Visibility="Hidden"/>
+            <ComboBox Grid.Column="3" HorizontalAlignment="Left" Margin="165.6,6,-159.2,16" Grid.Row="8" Width="120" x:Name="comboCarType" SelectedValue="{Binding carsize}" SelectionChanged="comboCarType_SelectionChanged" Visibility="Hidden"/>
             <!--** Dálkar tvö og þrjú ******************************************************************************************************************************-->
 
             <!--R0C2 Label Lyfta-->

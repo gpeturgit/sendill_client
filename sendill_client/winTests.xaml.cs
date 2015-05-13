@@ -26,7 +26,7 @@ namespace sendill_client
         private void comPinLogOpen_Click(object sender, RoutedEventArgs e)
         {
             winPinLog _wplog = new winPinLog();
-            _wplog.ShowDialog();
+            _wplog.Show();
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)

@@ -26,16 +26,6 @@ namespace sendill_client.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\dbsendill.mdb")]
-        public string dbsendillConnectionString {
-            get {
-                return ((string)(this["dbsendillConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=tcp:b679p2gt2j.database.windows.net;Initial Catalog=dbsendill;User ID" +
             "=sqluseronice;Password=@appelsin2013")]
         public string dbCloudConnection {
@@ -51,6 +41,16 @@ namespace sendill_client.Properties {
         public string sqlSendillLocalConnection {
             get {
                 return ((string)(this["sqlSendillLocalConnection"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\\dbsendill\\dbsendill.mdb")]
+        public string dbsendillConnectionString {
+            get {
+                return ((string)(this["dbsendillConnectionString"]));
             }
         }
     }

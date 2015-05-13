@@ -22,7 +22,6 @@ namespace sendill_client
         List<dtoCars> memListCar = new List<dtoCars>();
         List<dtoCustomer> memListCustomer = new List<dtoCustomer>();
         List<dtoPinStatus> memListPinStatusLog = new List<dtoPinStatus>();
-        //dbsendillEntities ent = new dbsendillEntities();
 
         public void LoadListFromMem()
         {
@@ -35,6 +34,11 @@ namespace sendill_client
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 memListCar = (List<dtoCars>)bin.Deserialize(stream);
+            }
+            using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
             }
 
         }
@@ -51,8 +55,6 @@ namespace sendill_client
             //}
         }
 
-
-
        public List<dtoCars> GetAllCars()
         {
            if(memListCar.Count==0)
@@ -62,18 +64,37 @@ namespace sendill_client
            return memListCar;
         }
 
+        public IEnumerable<dtoPinStatus> GetPinStatus()
+       {
+                   using (Stream stream = File.Open(@"C:\dbsendill\list_pinstatus.bin", FileMode.Open))
+                   {
+                       BinaryFormatter bin = new BinaryFormatter();
+                       memListPinStatusLog = (List<dtoPinStatus>)bin.Deserialize(stream);
+                   }
+                   return memListPinStatusLog.ToList(); ;
+       }
+        
+        
+        
+        
+        
         public IEnumerable<dtoCustomer> GetAllCustomers()
        {
-           using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
-           {
-               BinaryFormatter bin = new BinaryFormatter();
-               memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
-               var parlist = from fl in memListCustomer
-                             select fl;
-               return parlist;
+               if (memListCustomer.Count == 0)
+               {
+                   using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
+                   {
+                       BinaryFormatter bin = new BinaryFormatter();
+                       memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
+                   }
+                   return memListCustomer.ToList(); ;
+               }
+               else
+               {
+                   return memListCustomer.ToList();
+               }
                
            }
-       }
 
         // Get Tour functions.
 
@@ -172,7 +193,7 @@ namespace sendill_client
                 dtoCars _rec;
                 if (memListCar.Count == 0)
                 {
-                    using (Stream stream = File.Open(@"C:\dbsendill\list_cars.bin", FileMode.Open))
+                    using (Stream stream = File.Open(@"C:\dbsendill\list_carall.bin", FileMode.Open))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
                         memListCar = (List<dtoCars>)bin.Deserialize(stream);
@@ -245,78 +266,72 @@ namespace sendill_client
 
         public string CreateMemFileFromDatabase(int fileid)
         {
-            
+               //List<dtooCars> c = new List<dtooCars>();
 
-            
-            //if (fileid == 1)
-            //{
+                //using (FileStream stream = new FileStream(@"C:\dbsendill\list_carall.bin", FileMode.Open))
+                //{
+
+                //    BinaryFormatter bf = new BinaryFormatter();
+                //    memListCar = (List<dtoCars>)bf.Deserialize(stream);
 
 
-            //    List<dtoCars> listcar = new List<dtoCars>();
+                //    foreach (var oc in memListCar)
+                //    {
+                //        dtooCars car = new dtooCars();
+                //        car.id = oc.id;
+                //        car.isdel = oc.isdel;
+                //        car.kt = oc.kt;
+                //        car.length = oc.length;
+                //        car.liftsize = Convert.ToDouble(oc.liftsize);
+                //        car.address = oc.address;
+                //        car.backdoorheight = oc.backdoorheight;
+                //        car.backdoorlength = oc.backdoorlength;
+                //        car.car1 = oc.car1;
+                //        car.car2 = oc.car2;
+                //        car.car3 = oc.car3;
+                //        car.car4 = oc.car4;
+                //        car.car5 = oc.car5;
+                //        car.car6 = oc.car6;
+                //        car.car7 = oc.car7;
+                //        car.car8 = oc.car8;
+                //        car.car9 = oc.car9;
+                //        car.car10 = oc.car10;
+                //        car.carname = oc.carname;
+                //        car.carnumber = oc.carnumber;
+                //        car.code = oc.code;
+                //        car.daddress = oc.daddress;
+                //        car.dkt = oc.dkt;
+                //        car.dmobile = oc.dmobile;
+                //        car.dphone = oc.dphone;
+                //        car.dpostcode = oc.dpostcode;
+                //        car.driver = oc.driver;
+                //        car.dtown = oc.dtown;
+                //        car.heightofbox = oc.heightofbox;
+                //        car.maxcarry = oc.maxcarry;
+                //        car.mobile = oc.mobile;
+                //        car.model = oc.model;
+                //        car.owner = oc.owner;
+                //        car.phone = car.phone;
+                //        car.postcode = oc.phone;
+                //        car.sidedoorheight = oc.sidedoorheight;
+                //        car.sidedoorlength = oc.sidedoorlength;
+                //        car.stationid = oc.stationid;
+                //        car.size = oc.size;
+                //        car.town = oc.town;
+                //        car.volume = oc.width;
+                //        car.weightlimit = oc.weightlimit;
+                //        car.width = oc.width;
+                //        c.Add(car);
+                //    }
 
-
-            //    var context = from ccar in ent.tbl_cars
-            //                  select ccar;
-
-            //    foreach (var oc in context)
-            //    {
-            //        dtoCars car = new dtoCars();
-            //        car.id = oc.ID;
-            //        car.isdel = false;
-            //        car.kt = oc.kt;
-            //        car.length = oc.length;
-            //        car.liftsize = oc.lift_size;
-            //        car.address = oc.address;
-            //        car.backdoorheight = oc.back_door_height;
-            //        car.backdoorlength = oc.back_door_width;
-            //        car.car1 = oc.car1;
-            //        car.car2 = oc.car2;
-            //        car.car3 = oc.car3;
-            //        car.car4 = oc.car4;
-            //        car.car5 = oc.car5;
-            //        car.car6 = oc.car6;
-            //        car.car7 = oc.car7;
-            //        car.car8 = oc.car8;
-            //        car.car9 = oc.car9;
-            //        car.car10 = oc.car10;
-            //        car.carname = oc.carname;
-            //        car.carnumber = oc.carnumber;
-            //        car.code = oc.code;
-            //        car.daddress = oc.daddress;
-            //        car.dkt = oc.dkt;
-            //        car.dmobile = oc.dmobile;
-            //        car.dphone = oc.dphone;
-            //        car.dpostcode = oc.dpostcode;
-            //        car.driver = oc.driver;
-            //        car.dtown = oc.dtown;
-            //        car.heightofbox = oc.heightofbox;
-            //        car.maxcarry = oc.max_carry;
-            //        car.mobile = oc.mobile;
-            //        car.model = oc.model;
-            //        car.owner = oc.owner;
-            //        car.phone = car.phone;
-            //        car.postcode = oc.phone;
-            //        car.sidedoorheight = oc.side_door_height;
-            //        car.sidedoorlength = oc.side_door_width;
-            //        car.stationid = oc.stationid;
-            //        car.size = Convert.ToInt32(oc.size);
-            //        car.town = oc.town;
-            //        car.volume = oc.Volume;
-            //        car.weightlimit = oc.weight_limit;
-            //        car.width = oc.width;
-            //        listcar.Add(car);
-            //    }
-            //    FileStream fs = new FileStream(@"C:\dbsendill\list_carall.bin", FileMode.Create);
-            //    BinaryFormatter bf = new BinaryFormatter();
-            //    bf.Serialize(fs, listcar);
-            //    fs.Close();
-            //    return "Bílalisti uppfærður "+DateTime.Now.ToShortDateString();
-            //}
-            //else
-            //{
-             return "Villa kom fram við uppfærslu bílalistans.";
+                //    FileStream fs = new FileStream(@"C:\dbsendill\newlist_carall.bin", FileMode.Create);
+                //    BinaryFormatter bbf = new BinaryFormatter();
+                //    bf.Serialize(fs, c);
+                //    fs.Close();
+                    return "Bílalisti uppfærður " + DateTime.Now.ToShortDateString();
             //}
         }
+           
 
         public string SaveToursToFile(dtoTour dt)
         {
@@ -353,6 +368,52 @@ namespace sendill_client
             string rvalue = " Loggur geymdur";
             return rvalue;
         }
+
+        public string SavePinStatusToFile()
+        {
+            FileStream fst = new FileStream(@"C:\dbsendill\list_pinstatus.bin", FileMode.Create);
+
+            BinaryFormatter bff = new BinaryFormatter();
+            bff.Serialize(fst, memListPinStatusLog);
+            fst.Close();
+            string rvalue = " Pin status loggur uppfærður.";
+            return rvalue;
+        }
+
+        public string SavePin1StatusToFile(List<dtoPin> memListPin)
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin1.bin", FileMode.Create))
+            {
+
+                if (memListPin.Count > 0)
+                {
+                    BinaryFormatter bff = new BinaryFormatter();
+                    bff.Serialize(fst, memListPin);
+                    fst.Close();
+                    string rvalue = " memListPin1 uppfærður";
+                    return rvalue;
+                }
+                return "Listi tómur";
+            }
+        }
+
+        public string SavePin2StatusToFile(List<dtoPin> memListPin)
+        {
+            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin2.bin", FileMode.Create))
+            {
+
+                if (memListPin.Count > 0)
+                {
+                    BinaryFormatter bff = new BinaryFormatter();
+                    bff.Serialize(fst, memListPin);
+                    fst.Close();
+                    string rvalue = " memListPin2 uppfærður";
+                    return rvalue;
+                }
+                return "Listi tómur";
+            }
+        }
+
 
     }
 

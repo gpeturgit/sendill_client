@@ -5,6 +5,7 @@ using System.Text;
 
 namespace sendill_client
 {
+    [Serializable]
     public class dtoPin
     {
         public int id { get; set; }
@@ -24,5 +25,7 @@ namespace sendill_client
         public bool? car3 { get; set; }          //Krókur
         public bool? car4 { get; set; }          //Þungaburður
         public bool? car5 { get; set; }          //Rafmagnstjakkur
+        public bool? car6 { get; set; }
+        public bool? car7 { get; set; }
     }
 }
