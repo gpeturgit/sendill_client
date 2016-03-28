@@ -44,7 +44,6 @@ namespace sendill_client
         {
             DBManager db = new DBManager();
             
-            MessageBox.Show("hhhhh");
  
         }
 
@@ -64,7 +63,8 @@ namespace sendill_client
         {
             //LoadLogFromMem();
             SQLManager sm = new SQLManager();
-            sm.LogRecCreate("New row to log added");
+            //sm.LogRecCreate("New row to log added");
+            sm.LogRecCount();
             //int imtCount = sm.DapperLogGetAll().Count()+1;
             //dtoLog objLog = new dtoLog();
             //objLog.ID = imtCount;
@@ -80,9 +80,9 @@ namespace sendill_client
 
         private void comPrev_Click(object sender, RoutedEventArgs e)
         {
-            SQLManager sm = new SQLManager();
-            var listLog = sm.DapperLogGetAll();
-            dgMain.ItemsSource = listLog;
+            //SQLManager sm = new SQLManager();
+            //var listLog = sm.DapperLogGetAll();
+            //dgMain.ItemsSource = listLog;
         }
 
         private void comNext_Click(object sender, RoutedEventArgs e)

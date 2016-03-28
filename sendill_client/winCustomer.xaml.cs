@@ -45,7 +45,7 @@ namespace sendill_client
             //catch (IOException)
             //{
             //}
-            MessageBox.Show("Bílar hlaðnir í minni");
+            //MessageBox.Show("Bílar hlaðnir í minni");
             
             //foreach (DataRow dr in memTableCustomers.Rows)
             //{
@@ -80,11 +80,12 @@ namespace sendill_client
 
         private void comPrev_Click_1(object sender, RoutedEventArgs e)
         {
-            FileStream fs = new FileStream(@"C:\dbsendill\list_customers.bin", FileMode.Create);
+
+            DBManager dm = new DBManager();
+            FileStream fs = new FileStream(dm.GetAppConfigSetting()+"list_customers.bin", FileMode.Create);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, _lcustomer);
             fs.Close();
-            MessageBox.Show("Viðskiptamannalista hlaðið í minni");
         }
 
         private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)

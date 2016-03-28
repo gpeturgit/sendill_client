@@ -27,5 +27,7 @@
         }
 
         public string SendillAccConn { get; set; }
+
+        public string localSendillConn { get; set; }
     }
 }

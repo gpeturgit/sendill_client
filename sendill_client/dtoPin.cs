@@ -27,5 +27,6 @@ namespace sendill_client
         public bool? car5 { get; set; }          //Rafmagnstjakkur
         public bool? car6 { get; set; }
         public bool? car7 { get; set; }
+        public bool? listed { get; set; }
     }
 }

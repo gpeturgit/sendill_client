@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="dbsendillModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_cars">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="stationid" Type="int" />
+          <Property Name="carnumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="code" Type="nvarchar" MaxLength="255" />
+          <Property Name="listed" Type="bit" />
+          <Property Name="carname" Type="nvarchar" MaxLength="255" />
+          <Property Name="car1" Type="bit" />
+          <Property Name="car2" Type="bit" />
+          <Property Name="car3" Type="bit" />
+          <Property Name="car4" Type="bit" />
+          <Property Name="car5" Type="bit" />
+          <Property Name="car6" Type="bit" />
+          <Property Name="car7" Type="bit" />
+          <Property Name="car8" Type="bit" />
+          <Property Name="car9" Type="bit" />
+          <Property Name="car10" Type="bit" />
+          <Property Name="length" Type="float" />
+          <Property Name="back_door_width" Type="float" />
+          <Property Name="back_door_height" Type="float" />
+          <Property Name="side_door_width" Type="float" />
+          <Property Name="side_door_height" Type="float" />
+          <Property Name="weight_limit" Type="float" />
+          <Property Name="lift_size" Type="smallint" />
+          <Property Name="Volume" Type="float" />
+          <Property Name="width" Type="float" />
+          <Property Name="model" Type="nvarchar" MaxLength="255" />
+          <Property Name="max_carry" Type="float" />
+          <Property Name="owner" Type="nvarchar" MaxLength="255" />
+          <Property Name="kt" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" />
+          <Property Name="town" Type="nvarchar" MaxLength="255" />
+          <Property Name="postcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="phone" Type="nvarchar" MaxLength="255" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="driver" Type="nvarchar" MaxLength="255" />
+          <Property Name="dkt" Type="nvarchar" MaxLength="255" />
+          <Property Name="daddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="dtown" Type="nvarchar" MaxLength="255" />
+          <Property Name="dpostcode" Type="nvarchar" MaxLength="255" />
+          <Property Name="dphone" Type="nvarchar" MaxLength="255" />
+          <Property Name="dmobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="heightofbox" Type="float" />
+          <Property Name="size" Type="float" />
+        </EntityType>
+        <EntityType Name="tbl_log">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="logtimestamp" Type="datetime" />
+          <Property Name="logtext" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityContainer Name="dbsendillModelStoreContainer">
+          <EntitySet Name="tbl_cars" EntityType="Self.tbl_cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_log" EntityType="Self.tbl_log" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbsendillModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CarEntity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stationid" Type="Int32" />
+          <Property Name="carnumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="listed" Type="Boolean" />
+          <Property Name="carname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="car1" Type="Boolean" />
+          <Property Name="car2" Type="Boolean" />
+          <Property Name="car3" Type="Boolean" />
+          <Property Name="car4" Type="Boolean" />
+          <Property Name="car5" Type="Boolean" />
+          <Property Name="car6" Type="Boolean" />
+          <Property Name="car7" Type="Boolean" />
+          <Property Name="car8" Type="Boolean" />
+          <Property Name="car9" Type="Boolean" />
+          <Property Name="car10" Type="Boolean" />
+          <Property Name="length" Type="Double" />
+          <Property Name="back_door_width" Type="Double" />
+          <Property Name="back_door_height" Type="Double" />
+          <Property Name="side_door_width" Type="Double" />
+          <Property Name="side_door_height" Type="Double" />
+          <Property Name="weight_limit" Type="Double" />
+          <Property Name="lift_size" Type="Int16" />
+          <Property Name="Volume" Type="Double" />
+          <Property Name="width" Type="Double" />
+          <Property Name="model" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="max_carry" Type="Double" />
+          <Property Name="owner" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="kt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="town" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="postcode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="driver" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dkt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="daddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dtown" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dpostcode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dphone" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="dmobile" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="heightofbox" Type="Double" />
+          <Property Name="size" Type="Double" />
+        </EntityType>
+        <EntityContainer Name="dbsendillEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_cars" EntityType="dbsendillModel.CarEntity" />
+          <EntitySet Name="tbl_log" EntityType="dbsendillModel.LogEntity" />
+        </EntityContainer>
+        <EntityType Name="LogEntity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="logtimestamp" Type="DateTime" Precision="3" />
+          <Property Name="logtext" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbsendillModelStoreContainer" CdmEntityContainer="dbsendillEntities">
+          <EntitySetMapping Name="tbl_cars">
+            <EntityTypeMapping TypeName="dbsendillModel.CarEntity">
+              <MappingFragment StoreEntitySet="tbl_cars">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="stationid" ColumnName="stationid" />
+                <ScalarProperty Name="carnumber" ColumnName="carnumber" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="listed" ColumnName="listed" />
+                <ScalarProperty Name="carname" ColumnName="carname" />
+                <ScalarProperty Name="car1" ColumnName="car1" />
+                <ScalarProperty Name="car2" ColumnName="car2" />
+                <ScalarProperty Name="car3" ColumnName="car3" />
+                <ScalarProperty Name="car4" ColumnName="car4" />
+                <ScalarProperty Name="car5" ColumnName="car5" />
+                <ScalarProperty Name="car6" ColumnName="car6" />
+                <ScalarProperty Name="car7" ColumnName="car7" />
+                <ScalarProperty Name="car8" ColumnName="car8" />
+                <ScalarProperty Name="car9" ColumnName="car9" />
+                <ScalarProperty Name="car10" ColumnName="car10" />
+                <ScalarProperty Name="length" ColumnName="length" />
+                <ScalarProperty Name="back_door_width" ColumnName="back_door_width" />
+                <ScalarProperty Name="back_door_height" ColumnName="back_door_height" />
+                <ScalarProperty Name="side_door_width" ColumnName="side_door_width" />
+                <ScalarProperty Name="side_door_height" ColumnName="side_door_height" />
+                <ScalarProperty Name="weight_limit" ColumnName="weight_limit" />
+                <ScalarProperty Name="lift_size" ColumnName="lift_size" />
+                <ScalarProperty Name="Volume" ColumnName="Volume" />
+                <ScalarProperty Name="width" ColumnName="width" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="max_carry" ColumnName="max_carry" />
+                <ScalarProperty Name="owner" ColumnName="owner" />
+                <ScalarProperty Name="kt" ColumnName="kt" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="town" ColumnName="town" />
+                <ScalarProperty Name="postcode" ColumnName="postcode" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="driver" ColumnName="driver" />
+                <ScalarProperty Name="dkt" ColumnName="dkt" />
+                <ScalarProperty Name="daddress" ColumnName="daddress" />
+                <ScalarProperty Name="dtown" ColumnName="dtown" />
+                <ScalarProperty Name="dpostcode" ColumnName="dpostcode" />
+                <ScalarProperty Name="dphone" ColumnName="dphone" />
+                <ScalarProperty Name="dmobile" ColumnName="dmobile" />
+                <ScalarProperty Name="heightofbox" ColumnName="heightofbox" />
+                <ScalarProperty Name="size" ColumnName="size" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_log">
+            <EntityTypeMapping TypeName="dbsendillModel.LogEntity">
+              <MappingFragment StoreEntitySet="tbl_log">
+                <ScalarProperty Name="logtext" ColumnName="logtext" />
+                <ScalarProperty Name="logtimestamp" ColumnName="logtimestamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

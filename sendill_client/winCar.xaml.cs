@@ -55,14 +55,12 @@ namespace sendill_client
             CollectionViewSource masterviewsource = (CollectionViewSource)this.FindResource("MasterView");
             masterviewsource.SortDescriptions.Add(new System.ComponentModel.SortDescription("stationid", System.ComponentModel.ListSortDirection.Ascending));
 
-            String mstr = global_id_car.ToString() + "  " + is_detail_form_call;
-            MessageBox.Show(mstr);
 
             int i = ocar.FindIndex(l => l.id == (Int16?)global_id_car);
             masterviewsource.Source = ocar;
             mainGrid.DataContext = masterviewsource;
             masterviewsource.View.MoveCurrentToFirst();
-            masterviewsource.View.MoveCurrentToPosition(i-1);
+            //masterviewsource.View.MoveCurrentToPosition(i-1);
             childWinCar.Show();
 
         }
@@ -183,7 +181,9 @@ namespace sendill_client
 
         private void carToolbarComRecSave_Click(object sender, RoutedEventArgs e)
         {
-            FileStream fs = new FileStream(@"C:\dbsendill\list_carall.bin", FileMode.Create);
+            DBManager dm = new DBManager();
+            string spath = dm.GetAppConfigSetting();
+            FileStream fs = new FileStream(spath+"list_carall.bin", FileMode.Create);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, ocar);
             fs.Close();
@@ -199,6 +199,7 @@ namespace sendill_client
         private void RibbonButton_Click(object sender, RoutedEventArgs e)
         {
             winCarDetail wcd = new winCarDetail();
+            wcd.pub_icar = 3;
             wcd.Show();
         }
 
@@ -217,7 +218,7 @@ namespace sendill_client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            MessageBox.Show("Þetta eru parametrarnir " + global_id_car.ToString() + is_detail_form_call.ToString()); if (is_detail_form_call == true)
+     
             {
                 LoadCarDetail();
             }

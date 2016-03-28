@@ -22,9 +22,12 @@ namespace sendill_client
     public partial class winNewTour : Window
     {
         List<dtoTour> ltour = new List<dtoTour>();
+        List<dtoTour> tmpTour = new List<dtoTour>();
         public bool globl_new_tour;
         public int global_car_id;
         public int global_pin_id;
+        public bool p_filtercarid;
+        public dtoTour DtoTour;
 
         public winNewTour()
         {
@@ -35,20 +38,56 @@ namespace sendill_client
         {
 
             System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
-            
+
 
             var window2 = Application.Current.Windows
             .Cast<Window>()
             .FirstOrDefault(window => window is MainWindow) as MainWindow;
             ltour = window2.memListTour;
             var mtour = window2.memListCar;
-            dtoTourViewSource.Source = ltour;
-            this.DataContext = dtoTourViewSource;
-            dtoTourViewSource.View.MoveCurrentToLast();
+            DBManager dm = new DBManager();
+            //idcustomerComboBox.ItemsSource = dm.GetAllCustomers();
+            //idcustomerComboBox.DisplayMemberPath = "name";
+            //idcustomerComboBox.SelectedValuePath = "id";
+
+
             comboCarType.ItemsSource = CreateCarGroups();
             comboCarType.DisplayMemberPath = "name";
             comboCarType.SelectedValuePath = "type";
-           
+            if (p_filtercarid == true ) 
+            {
+                List<dtoTour> nl = new List<dtoTour>();
+                nl.Add(ltour.Find(p => p.id == DtoTour.id));
+                dtoTourViewSource.Source = nl;
+
+                this.DataContext = dtoTourViewSource;
+                txtTourHeader.Text = "Skoða túr.";
+                stackPanel2.IsEnabled = false;
+                idcarTextBox1.IsEnabled = false;
+            }
+            else if (globl_new_tour==true)
+            {
+                tmpTour.Add(DtoTour);
+                dtoTourViewSource.Source = tmpTour;
+                this.DataContext = dtoTourViewSource;
+                carToolbarComRecNew.IsEnabled = false;
+                idcarTextBox1.IsEnabled = false;
+            }
+            else
+            {
+                dtoTourViewSource.Source = ltour;
+                this.DataContext = dtoTourViewSource;
+                dtoTourViewSource.View.MoveCurrentToLast();
+                stackPanel2.IsEnabled = true;
+                idcarTextBox1.IsEnabled = true;
+            }
+            System.Windows.Data.CollectionViewSource dtoCustomerViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoCustomerViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            dtoCustomerViewSource.Source = dm.GetAllCustomers();
+            idcustomerComboBox.ItemsSource = dtoCustomerViewSource.View;
+            idcustomerComboBox.DisplayMemberPath = "name";
+            idcustomerComboBox.SelectedValuePath = "id";
+            
         }
 
         private void carToolbarComRecNew_Click(object sender, RoutedEventArgs e)
@@ -141,22 +180,24 @@ namespace sendill_client
 
         private void carToolbarComRecSave_Click(object sender, RoutedEventArgs e)
         {
-
-            var ptour = ltour.LastOrDefault();
-            var idel = isdelCheckBox.IsChecked.Value;
+         
+            DtoTour = tmpTour.FirstOrDefault();
+            //var idel = isdelCheckBox.IsChecked.Value;
             if (globl_new_tour == true)
             {
-                //var window2 = Application.Current.Windows
-                //.Cast<Window>()
-                //.FirstOrDefault(window => window is MainWindow) as MainWindow;
-                //window2.funcAddNewTour(ptour);
+                var window2 = Application.Current.Windows
+                .Cast<Window>()
+                .FirstOrDefault(window => window is MainWindow) as MainWindow;
+                ltour.Add(DtoTour);
+                window2.memListTour = ltour;
                 DBManager dm = new DBManager();
-                var rmsg = dm.SaveToursToFile(ptour);
+                var rmsg = dm.SaveToursToFile(DtoTour);
+                tmpTour.Remove(DtoTour);
             }
             else
             {
                 DBManager dm = new DBManager();
-                var rmsg = dm.SaveToursToFile(ptour);
+                var rmsg = dm.SaveToursToFile(DtoTour);
                 winTurar wt = new winTurar();
                 wt.Show();
             }
@@ -164,6 +205,34 @@ namespace sendill_client
 
             this.Close();
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var window2 = Application.Current.Windows
+            .Cast<Window>()
+            .FirstOrDefault(window => window is MainWindow) as MainWindow;
+            window2.MemListRestore(DtoTour.idpin);
+            this.Close();
+        }
+
+        private void idcustomerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //string sCustomer = idcustomerComboBox.SelectedValue.ToString();
+            ////int cid = dto.idcustomer
+            //DBManager dm = new DBManager();
+            //string sCustomer = dm.GetCustomerById(cid).name;
+
+            ////idcustomerTextBox.Text = idcustomerComboBox.Text;
+            //MessageBox.Show("CustomerName : " + sCustomer);
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            tcustomerTextBox.Text = idcustomerComboBox.Text;
+            idcustomerTextBox.Text = idTextBox.Text;
+            tcustomerTextBox.Focus();
         }
 
 

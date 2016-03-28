@@ -1,0 +1,8 @@
+﻿<Window x:Class="sendill_client.ViewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ViewWindow" Height="769" Width="1024" Loaded="Window_Loaded">
+    <Grid Name="gridMain">
+        
+    </Grid>
+</Window>

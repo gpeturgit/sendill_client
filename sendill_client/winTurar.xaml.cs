@@ -26,43 +26,28 @@ namespace sendill_client
     {
         ICollectionView _turarView;
         List<dtoCustomer> _lcust = new List<dtoCustomer>();        
-        List<dtoTour> _ltour = new List<dtoTour>();
+        public List<dtoTour> _ltour = new List<dtoTour>();
         List<dtoCars> _car = new List<dtoCars>();
         string[] filtervalues =new string[4];
         DateTime _parDateFrom;
         DateTime _parDateTo;
         DateTime dtnow;
+        public int p_carid;
+        public bool p_caridfilter;
+        public int p_repid;
+        public dtoTour p_DtoTour;
  
         public winTurar()
         {
             InitializeComponent();
 
 
-           // var window2 = Application.Current.Windows
-           //.Cast<Window>()
-           //.FirstOrDefault(window => window is MainWindow) as MainWindow;
-           // var dtturar = window2.memTableTurar;
-           // dtoTour _tour = new dtoTour();
-           // foreach (DataRow dr in dtturar.Rows)
-           // {
-           //     dtoTour _itour = new dtoTour();
-           //     if (!dr.IsNull(0)) { _itour.id = (int)dr["ID"]; }
-           //     if (!dr.IsNull(1)) { _itour.idcustomer = (int)dr["id_customers"]; }
-           //     if (!dr.IsNull(2)) { _itour.idcar = (int)dr["id_cars"]; }
-           //     if (!dr.IsNull(4)) { _itour.tdatetime = (DateTime)dr["timedate"]; }
-           //     if (!dr.IsNull(5)) { _itour.tcustomer = (string)dr["customer"]; }
-           //     if (!dr.IsNull(6)) { _itour.tcontact = (string)dr["contact"]; }
-           //     if (!dr.IsNull(7)) { _itour.tphone = (string)dr["phione"]; }
-           //     if (!dr.IsNull(8)) { _itour.tnote = (string)dr["note"]; }
-           //     _ltour.Add(_itour);
-           // }
             try
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
-                {
-                    BinaryFormatter bin = new BinaryFormatter();
 
-                    _lcust = (List<dtoCustomer>)bin.Deserialize(stream);
+
+                DBManager dm = new DBManager();
+                _lcust = dm.GetAllCustomers().ToList();
                     dtnow = DateTime.Now;
                     var isource = from c in _lcust
                                   orderby c.name ascending
@@ -74,14 +59,12 @@ namespace sendill_client
                                       c.number
                                   };
 
-                    comboCustomer.ItemsSource =_lcust;
-                    comboCustomer.SelectedValuePath = "id";
                     this.DataContext = _lcust;
                     comboFilterCustomer.SelectedValuePath = "id";
                     comboFilterCustomer.DisplayMemberPath = "name";
 
 
-                }
+                
             }
             catch (IOException)
             {
@@ -126,13 +109,13 @@ namespace sendill_client
                 //.Cast<Window>()
                 //.FirstOrDefault(window => window is MainWindow) as MainWindow;
                 ArrayDefaultValues();
-                List<dtoTour> ltour = new List<dtoTour>();
-                DBManager dm = new DBManager();
+                //List<dtoTour> ltour = new List<dtoTour>();
+                //DBManager dm = new DBManager();
                 //dataGridTurar.ItemsSource = dm.GetAllToursFromFile();
-                _ltour = dm.GetAllToursFromFile().ToList();
-                _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                //_ltour = dm.GetAllToursFromFile().ToList();
+                //_turarView = CollectionViewSource.GetDefaultView(_ltour);
                 //_turarView.Filter = TurarSingelDateFilter;
-                dataGridTurar.ItemsSource = _turarView;
+                //dataGridTurar.ItemsSource = _turarView;
                 //_turarView.Filter = TurarSingelDateFilter;
                // CollectionViewSource.GetDefaultView(_ltour).Refresh();
                 //dataGridTurar.ItemsSource = dm.GetTourPar_Year_Month(DateTime.Now.Year-1, DateTime.Now.Month);
@@ -166,36 +149,36 @@ namespace sendill_client
 
         private void comTBarNew_Click(object sender, RoutedEventArgs e)
         {
-            PopupNewTourWindow.Show();
+            
         }
 
         private void comChildSave_Click(object sender, RoutedEventArgs e)
         {
-            dtoTour itour = new dtoTour();
-            itour.idcar =  Convert.ToInt32(txtIdCar.Text);
-            itour.tcontact = txtContact.Text;
-            itour.taddress = txtAddress.Text;
-            itour.tphone = txtPhone.Text;
-            itour.tcustomer = txtCustomer.Text;
-            itour.tnote = txtNote.Text;
-            _ltour.Add(itour);
-            PopupNewTourWindow.Close();
-            dtnow = DateTime.Now;
-            var isource = from c in _ltour
-                          select c;
-            dataGridTurar.ItemsSource = isource;
+            //dtoTour itour = new dtoTour();
+            //itour.idcar =  Convert.ToInt32(txtIdCar.Text);
+            //itour.tcontact = txtContact.Text;
+            //itour.taddress = txtAddress.Text;
+            //itour.tphone = txtPhone.Text;
+            //itour.tcustomer = txtCustomer.Text;
+            //itour.tnote = txtNote.Text;
+            //_ltour.Add(itour);
+            //PopupNewTourWindow.Close();
+            //dtnow = DateTime.Now;
+            //var isource = from c in _ltour
+            //              select c;
+            //dataGridTurar.ItemsSource = isource;
             
         }
 
         private void comChildCancel_Click(object sender, RoutedEventArgs e)
         {
-            txtIdCar.Clear();
-            txtAddress.Clear();
-            txtContact.Clear();
-            txtPhone.Clear();
-            txtCustomer.Clear();
-            txtNote.Clear();
-            PopupNewTourWindow.Close();
+            //txtIdCar.Clear();
+            //txtAddress.Clear();
+            //txtContact.Clear();
+            //txtPhone.Clear();
+            //txtCustomer.Clear();
+            //txtNote.Clear();
+            //PopupNewTourWindow.Close();
         }
 
         private void comTBarSave_Click(object sender, RoutedEventArgs e)
@@ -230,27 +213,27 @@ namespace sendill_client
 
         private void comboCustomer_KeyDown(object sender, KeyEventArgs e)
         {
-            try
-            {
-                string strid = comboCustomer.SelectedValue.ToString();
-                int id = Convert.ToInt32(strid);
-                var isource = from c in _lcust
-                              where c.id == id
-                              select new
-                              {
-                                  c.address,
-                                  c.streetnr
-                              };
-                foreach (var row in isource)
-                {
-                    string str = row.address + " " + row.streetnr;
-                    txtAddress.Text = str;
-                }
-            }
-            catch(IOException)
-            {
+            //try
+            //{
+            //    string strid = comboCustomer.SelectedValue.ToString();
+            //    int id = Convert.ToInt32(strid);
+            //    var isource = from c in _lcust
+            //                  where c.id == id
+            //                  select new
+            //                  {
+            //                      c.address,
+            //                      c.streetnr
+            //                  };
+            //    foreach (var row in isource)
+            //    {
+            //        string str = row.address + " " + row.streetnr;
+            //        txtAddress.Text = str;
+            //    }
+            //}
+            //catch(IOException)
+            //{
 
-            }
+            //}
         }
 
         private void tourToolbarComFilter_Click(object sender, RoutedEventArgs e)
@@ -325,6 +308,14 @@ namespace sendill_client
                 var ival = Convert.ToInt32(cc.SelectedValue);
                 string sval = ival.ToString();
                 filtervalues[2] = sval;
+        }
+
+        private void comboFilterCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cc = sender as ComboBox;
+            var ival = Convert.ToInt32(cc.SelectedValue);
+            string sval = ival.ToString();
+            filtervalues[3] = sval;
         }
 
         #region Filters
@@ -413,29 +404,136 @@ namespace sendill_client
 
         private void rComFilter_Click(object sender, RoutedEventArgs e)
         {
-            if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty") && !(filtervalues[3] == "emty"))
+            //if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty") && !(filtervalues[3] == "emty"))
+            //{
+            //    MessageBox.Show("Filter fyrir viðskiptavini og stöðvarnúmer virka ekki.");
+            //    _turarView.Filter = TurarDateFromFilter;
+            //    _turarView.Filter = TurarIdFilter;
+            //    _turarView.Filter = TurarCustomerFilter;
+            //    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+
+            //}
+            //else if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty") && (filtervalues[3] == "emty"))
+            //{
+            //    MessageBox.Show("Filter fyrir stöðvarnúmer virkar ekki.");
+            //    _turarView.Filter = TurarDateFromFilter;
+            //    _turarView.Filter = TurarIdFilter;
+            //    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+            //}
+            //else if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && (filtervalues[2] == "emty") && (filtervalues[3]== "emty"))
+            //{
+            //    _turarView.Filter = TurarDateFromFilter;
+            //    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+            //}
+            if ((chbDate.IsChecked == true) && (chbCustomer.IsChecked == false) && (chbStation.IsChecked == false))
             {
-                MessageBox.Show("Filter fyrir viðskiptavini og stöðvarnúmer virka ekki.");
-                _turarView.Filter = TurarDateFromFilter;
-                _turarView.Filter = TurarIdFilter;
-                _turarView.Filter = TurarCustomerFilter;
-                CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetTourPar_Date(_parDateFrom, _parDateTo.AddDays(1)).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina");
+                }
+            }
+            if ((chbDate.IsChecked == false) && (chbCustomer.IsChecked == true) && (chbStation.IsChecked == false))
+            {
+                if (!(filtervalues[3] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetToursPar_CustId(Convert.ToInt32(filtervalues[3])).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
+            }
+            if ((chbDate.IsChecked == false) && (chbCustomer.IsChecked == false) && (chbStation.IsChecked == true))
+            {
+                if (!(filtervalues[2] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetToursPar_CarId(Convert.ToInt32(filtervalues[2])).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
+            }
+            //if (!(filtervalues[0] == "emty") && !(filtervalues[1]=="emty") &&)
+            if ((chbDate.IsChecked == true) && (chbStation.IsChecked == true) && (chbCustomer.IsChecked == false))
+            {
+                MessageBox.Show("Dagsettningr og stöðvarafmörkur.");
+
+                if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetToursPar_CarId_Date(Convert.ToInt32(filtervalues[2]), _parDateFrom, _parDateTo.AddDays(1)).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
+            }
+
+            if ((chbDate.IsChecked == true) && (chbCustomer.IsChecked == true) && (chbStation.IsChecked == false))
+            {
+             
+                if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[3] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetToursPar_CarId_Date(Convert.ToInt32(filtervalues[2]), _parDateFrom, _parDateTo.AddDays(1)).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
 
             }
-            else if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty") && (filtervalues[3] == "emty"))
+            if ((chbDate.IsChecked == false) && (chbCustomer.IsChecked == true) && (chbStation.IsChecked == true))
             {
-                MessageBox.Show("Filter fyrir stöðvarnúmer virkar ekki.");
-                _turarView.Filter = TurarDateFromFilter;
-                _turarView.Filter = TurarIdFilter;
-                CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                if (!(filtervalues[2] == "emty") && !(filtervalues[3] == "emty"))
+                {
+                    DBManager dm = new DBManager();
+                    _ltour = dm.GetToursPar_CarId_Date(Convert.ToInt32(filtervalues[3]), _parDateFrom, _parDateTo.AddDays(1)).ToList();
+                    _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                    dataGridTurar.ItemsSource = _turarView;
+                    CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
             }
-            else if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && (filtervalues[2] == "emty") && (filtervalues[3]== "emty"))
+            if ((chbDate.IsChecked == true) && (chbCustomer.IsChecked == true) && (chbStation.IsChecked == true))
             {
-                _turarView.Filter = TurarDateFromFilter;
-                CollectionViewSource.GetDefaultView(_ltour).Refresh();
+                MessageBox.Show("Stöðvar, viðskiptamanna og dagsettningar afmörkun.");
+                if (!(filtervalues[0] == "emty") && !(filtervalues[1] == "emty") && !(filtervalues[2] == "emty") && !(filtervalues[3] == "emty"))
+                {
+                    MessageBox.Show("Þú hefur valið afmörkun sem ekki er gild. Hafið samband við kerfesstjóra til að virkja þessa afmörkun.");
+                }
+                else
+                {
+                    MessageBox.Show("Það vantar gildi í afmörkunina.");
+                }
             }
-
-
 
         }
 
@@ -457,6 +555,9 @@ namespace sendill_client
 
         private void rComReportList_Click(object sender, RoutedEventArgs e)
         {
+
+            
+            p_repid = 1;
             frmReports frm = new frmReports();
             frm.Show();
 
@@ -464,6 +565,27 @@ namespace sendill_client
 
         private void rComReportRec_Click(object sender, RoutedEventArgs e)
         {
+            p_repid = 2;
+            int i = dataGridTurar.SelectedIndex;
+            if (i == -1)
+            {
+                MessageBox.Show(" Það er enginn túr valinn. ",
+                    "Aðvörun .",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Hand);
+            }
+            else
+            {
+                
+                p_DtoTour = _ltour[i];
+                frmReports frm = new frmReports();
+                frm.Show();
+            }
+
+
+
+
+
 
         }
 
@@ -474,31 +596,47 @@ namespace sendill_client
 
         private bool CusomerTextFilter(object itour)
         {
-            
-            
-            
-            
             return true;
         }
 
-        private void comboFilterCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-                var cc = sender as ComboBox;
-                var ival = Convert.ToInt32(cc.SelectedValue);
-                string sval = ival.ToString();
-                filtervalues[3] = sval;
-        }
+
 
         private void RibbonButton_Click(object sender, RoutedEventArgs e)
         {
-            //PopupNewTourWindow.Show();
-            winNewTour nt = new winNewTour();
-            nt.globl_new_tour = false;
-            nt.Show();
-            this.Close();
+            
+            int i = dataGridTurar.SelectedIndex;
+            if (i == -1)
+            {
+                //MessageBox.Show(" Það er enginn túr valinn. ",
+                //    "Aðvörun .",
+                //    MessageBoxButton.OK,
+                //    MessageBoxImage.Hand);
+                dtoTour tour = _ltour[0];
+                winNewTour nt = new winNewTour();
+                nt.globl_new_tour = false;
+                nt.p_filtercarid = false;
+                nt.DtoTour = tour;
+                string sm = tour.id.ToString();
+                nt.Show();
+
+            }
+            else
+            {
+                dtoTour tour = _ltour[i];
+                winNewTour nt = new winNewTour();
+                nt.globl_new_tour = false;
+                nt.p_filtercarid = true;
+                nt.DtoTour = tour;
+                string sm = tour.id.ToString();
+                nt.Show();
+            }
         }
         public void LoadToursToList()
         {
+             dtnow = DateTime.Now;
+             _parDateFrom = dtnow;
+            _parDateTo = dtnow.AddMonths(0).AddDays(1); 
+            
             List<dtoTour> ltour = new List<dtoTour>();
             DBManager dm = new DBManager();
             //dataGridTurar.ItemsSource = dm.GetAllToursFromFile();
@@ -507,6 +645,35 @@ namespace sendill_client
             //_turarView.Filter = TurarSingelDateFilter;
             dataGridTurar.ItemsSource = _turarView;
             CollectionViewSource.GetDefaultView(_ltour).Refresh();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            if (p_caridfilter==true)
+            {
+                DBManager dm=new DBManager();
+                //_ltour = dm.GetToursPar_CarId_Date(p_carid, DateTime.Now, DateTime.Now).ToList();
+                 _ltour = dm.GetToursPar_CarId(p_carid).ToList();
+                _turarView = CollectionViewSource.GetDefaultView(_ltour);
+                dataGridTurar.ItemsSource = _turarView;
+                CollectionViewSource.GetDefaultView(_ltour).Refresh();
+            }
+            else
+            {
+                LoadToursToList();
+            }
+            this.WindowState = WindowState.Maximized;
+        }
+
+        private void TourRibbon_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void RibbonApplicationMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         //private void PiratesFilter_OnTextChanged(object sender, TextChangedEventArgs e)

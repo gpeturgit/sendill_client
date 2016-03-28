@@ -10,6 +10,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Data.SqlClient;
 using System.Windows.Threading;
 using System.Runtime.Caching;
+using System.Data.Services.Client;
+using sendill_client.srvRefSendillEnt;
+using System.Windows.Forms;
 
 
 namespace sendill_client
@@ -17,30 +20,131 @@ namespace sendill_client
     [Serializable]
     public class DBManager
     {
-        
+        public List<dtoPin>[] arrMemListPin;
+        List<dtoPin> memListPin = new List<dtoPin>();
         List<dtoTour> memListTour = new List<dtoTour>();
         List<dtoCars> memListCar = new List<dtoCars>();
         List<dtoCustomer> memListCustomer = new List<dtoCustomer>();
         List<dtoPinStatus> memListPinStatusLog = new List<dtoPinStatus>();
+        List<dtoPinStatus> memListPinStatus = new List<dtoPinStatus>();
+        private DataServiceCollection<tbl_log> trackedTblLog;
+        public const string svcUri = "http//localhost:59387/WCFOData.svc";
+        public string sappconfig;
 
+        public string GetAppConfigSetting()
+        {
+            ConfigFile conf = new ConfigFile();
+            string ssetting = conf.GetLocalBinFolder() + "\\DataFiles\\";
+            return ssetting;
+        }
+
+        public string GetAppDataBackupConfigSetting()
+        {
+            ConfigFile conf = new ConfigFile();
+            string ssetting = conf.GetLocalBinFolder() + "\\DataFiles\\bak\\";
+            return ssetting;
+
+        }
+        
         public void LoadListFromMem()
         {
-            using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+            using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 memListTour = (List<dtoTour>)bin.Deserialize(stream);
             }
-            using (Stream stream = File.Open(@"C:\dbsendill\list_carall.bin", FileMode.Open))
+            using (Stream stream = File.Open(GetAppConfigSetting()+"list_carall.bin", FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 memListCar = (List<dtoCars>)bin.Deserialize(stream);
             }
-            using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
+            using (Stream stream = File.Open(GetAppConfigSetting() + "list_customers.bin", FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
             }
 
+        }
+
+        public List<dtoPin> LoadPin1FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin1.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+        public List<dtoPin> LoadPin2FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin2.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+        public List<dtoPin> LoadPin3FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin3.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+        public List<dtoPin> LoadPin4FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin4.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+        public List<dtoPin> LoadPin5FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin5.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+        public List<dtoPin> LoadPin6FromFile()
+        {
+            string dfile = GetAppConfigSetting() + "list_pin6.bin";
+            using (Stream stream = File.Open(dfile, FileMode.Open))
+            {
+                BinaryFormatter bin = new BinaryFormatter();
+                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+            }
+            return memListPin;
+        }
+
+
+
+
+        public string SavePinStatusToFile()
+        {
+            using (FileStream fst = new FileStream(GetAppConfigSetting()+"list_pinstatus.bin", FileMode.Create))
+            {
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, memListPinStatus);
+                fst.Close();
+                string rvalue = " memListStatus uppfærður";
+                return rvalue;
+            }
         }
         public bool UpdateCarsFromFile(List<dtoCars> lcars)
         {
@@ -66,7 +170,7 @@ namespace sendill_client
 
         public IEnumerable<dtoPinStatus> GetPinStatus()
        {
-                   using (Stream stream = File.Open(@"C:\dbsendill\list_pinstatus.bin", FileMode.Open))
+                   using (Stream stream = File.Open(GetAppConfigSetting()+"list_pinstatus.bin", FileMode.OpenOrCreate))
                    {
                        BinaryFormatter bin = new BinaryFormatter();
                        memListPinStatusLog = (List<dtoPinStatus>)bin.Deserialize(stream);
@@ -82,7 +186,7 @@ namespace sendill_client
        {
                if (memListCustomer.Count == 0)
                {
-                   using (Stream stream = File.Open(@"C:\dbsendill\list_customers.bin", FileMode.Open))
+                   using (Stream stream = File.Open(GetAppConfigSetting()+"list_customers.bin", FileMode.Open))
                    {
                        BinaryFormatter bin = new BinaryFormatter();
                        memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
@@ -96,6 +200,24 @@ namespace sendill_client
                
            }
 
+        public dtoCustomer GetCustomerById(int id)
+        {
+            if (memListCustomer.Count==0)
+            {
+                   using (Stream stream = File.Open(GetAppConfigSetting()+"list_customers.bin", FileMode.Open))
+                   {
+                       BinaryFormatter bin = new BinaryFormatter();
+                       memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
+                       
+                   }
+                   return memListCustomer.Find(p => p.id == id);
+            }
+            else
+            {
+                return memListCustomer.Find(p => p.id == id);
+            }
+        }
+
         // Get Tour functions.
 
 
@@ -105,7 +227,7 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
@@ -129,7 +251,7 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
@@ -154,29 +276,97 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    memListTour = (List<dtoTour>)bin.Deserialize(stream);
+                }
+                if (dfrom == dto)
+                {
+                    _select = from fl in memListTour
+                              where fl.tdatetime == dfrom && fl.tdatetime == dto
+                              select fl;
+                    return _select;
+                }
+                else
+                {
+                    _select = from fl in memListTour
+                              where fl.tdatetime >= dfrom && fl.tdatetime <= dto
+                              select fl;
+                    return _select;
+                }
+            }
+            else
+            {
+                if (dfrom == dto)
+                {
+                    _select = from fl in memListTour
+                              where fl.tdatetime == dfrom && fl.tdatetime == dto
+                              select fl;
+                    return _select;
+                }
+                else
+                {
+                    _select = from fl in memListTour
+                              where fl.tdatetime >= dfrom && fl.tdatetime <= dto
+                              select fl;
+                    return _select;
+                }
+            }
+        }
+
+        public IEnumerable<dtoTour> GetToursPar_CustId(int pCustId)
+        {
+            IEnumerable<dtoTour> _select;
+            if (memListTour.Count == 0)
+            {
+                using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
                 _select = from fl in memListTour
-                          where fl.tdatetime >= dfrom && fl.tdatetime <= dto
+                          where fl.idcustomer == pCustId
+                          orderby fl.tdatetime descending
                           select fl;
                 return _select;
             }
             else
             {
                 _select = from fl in memListTour
-                          where fl.tdatetime >= dfrom && fl.tdatetime <= dto
+                          where fl.idcustomer == pCustId
                           select fl;
-
                 return _select;
             }
         }
 
+        public IEnumerable<dtoTour> GetToursPar_CustId_Date(int pCustId, DateTime? dfrom, DateTime? dto)
+        {
+            IEnumerable<dtoTour> _select;
+            if (memListTour.Count == 0)
+            {
+                using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    memListTour = (List<dtoTour>)bin.Deserialize(stream);
+                }
+                _select = from fl in memListTour
+                          where fl.idcustomer == pCustId
+                          select fl;
+                return _select;
+            }
+            else
+            {
+                _select = from fl in memListTour
+                          where fl.idcustomer == pCustId
+                          select fl;
+                return _select;
+            }
+        }
+        
         public IEnumerable<dtoTour> GetTourPar_Year_Month(int dyear, int dmonth)
         {
-            using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+            using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
                 memListTour = (List<dtoTour>)bin.Deserialize(stream);
@@ -193,7 +383,7 @@ namespace sendill_client
                 dtoCars _rec;
                 if (memListCar.Count == 0)
                 {
-                    using (Stream stream = File.Open(@"C:\dbsendill\list_carall.bin", FileMode.Open))
+                    using (Stream stream = File.Open(GetAppConfigSetting()+"list_carall.bin", FileMode.Open))
                     {
                         BinaryFormatter bin = new BinaryFormatter();
                         memListCar = (List<dtoCars>)bin.Deserialize(stream);
@@ -214,12 +404,13 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
                 _select = from fl in memListTour
+                          orderby fl.tdatetime descending
                           select fl;
 
                 return _select;
@@ -228,6 +419,7 @@ namespace sendill_client
             else
             {
                 _select = from fl in memListTour
+                          orderby fl.tdatetime descending
                           select fl;
                 return _select;
             }
@@ -335,32 +527,29 @@ namespace sendill_client
 
         public string SaveToursToFile(dtoTour dt)
         {
-            File.Delete(@"C:\dbsendill\bak\list_tours.bin");
-            File.Copy(@"C:\dbsendill\list_tours.bin", @"C:\dbsendill\bak\list_tours.bin");
+            string sTimeStamp = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            string fname = "list_tours" + sTimeStamp + ".bin";
+            File.Copy(GetAppConfigSetting() + "list_tours.bin", GetAppDataBackupConfigSetting() + fname);
             if (memListTour.Count == 0)
             {
-                using (FileStream fs = new FileStream(@"C:\dbsendill\list_tours.bin", FileMode.Open))
+                using (FileStream fs = new FileStream(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
                 {
-
                     BinaryFormatter bf = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bf.Deserialize(fs);
-
                 }
             }
-            FileStream fst = new FileStream(@"C:\dbsendill\list_tours.bin", FileMode.Create);
-
+            FileStream fst = new FileStream(GetAppConfigSetting()+"list_tours.bin", FileMode.Create);
                 memListTour.Add(dt);
                 BinaryFormatter bff = new BinaryFormatter();
                 bff.Serialize(fst, memListTour);
                 fst.Close();
             string rvalue = " Túr geymdur";
             return rvalue;
-
         }
 
         public string SavePinStatusLogToFile()
         {
-            FileStream fst = new FileStream(@"C:\dbsendill\list_pinstatus_log.bin", FileMode.Create);
+            FileStream fst = new FileStream(GetAppConfigSetting()+"list_pinstatus_log.bin", FileMode.Create);
 
             BinaryFormatter bff = new BinaryFormatter();
             bff.Serialize(fst, memListPinStatusLog);
@@ -369,20 +558,11 @@ namespace sendill_client
             return rvalue;
         }
 
-        public string SavePinStatusToFile()
-        {
-            FileStream fst = new FileStream(@"C:\dbsendill\list_pinstatus.bin", FileMode.Create);
 
-            BinaryFormatter bff = new BinaryFormatter();
-            bff.Serialize(fst, memListPinStatusLog);
-            fst.Close();
-            string rvalue = " Pin status loggur uppfærður.";
-            return rvalue;
-        }
 
         public string SavePin1StatusToFile(List<dtoPin> memListPin)
         {
-            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin1.bin", FileMode.Create))
+            using (FileStream fst = new FileStream(GetAppConfigSetting()+"list_pin1.bin", FileMode.Create))
             {
 
                 if (memListPin.Count > 0)
@@ -399,7 +579,7 @@ namespace sendill_client
 
         public string SavePin2StatusToFile(List<dtoPin> memListPin)
         {
-            using (FileStream fst = new FileStream(@"C:\dbsendill\list_pin2.bin", FileMode.Create))
+            using (FileStream fst = new FileStream(GetAppConfigSetting()+"list_pin2.bin", FileMode.Create))
             {
 
                 if (memListPin.Count > 0)
@@ -413,6 +593,34 @@ namespace sendill_client
                 return "Listi tómur";
             }
         }
+
+        public string ZinkLogTable()
+        {
+            string suri = @"http://localhost:59387/WCFOData.svc";
+            Uri muri = new Uri(suri);
+            var context = new sendill_client.srvRefSendillEnt.SendillEntities(muri);
+            tbl_log newlog = new tbl_log();
+            newlog.ID = 99999999;
+            newlog.logtimestamp = DateTime.Now;
+            newlog.logtext = "Þetta er texte frá service.";
+            try
+            {
+                context.AddTotbl_log(newlog);
+                DataServiceResponse responce = context.SaveChanges();
+                return "log_tbl uppfærður.";
+            }
+            catch (DataServiceRequestException ex)
+            {
+                return "Villa kom upp við uppfærslu " + ex.ToString();
+            }
+        }
+
+        public bool ReplicateCarsTable()
+        {
+            return true;
+        }
+
+
 
 
     }

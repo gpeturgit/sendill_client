@@ -33,21 +33,24 @@ namespace sendill_client
         {
             DBManager dm = new DBManager();
             string smessage=dm.CreateMemFileFromDatabase(1);
-            MessageBox.Show(smessage);
         }
 
         private void comEndurrada_Click(object sender, RoutedEventArgs e)
         {
             //frmPinReorder winPinReorder = new frmPinReorder();
             //winPinReorder.Show();
-            winPinLog wpl = new winPinLog();
-            wpl.Show();
+            //winPinLog wpl = new winPinLog();
+            //wpl.Show();
+            //ConfigFile fconfig = new ConfigFile();
+            //var sapp = fconfig.GetLocalBinFolder;
+            DBManager db = new DBManager();
+            var sdata = db.GetAppConfigSetting();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            winNewTour wt= new winNewTour();
-            wt.Show();
+            DBManager db = new DBManager();
+            string msg = db.ZinkLogTable();
         }
 
         private void comSendaSms_Click(object sender, RoutedEventArgs e)

@@ -3,15 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tex="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
         xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Sendill - Símaborð" Height="768" Width="1024" Loaded="Window_Loaded" Background="#FFD0DAF0" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" Icon="Images/Truck128.png" Closed="Window_Closed">
+        Title="Sendill - 1.9" Height="768" Width="1024" Loaded="Window_Loaded" Background="#FFD0DAF0" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen" Icon="Images/Truck128.png" Closed="Window_Closed">
     <Window.Resources>
         <!--**************************************************************************************************************-->
         <!--Styles-->
         <!--**************************************************************************************************************-->
         <Style x:Key="pinListboxStyle">
             <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightGray" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="DarkGray" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FFC4CEDD" />
+                
             </Style.Resources>
         </Style>
         <!--**************************************************************************************************************-->
@@ -85,7 +86,7 @@
                     <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
                 </Button>
                 <Button x:Name="btnSendToTour" CommandParameter="{Binding idcar}" Click="btnSendToTour_Click" Style="{StaticResource BorderlessButton}" IsEnabled="True" Loaded="btnSendToTour_Loaded" >
-                    <Image Source="/sendill_client;component/Images/ArrToTour.png" MinHeight="0" Margin="2,2,2,2" Height="24" />
+                    <Image Name="SendToTour" MinHeight="0" Margin="2,2,2,2" Height="24" />
                 </Button>
             </StackPanel>
             <DataTemplate.Triggers>
@@ -113,6 +114,12 @@
                     <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
                     <!--CoffeeGreen_32_32.png-->
                 </DataTrigger>
+                <DataTrigger Binding="{Binding Path=listed}" Value="true">
+                    <Setter TargetName="SendToTour" Property="Source" Value="/sendill_client;component/Images\redkross32.png"/>
+                    </DataTrigger>
+                <DataTrigger Binding="{Binding Path=listed}" Value="false">
+                    <Setter TargetName="SendToTour" Property="Source" Value="/sendill_client;component/Images\ArrToTour.png"/>
+                </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
         <!--*********************************************************************************************************-->
@@ -120,7 +127,6 @@
         <!--*********************************************************************************************************-->
         <DataTemplate x:Key="TourOnPin" x:Name="dtTourOnPin" >
             <StackPanel Orientation="Horizontal">
-
                 <Button x:Name="btnShowTourInfo" Style="{StaticResource BorderlessButton}" >
                     <Image Name="TourClock" Source="/sendill_client;component/Images/listImageClock2424.png" MinHeight="0" Margin="2" Height="24" />
                     <Button.ContextMenu>
@@ -183,120 +189,16 @@
         <!--***************************************************************************************************************************************************-->
         <!-- Modal Uppfæra túr í couch-gagnagrunn. -->
         <!--***************************************************************************************************************************************************-->
-        <wpfx:ChildWindow Name="PopupLocalUpdateWindow" Caption="Sráning nýrra túra" Height="350" IsModal="False" Width="500" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.RowSpan="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="300" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="500" />
-                </Grid.ColumnDefinitions>
-                <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
-                    <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"></Image>
-                    <TextBlock Text="Uppfæra" TextAlignment="Left" VerticalAlignment="Center" Width="94" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
-                    <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
-                </StackPanel>
-                <Button Name="comLoadDataToLocalCouch" Content="Uppfæra túra í gagnagrunn" />
-                <Button Name="comLoadCarsToLocalCouch" Content="Setja bíla í sófa" />
-            </Grid>
-        </wpfx:ChildWindow>
         <!--*****************************************************************************************************************-->
         <!-- Modal Tours window -->
         <!--*****************************************************************************************************************-->
-        <wpfx:ChildWindow Name="childWinTours" Height="600" Width="800" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" IsModal="True">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="260*" />
-                </Grid.RowDefinitions>
-                <!--Haus-->
-                <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
-                    <Image Source="/sendill_client;component/Images/Clipboard_blue_1281.png"></Image>
-                    <TextBlock Name="txtTourHeader" Text="Túrar" TextAlignment="Left" VerticalAlignment="Center" Width="162" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
-                    <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Stretch" Name="stackPanel2" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-                    <Button Name="tourToolbarcomFilterOn" Margin="0,0,0,0" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="tourToolbarcomFilterOn_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/sendill_client;component/Images/toolbar_filter.png" Height="20" Width="20"></Image>
-                            <Label Content="Sía á " />
-                        </StackPanel>
-                    </Button>
-                    <Button Name="tourToolbarComFilterOff" Margin="0,0,0,0" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Visibility="Hidden" Click="tourToolbarComFilterOff_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/sendill_client;component/Images/toolbar_filter.png" Height="20" Width="20"></Image>
-                            <Label Content="Sía af " />
-                        </StackPanel>
-                    </Button>
-                    <Label x:Name="tourToolbarLblDateFrom" Content="Frá :" Height="28" Visibility="Hidden" />
-                    <DatePicker Height="25" Name="tourToolbarDatePickerFrom" Width="115" Visibility="Hidden" />
-                    <Label Name="tourToolbarLblDateTo" Content="Til :" Height="28" Visibility="Hidden" />
-                    <DatePicker Height="25" Name="tourToolbarDatePickerTo" Width="115" Visibility="Hidden"/>
-                    <Button Name="tourToolbarComFilter" Margin="0,0,0,0" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Visibility="Hidden" Click="tourToolbarComFilter_Click" >
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/sendill_client;component/Images/toolbar_filter.png" Height="20" Width="20"></Image>
-                            <Label Content="Sía " />
-                        </StackPanel>
-                    </Button>
-
-                </StackPanel>
-                <DataGrid AutoGenerateColumns="False" Name="dataGridTur" Grid.Row="2" RowBackground="FloralWhite" AlternatingRowBackground="Wheat">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Dags-tími" Binding="{Binding tdatetime}" Width="150"/>
-                        <DataGridTextColumn Header="Nr" Binding="{Binding idcar}" Width="25"/>
-                        <DataGridTextColumn Header="Ekið frá" Binding="{Binding taddress}" Width="250" />
-                        <DataGridTextColumn Header="Umbeðið af" Binding="{Binding tcontact}" Width="250" />
-                        <DataGridTextColumn Header="Sími" Binding="{Binding tphone }" Width="100"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-
-        </wpfx:ChildWindow>
         <!--*********************************************************************************************************-->
         <!-- Modal Car Detail window -->
         <!--*********************************************************************************************************-->
-        <wpfx:ChildWindow>
-
-        </wpfx:ChildWindow>
 
         <!--*********************************************************************************************************-->
         <!-- Modal pin reorder window -->
         <!--*********************************************************************************************************-->
-        <wpfx:ChildWindow Name="childWinReorderPin" Height="400" IsModal="False" Width="300" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" Grid.RowSpan="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="160*" />
-                </Grid.RowDefinitions>
-                <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0">
-                    <TextBlock Name="txtReorderHeader" Text="  Endurraða á Stöð" TextAlignment="Left" VerticalAlignment="Center" Width="250" FontSize="18" FontFamily="Segoe UI" Foreground="White" />
-                    <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FFB9C9DA" Orientation="Horizontal" Grid.Row="1">
-
-                    <Button Name="ChildWinReorderPin_ToolbarComSave" Margin="10,0,0,5" BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Click="ChildWinReorderPin_ToolbarComSave_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/sendill_client;component/Images/ToolbarRecSave.png" Height="20" Width="20"></Image>
-                        </StackPanel>
-                    </Button>
-                    <Button Name="ChildWinReorderPin_ToolbarComCancel" Margin="15,0,0,5"  BorderThickness="1" FontSize="12" Background="#FFB9C9DA" BorderBrush="#FFB9C9DA" Style="{StaticResource BorderlessButton}" Content="Hætta við" Foreground="#FF224591">
-
-                    </Button>
-                </StackPanel>
-                <DataGrid AutoGenerateColumns="False" Name="childWinReorderPin_DataGrid" Grid.Row="2" RowBackground="LightGray" AlternatingRowBackground="WhiteSmoke" CanUserAddRows="False" RowHeight="25">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Ný staða " Binding="{Binding pline, Mode=TwoWay}" Width="75"  />
-                        <DataGridTextColumn Header="Númer" Binding="{Binding idcar, Mode=OneWay}" Width="75" />
-                        <DataGridTextColumn Header="Staða " Binding="{Binding pline, Mode=OneWay}" Width="75" />
-
-                    </DataGrid.Columns>
-
-                </DataGrid>
-            </Grid>
-        </wpfx:ChildWindow>
         <!--*********************************************************************************************************-->
         <!-- Main window-->
         <!--*********************************************************************************************************-->
@@ -371,7 +273,7 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="#D8F4F7"/>
+                                <Setter Property="Background" Value="#FFD0D8E4"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -407,22 +309,22 @@
                         <Button x:Name="btnPinTwoMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinTwoMooveDown_Click">
                             <Image Source="mnu_arrow_2424down.png"/>
                         </Button>
-                        <Button x:Name="btnPinTwoTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                        <Button x:Name="btnPinTwoTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinTwoTakeOff_Click" >
                             <Button.ContextMenu>
                                 <ContextMenu Margin="-30,0,0,0">
-                                    <MenuItem x:Name="mnuItemPin2Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="True" IsEnabled="True" Click="mnuItemPin2Car_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin2Car01" Header="Skoða túra" FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car01" Header="Skoða túra" FontSize="14" ContextMenuService.IsEnabled="True" IsEnabled="True" Click="mnuItemPin2Car01_Click"/>
 
                                     <MenuItem x:Name="mnuItemPin2Car02" Header="Taka af stæði"  FontSize="14" Click="mnuItemPin2Car02_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin2Car03" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car03" Header="Flytja á -> BREIÐHOLT - IKEA " FontSize="14" Click="mnuItemPin2Car03_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin2Car04" Header="Flytja í -> ÁRBÆR BAUHAUS " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car04" Header="Flytja í -> ÁRBÆR - BAUHAUS " FontSize="14" IsEnabled="True" Click="mnuItemPin2Car04_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin2Car05" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car05" Header="Flytja í -> RENNU " FontSize="14" IsEnabled="True" Click="mnuItemPin2Car05_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin2Car06" Header="Flytja í -> RENNU " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin2Car06" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="True" Click="mnuItemPin2Car06_Click" />
 
                                 </ContextMenu>
                             </Button.ContextMenu>
@@ -435,7 +337,7 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="#D8F4F7"/>
+                                <Setter Property="Background" Value="#FFD0D8E4"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -464,22 +366,22 @@
                         <Button x:Name="btnPinFourMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinFourMooveDown_Click" >
                             <Image Source="mnu_arrow_2424down.png"/>
                         </Button>
-                        <Button x:Name="btnPinFourTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                        <Button x:Name="btnPinFourTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinFourTakeOff_Click" >
                             <Button.ContextMenu>
                                 <ContextMenu Margin="-30,0,0,0">
-                                    <MenuItem x:Name="mnuItemPin4Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin4Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="True" Click="mnuItemPin4Car_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin4Car01" Header="Skoða túra" FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin4Car01" Header="Skoða túra" FontSize="14" IsEnabled="True" Click="mnuItemPin4Car01_Click" />
 
                                     <MenuItem x:Name="mnuItemPin4Car02" Header="Taka af stæði " FontSize="14" Click="mnuItemPin4Car02_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin4Car03" Header="Flytja á -> STÖÐINQ " FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin4Car03" Header="Flytja á -> RENNU " FontSize="14" IsEnabled="True" Click="mnuItemPin4Car03_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin4Car04" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin4Car04" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="True" Click="mnuItemPin4Car04_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin4Car05" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin4Car05" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="True" Click="mnuItemPin4Car05_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin4Car06" Header="Flytja í -> RENNU " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin4Car06" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14" IsEnabled="True" Click="mnuItemPin4Car06_Click" />
 
                                 </ContextMenu>
                             </Button.ContextMenu>
@@ -490,7 +392,7 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="#D8F4F7" />
+                                <Setter Property="Background" Value="#FFD0D8E4" />
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -498,7 +400,9 @@
             </Border>
 
             <!--*********************************************************************************************************-->
-            <!-- Þeiðja nál og renna -->
+            <!--**-->
+            <!--**  Þeiðja nál og renna . -->
+            <!--**-->
             <!--*********************************************************************************************************-->
 
             <Border Grid.Column="3" Grid.Row="1"  BorderThickness="2" BorderBrush="#FF224591">
@@ -525,33 +429,33 @@
                         <Button x:Name="btnPinThreeMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinThreeMooveDown_Click" >
                             <Image Source="mnu_arrow_2424down.png"/>
                         </Button>
-                        <Button x:Name="btnPinThreeTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                        <Button x:Name="btnPinThreeTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinThreeTakeOff_Click" >
                             <Button.ContextMenu>
                                 <ContextMenu Margin="-30,0,0,0">
-                                    <MenuItem x:Name="mnuItemPin3Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin3Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="True" Click="mnuItemPin3Car_Click"/>
 
-                                    <MenuItem x:Name="mnuItemPin3Car01" Header="Skoða túra" FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin3Car01" Header="Skoða túra" FontSize="14" IsEnabled="True" Click="mnuItemPin3Car01_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin3Car02" Header="Taka af stæði " FontSize="14" Click="mnuItemPin3Car02_Click" />
+                                    <MenuItem x:Name="mnuItemPin3Car02" Header="Taka af stæði " FontSize="14" IsEnabled="True" Click="mnuItemPin3Car02_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin3Car03" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin3Car03" Header="Flytja á -> ÁRBÆR - BAUHAUS " FontSize="14" IsEnabled="True" Click="mnuItemPin3Car03_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin3Car04" Header="Flytja í -> ÁRBÆR BAUHAUS " FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin3Car04" Header="Flytja í -> RENNU " FontSize="14" IsEnabled="True" Click="mnuItemPin3Car04_Click"  />
 
-                                    <MenuItem x:Name="mnuItemPin3Car05" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin3Car05" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="True" Click="mnuItemPin3Car05_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin3Car06" Header="Flytja í -> RENNU " FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin3Car06" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="True" Click="mnuItemPin3Car06_Click" />
 
                                 </ContextMenu>
                             </Button.ContextMenu>
                             <Image Source="mnu_upload.png"/>
                         </Button>
                     </StackPanel>
-                    <ListBox  Height="246" Background="#FFD0D8E4" Name="lboxPin3" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}"  >
+                    <ListBox  Height="246" Background="#FFD0D8E4" Name="lboxPin3" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" Style="{StaticResource pinListboxStyle}" SelectionMode="Single"  >
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="#D8F4F7"/>
+                                <Setter Property="Background" Value="#FFD0D8E4"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -571,22 +475,22 @@
                         <Button x:Name="btnPinFiveMooveDown" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinFiveMooveDown_Click" >
                             <Image Source="mnu_arrow_2424down.png"/>
                         </Button>
-                        <Button x:Name="btnPinFiveTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5">
+                        <Button x:Name="btnPinFiveTakeOff" Style="{StaticResource BorderlessButton}" IsEnabled="True" BorderThickness="0" Margin="5" Click="btnPinFiveTakeOff_Click">
                             <Button.ContextMenu>
                                 <ContextMenu Margin="-30,0,0,0">
-                                    <MenuItem x:Name="mnuItemPin5Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin5Car" Header="Skoða bíl " FontSize="14" ContextMenuService.IsEnabled="False" IsEnabled="True" Click="mnuItemPin5Car_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin5Car01" Header="Skoða túra" FontSize="14" IsEnabled="False" />
+                                    <MenuItem x:Name="mnuItemPin5Car01" Header="Skoða túra" FontSize="14" IsEnabled="True" Click="mnuItemPin5Car01_Click" />
 
                                     <MenuItem x:Name="mnuItemPin5Car02" Header="Taka af stæði " FontSize="14" Click="mnuItemPin5Car02_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin5Car03" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin5Car03" Header="Flytja á -> STÖÐINA " FontSize="14" IsEnabled="True" Click="mnuItemPin5Car03_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin5Car04" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin5Car04" Header="Flytja á -> MIÐBÆJARSVÆÐI " FontSize="14" IsEnabled="True" Click="mnuItemPin5Car04_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin5Car05" Header="Flytja í -> ÁRBÆR BAUHAUS " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin5Car05" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14" IsEnabled="True" Click="mnuItemPin5Car05_Click" />
 
-                                    <MenuItem x:Name="mnuItemPin5Car06" Header="Flytja í -> BREIÐHOLT IKEA " FontSize="14" IsEnabled="False"/>
+                                    <MenuItem x:Name="mnuItemPin5Car06" Header="Flytja í -> ÁRBÆR BAUHAUS " FontSize="14" IsEnabled="True" Click="mnuItemPin5Car06_Click" />
 
                                 </ContextMenu>
                             </Button.ContextMenu>
@@ -598,7 +502,7 @@
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
-                                <Setter Property="Background" Value="#D8F4F7"/>
+                                <Setter Property="Background" Value="#FFD0D8E4"/>
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
@@ -612,7 +516,7 @@
 
             <Border Grid.Column="4" Grid.Row="1"  BorderThickness="2" BorderBrush="#FF224591" Grid.RowSpan="2">
                 <StackPanel Name="spanCol4">
-                    <TextBox Text="Túrar" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" TextChanged="TextBox_TextChanged">
+                    <TextBox Text="Svæði - 6" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40" TextChanged="TextBox_TextChanged">
                         <TextBox.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#FF465A7D" Offset="0" />
