@@ -1,0 +1,984 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C78AA828-B879-4B3D-968A-75380CB18C7E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>sendill_client</RootNamespace>
+    <AssemblyName>sendill_client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>E:\stodin_setup\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>2F5E799D8EA1E065FD8FBED5FB9C624BEBB2C1C1</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>sendill_client_23_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>sendill_client_23_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>data2424.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper.Contrib">
+      <HintPath>..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.StrongName">
+      <HintPath>..\packages\Dapper.StrongName.1.50.2\lib\net45\Dapper.StrongName.dll</HintPath>
+    </Reference>
+    <Reference Include="DapperExtensions, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DapperExtensions.1.5.0\lib\net45\DapperExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServerCompact">
+      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.1.3\lib\net40\EntityFramework.SqlServerCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.2.0.4\lib\net45\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.8.1\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.8.1\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.8.1\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.DataVisualization.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.Design.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.WebDesign.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.ReportViewer.11.0.3366.16\lib\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.11.0.2\lib\net20\Microsoft.SqlServer.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.8.0.0\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ReportsApplication2">
+      <HintPath>..\..\..\Visual Studio 2013\Projects\ReportsApplication2\ReportsApplication2\bin\Debug\ReportsApplication2.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ribboncontrolslibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.104.0\lib\net45\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.104.0\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.104.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.8.1\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Twilio.Api, Version=3.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Twilio.4.7.2\lib\3.5\Twilio.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="XmlLib">
+      <HintPath>..\..\..\..\..\..\..\..\Downloads\XmlLib-master\XmlLib-master\bin\debug\XmlLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="appSysSettings.cs" />
+    <Compile Include="Car.xaml.cs">
+      <DependentUpon>Car.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigFile.cs" />
+    <Compile Include="CreateCarGrou.cs" />
+    <Compile Include="CustomerModel.cs" />
+    <Compile Include="DalSendill.cs" />
+    <Compile Include="DataClasses1.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DataStateLocal.cs" />
+    <Compile Include="DBManager.cs" />
+    <Compile Include="dsCloudConn.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCloudConn.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsSendill.cs">
+      <DependentUpon>dsSendill.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="dsSendill.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSendill.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dtoListConfig.cs" />
+    <Compile Include="dtoLog.cs" />
+    <Compile Include="dtooCars.cs" />
+    <Compile Include="dtoCars.cs" />
+    <Compile Include="dtoCustomer.cs" />
+    <Compile Include="dtoPin.cs" />
+    <Compile Include="dtoPinChangeStatus.cs" />
+    <Compile Include="dtoPinStatus.cs" />
+    <Compile Include="dtoTour.cs" />
+    <Compile Include="frmAdmin.xaml.cs">
+      <DependentUpon>frmAdmin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="frmPinReorder.xaml.cs">
+      <DependentUpon>frmPinReorder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="frmReport1.xaml.cs">
+      <DependentUpon>frmReport1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="frmReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReports.Designer.cs">
+      <DependentUpon>frmReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IQuery.cs" />
+    <Compile Include="Mapping\mapTour.cs" />
+    <Compile Include="MSSqlCommand.cs" />
+    <Compile Include="MSSqlQuery.cs" />
+    <Compile Include="Service References\AzureSmsCallback\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\srvRefSendillEnt\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.datasvcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerBaseConn.cs" />
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="TableStorage\entCar.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SQLManager.cs" />
+    <Compile Include="TourModel.cs" />
+    <Compile Include="ucPin.xaml.cs">
+      <DependentUpon>ucPin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewWindow.xaml.cs">
+      <DependentUpon>ViewWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winCar.xaml.cs">
+      <DependentUpon>winCar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winCarDetail.xaml.cs">
+      <DependentUpon>winCarDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winCustomer.xaml.cs">
+      <DependentUpon>winCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winDesighn.xaml.cs">
+      <DependentUpon>winDesighn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winNewTour.xaml.cs">
+      <DependentUpon>winNewTour.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winPinLog.xaml.cs">
+      <DependentUpon>winPinLog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winRep.xaml.cs">
+      <DependentUpon>winRep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winSendSms.xaml.cs">
+      <DependentUpon>winSendSms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winTests.xaml.cs">
+      <DependentUpon>winTests.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winTourModel.xaml.cs">
+      <DependentUpon>winTourModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="winTurar.xaml.cs">
+      <DependentUpon>winTurar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="wpfRibbon.xaml.cs">
+      <DependentUpon>wpfRibbon.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Car.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="frmAdmin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="frmPinReorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="frmReport1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dtoArea.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ucPin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winCar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winCarDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winDesighn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winNewTour.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winPinLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winRep.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winSendSms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winTests.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winTourModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="winTurar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="wpfRibbon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="frmReports.resx">
+      <DependentUpon>frmReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report1.rdlc" />
+    <EmbeddedResource Include="Reports\custReport.rdlc" />
+    <EmbeddedResource Include="Reports\repCustomerList.rdlc" />
+    <EmbeddedResource Include="Reports\repTourDetails.rdlc" />
+    <EmbeddedResource Include="Reports\repTourList.rdlc" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="DataFiles\appsyssettings.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="clsDiagram.cd" />
+    <None Include="DataClasses1.dbml.layout">
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataClasses1.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DataFiles\bak\list_tours.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\carfile.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\datastatus.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_caralbl.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_carall.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_carallc.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_cars.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_customers.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin1.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin2.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin3.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin4.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin5.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pin6.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_pinstatus.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DataFiles\list_tours.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="devkey.pfx" />
+    <None Include="dsCloudConn.xsc">
+      <DependentUpon>dsCloudConn.xsd</DependentUpon>
+    </None>
+    <None Include="dsCloudConn.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCloudConn.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsCloudConn.xss">
+      <DependentUpon>dsCloudConn.xsd</DependentUpon>
+    </None>
+    <None Include="dsSendill.xsc">
+      <DependentUpon>dsSendill.xsd</DependentUpon>
+    </None>
+    <None Include="dsSendill.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSendill.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsSendill.xss">
+      <DependentUpon>dsSendill.xsd</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="pesidevkey.snk" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\DataSources\DBManager.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\dtoCustomer.datasource" />
+    <None Include="Properties\DataSources\dtoTour.datasource" />
+    <None Include="Properties\DataSources\sendill_client.srvRefSendillEnt.SendillEntities.datasource" />
+    <None Include="Properties\DataSources\TourModel.datasource" />
+    <None Include="Properties\DataSources\winTurar.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="sendill_client_10_TemporaryKey.pfx" />
+    <None Include="sendill_client_11_TemporaryKey.pfx" />
+    <None Include="sendill_client_12_TemporaryKey.pfx" />
+    <None Include="sendill_client_13_TemporaryKey.pfx" />
+    <None Include="sendill_client_14_TemporaryKey.pfx" />
+    <None Include="sendill_client_15_TemporaryKey.pfx" />
+    <None Include="sendill_client_16_TemporaryKey.pfx" />
+    <None Include="sendill_client_17_TemporaryKey.pfx" />
+    <None Include="sendill_client_18_TemporaryKey.pfx" />
+    <None Include="sendill_client_19_TemporaryKey.pfx" />
+    <None Include="sendill_client_1_TemporaryKey.pfx" />
+    <None Include="sendill_client_20_TemporaryKey.pfx" />
+    <None Include="sendill_client_21_TemporaryKey.pfx" />
+    <None Include="sendill_client_22_TemporaryKey.pfx" />
+    <None Include="sendill_client_23_TemporaryKey.pfx" />
+    <None Include="sendill_client_2_TemporaryKey.pfx" />
+    <None Include="sendill_client_3_TemporaryKey.pfx" />
+    <None Include="sendill_client_4_TemporaryKey.pfx" />
+    <None Include="sendill_client_5_TemporaryKey.pfx" />
+    <None Include="sendill_client_6_TemporaryKey.pfx" />
+    <None Include="sendill_client_7_TemporaryKey.pfx" />
+    <None Include="sendill_client_8_TemporaryKey.pfx" />
+    <None Include="sendill_client_9_TemporaryKey.pfx" />
+    <None Include="sendill_client_TemporaryKey.pfx" />
+    <None Include="sendill_dev_key.pfx" />
+    <None Include="sendil_dev_auth_key.pfx" />
+    <None Include="Service References\AzureSmsCallback\WCFSmsCallback.wsdl" />
+    <None Include="Service References\AzureSmsCallback\WCFSmsCallback.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\AzureSmsCallback\WCFSmsCallback1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\srvRefSendillEnt\service.edmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Phone.png" />
+    <Resource Include="mnu_arrow2424up.png" />
+    <Resource Include="mnu_arrow_2424down.png" />
+    <Resource Include="mnu_upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Customer128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Telephone128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Truck128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\tel_over_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\menu_item1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\home_blue_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\home_blue_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\home_blue_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UserDarkBlue128Over.png" />
+    <Resource Include="Images\SettingsDarkBlueOver.png" />
+    <Resource Include="Images\SettingsDarkBlue.png" />
+    <Resource Include="Images\UserDarkBlue1281.png" />
+    <Resource Include="Images\ClockDarkBlue128.png" />
+    <Resource Include="Images\Clipboard_blue_128_over+1.png" />
+    <Resource Include="Images\Clipboard_blue_1281.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\tours_128_over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\car_128_over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\customers_128_over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\settings_128_over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\print_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Moon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\night_48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\reorder_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\offpin_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pause_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blue-point.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dataconn_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\data_in_sinc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\data_outof_sync.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\driver_data_conn_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SqlServer.SqlLocalDB.11.1">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2012 Express LocalDB</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\app40.png" />
+    <Resource Include="Images\appclose24.png" />
+    <Resource Include="Images\closeWhite48.png" />
+    <Resource Include="Images\deleteDarkBlue32.png" />
+    <Resource Include="Images\newDarkBlue32.png" />
+    <Resource Include="Images\saveDarkBlue32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckDarkBlue32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckDarkBlue48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Box32LightBrown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CoffeeRed32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\BoxLightBrown32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckRed32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckYellow32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckYellow321.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Truckgren32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\button1off.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\CoffeeGreen_32_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Find_blue_128_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\print_128_over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\info_blue_24_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TruckYellow322.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mnu_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mnu_tour.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mnu_upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\mnu_information.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\toolbar_filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarDeleteFilter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecDelete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecFirst.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecLast.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecNew.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecNext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecPrev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ToolbarRecSave.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.2\nativeBinaries\x64\msvcr100.dll">
+      <Link>SqlServerTypes\x64\msvcr100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.2\nativeBinaries\x64\SqlServerSpatial110.dll">
+      <Link>SqlServerTypes\x64\SqlServerSpatial110.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.2\nativeBinaries\x86\msvcr100.dll">
+      <Link>SqlServerTypes\x86\msvcr100.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.2\nativeBinaries\x86\SqlServerSpatial110.dll">
+      <Link>SqlServerTypes\x86\SqlServerSpatial110.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Resource Include="Images\RibTour4848.png" />
+    <Resource Include="Images\Printer4848.png" />
+    <Resource Include="Images\arrow_right_2424_01.png" />
+    <Resource Include="Images\arrow_upp_2424_01.png" />
+    <Resource Include="data2424.ico" />
+    <Resource Include="Images\home2424_01.png" />
+    <Resource Include="Images\listImageClock2424.png" />
+    <Resource Include="Images\listImagePhone2424.png" />
+    <Resource Include="Images\CarOnPinCheck2424.png" />
+    <Resource Include="Images\CarOnPinUncheck.png" />
+    <Resource Include="Images\ArrToTour.png" />
+    <Content Include="DataFiles\csendilldb.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\dbsendill.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\exit-to-app.png" />
+    <Resource Include="Images\redkross32.png" />
+    <Content Include="ProjectRef\Microsoft.ReportViewer.WinForms.dll" />
+    <Content Include="ProjectRef\Newtonsoft.Json.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Design.4.0.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Design.4.0.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Expression.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.Expression.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.DataVisualization.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\System.Windows.Controls.Layout.Toolkit.VisualStudio.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.Design.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.pdb" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.VisualStudio.Design.dll" />
+    <Content Include="ProjectRef\v3.5.50211.1\WPFToolkit.VisualStudio.Design.pdb" />
+    <None Include="Service References\AzureSmsCallback\WCFSmsCallback.disco" />
+    <None Include="Service References\AzureSmsCallback\configuration91.svcinfo" />
+    <None Include="Service References\AzureSmsCallback\configuration.svcinfo" />
+    <None Include="Service References\AzureSmsCallback\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\srvRefSendillEnt\Reference.datasvcmap">
+      <Generator>DataServicesCoreClientGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Resource Include="Images\utour.png" />
+    <Resource Include="Images\utour3232.png" />
+    <Resource Include="Images\tour_new.png" />
+    <Content Include="ProjectRef\WPFToolkit.Extended.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\AzureSmsCallback\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceReferenceMetadataStorage Include="Service References\srvRefSendillEnt\">
+      <Type>datasvcmap</Type>
+    </ServiceReferenceMetadataStorage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.104.0\build\net45\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net45\System.Data.SQLite.Core.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

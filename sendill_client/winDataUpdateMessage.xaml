@@ -1,0 +1,46 @@
+﻿<Window x:Class="sendill_client.winDataUpdateMessage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:sendill_client"
+        mc:Ignorable="d"
+        Title="Sendill - 2.4 " Height="300" Width="400" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="minitruck.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="180*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="3">
+
+            <Image Source="/sendill_client;component/Images/SettingsDarkBlueOver.png" Margin="5"></Image>
+            <TextBlock Name="txtAdminHeader" Text="Skilaboð" TextAlignment="Left" VerticalAlignment='Center' FontSize="16" FontFamily="Segoe UI" Foreground="White" />
+            <Image Source="/sendill_client;component/Images/closeWhite48.png" VerticalAlignment="Top" HorizontalAlignment="Right" Width="834" Height="23" Margin="15"  />
+
+        </StackPanel>
+
+        <Label Name="lblMessageTime" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="14">Tími : </Label>
+        <TextBlock Name="txtMessageTime" Grid.Column="2" Grid.Row="2" Text="Messagetime" TextAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe UI" Foreground="Black" />
+        <Label Name="lblMessageType" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,0,0,0" Grid.Row="3" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="14">Tegund : </Label>
+        <TextBlock x:Name="txtMessageType" Grid.Column="2" Grid.Row="3" Text="Skilaboð" TextAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe UI" Foreground="Black" />
+        <Label Name="lblSentFrom" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="5,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="14" >Sendandi : </Label>
+        <TextBlock x:Name="txtSentFrom" Grid.Column="2" Grid.Row="4" Text="Skilaboð" TextAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe UI" Foreground="Black" />
+        <Label Name="lblMessageText" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="5,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="14" >Skilaboð :</Label>
+        <TextBlock x:Name="txtMessageText" Grid.Column="2" Grid.Row="5" Text="Skilaboð" TextAlignment="Left" VerticalAlignment="Center" FontSize="14" FontFamily="Segoe UI" Foreground="Black" />
+
+
+
+    </Grid>
+</Window>

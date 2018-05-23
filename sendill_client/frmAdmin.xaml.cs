@@ -22,5 +22,31 @@ namespace sendill_client
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //SQLManager sm = new SQLManager();
+            //var res = sm.CommandSqlDapperSyncTour();
+            //MessageBox.Show(res.ToString());
+            //MSSqlCommand.LoadAllTours _dbcommand = new MSSqlCommand.LoadAllTours();
+            //_dbcommand.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            //DBManager dm = new DBManager();
+            //var res = dm.CreateTourModelListFile();
+            //var sres = dm.SaveTourModelToFile(res);
+            //MessageBox.Show(sres);
+
+
+        }
+
+        private void btnMessageServiceStart_Click(object sender, RoutedEventArgs e)
+        {
+            MyPopup.IsOpen = true;
+        }
+
+        private void message_hide_Click(object sender, RoutedEventArgs e)
+        {
+            MyPopup.IsOpen = false;
+
+        }
     }
 }

@@ -24,7 +24,8 @@ namespace sendill_client
         List<dtoPin> memListPin = new List<dtoPin>();
         List<dtoTour> memListTour = new List<dtoTour>();
         List<dtoCars> memListCar = new List<dtoCars>();
-        List<dtoCustomer> memListCustomer = new List<dtoCustomer>();
+        //List<dtoCustomer> memListCustomer = new List<dtoCustomer>();
+        List<CustomerModel> memListCustomer = new List<CustomerModel>();
         List<dtoPinStatus> memListPinStatusLog = new List<dtoPinStatus>();
         List<dtoPinStatus> memListPinStatus = new List<dtoPinStatus>();
         private DataServiceCollection<tbl_log> trackedTblLog;
@@ -34,7 +35,7 @@ namespace sendill_client
         public string GetAppConfigSetting()
         {
             ConfigFile conf = new ConfigFile();
-            string ssetting = conf.GetLocalBinFolder() + "\\DataFiles\\";
+            string ssetting = conf.GetAppConfigSetting();
             return ssetting;
         }
 
@@ -58,12 +59,13 @@ namespace sendill_client
                 BinaryFormatter bin = new BinaryFormatter();
                 memListCar = (List<dtoCars>)bin.Deserialize(stream);
             }
-            using (Stream stream = File.Open(GetAppConfigSetting() + "list_customers.bin", FileMode.Open))
-            {
-                BinaryFormatter bin = new BinaryFormatter();
-                memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
-            }
-
+            //using (Stream stream = File.Open(GetAppConfigSetting() + "list_customers.bin", FileMode.Open))
+            //{
+            //    BinaryFormatter bin = new BinaryFormatter();
+            //    memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
+            //}
+            SQLManager sm = new SQLManager();
+            memListCustomer = sm.GetAllTours();
         }
 
         public List<dtoPin> LoadPin1FromFile()
@@ -127,11 +129,339 @@ namespace sendill_client
             using (Stream stream = File.Open(dfile, FileMode.Open))
             {
                 BinaryFormatter bin = new BinaryFormatter();
-                memListPin = (List<dtoPin>)bin.Deserialize(stream);
+                memListPin = (List<dtoPin>)bin.Deserialize(stream); 
             }
             return memListPin;
         }
+        #region Calls to DAL - Local SqlServer - Commands and Queries
 
+        //** Calls to DAL - Commands and Queries*************************************************
+
+        //***************************************************************************************
+        // VERSION 2.4
+        // Gets all messages from database. 
+        // 2.4 05.04.2017 - Added.
+        //***************************************************************************************
+        public dtoViewMessage GetDetailMessageFromQueue(int _p_message_id)
+        {
+            MSSqlQuery.GetDetailMessageById _query = new MSSqlQuery.GetDetailMessageById();
+            _query.p_message_id = _p_message_id;
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+
+
+        //***************************************************************************************
+        // VERSION 2.4
+        // Gets all messages from database. 
+        // 2.4 05.04.2017 - Added.
+        //***************************************************************************************
+        public List<MessageListItem> GetAllMessagesFromAzure()
+        {
+            MSSqlQuery.GetAllMessages _query = new MSSqlQuery.GetAllMessages();
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            List<MessageListItem> _list = new List<MessageListItem>();
+            foreach(var item in _qres)
+            {
+                MessageListItem _item = new MessageListItem();
+                _item.id = item.id;
+                _item.message_text = item.message_text;
+                _item.message_type = item.message_type;
+                _item.send_from_date = item.send_from_date;
+                _item.send_to_date = item.send_to_date;
+                _item.from_id = item.from_id;
+                _item.to_id = item.to_id;
+                _item.delivered = item.delivered;
+                _list.Add(_item);
+            }
+            return _list;
+        }
+
+
+        //***************************************************************************************
+        // VERSION 2.2
+        // Gets current month of tours from tbl_tours(TourModel) and loads into dtoTour list.
+        // 2.2 05.04.2017 - Added.
+        //***************************************************************************************
+        public List<dtoTour> GetToursByLastMonthFromDB()
+        {
+            MSSqlQuery.GetToursByLastMonth _query = new MSSqlQuery.GetToursByLastMonth();
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+        //***************************************************************************************
+        // VERSION 2.2
+        // Gets current month of tours from tbl_tours(TourModel) and loads into dtoTour list.
+        // 2.2 05.04.2017 - Added
+        //***************************************************************************************
+
+        public List<dtoTour> GetToursByCurrMonthFromDB()
+        {
+            MSSqlQuery.GetToursByCurrMonth _query = new MSSqlQuery.GetToursByCurrMonth();
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+        //***************************************************************************************
+        // Gets last seven days of tours from tbl_tours(TourModel) and loads into dtoTour list.
+        //***************************************************************************************
+        
+        public List<dtoTour> GetTourListFromDB()
+        {
+            MSSqlQuery.GetDefaultTours _query = new MSSqlQuery.GetDefaultTours();
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+
+        //***************************************************************************************
+        // Gets all tours from tbl_tours(TourModel) and loads into dtoTour list.
+        //***************************************************************************************
+        public List<dtoTour> GetToursFromDB()
+        {
+            MSSqlQuery.GetAllDtoTours _query = new MSSqlQuery.GetAllDtoTours();
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+
+        //***************************************************************************************
+        // Gets filtered tours from tbl_tours(TourModel) and loads into dtoTour list.
+        //***************************************************************************************
+
+        public List<dtoTour> GetToursByCarIdYearMonthDB(int _pCarId,int _pMonth,int _pYear)
+        {
+            MSSqlQuery.GetDtoToursByCarIdYearMonth _query = new MSSqlQuery.GetDtoToursByCarIdYearMonth();
+            _query.pYear = _pYear;
+            _query.pMonth = _pMonth;
+            _query.pCarId = _pCarId;
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+
+        //***************************************************************************************
+        // Gets filtered tours from tbl_tours(TourModel) and loads into dtoTour list.
+        //***************************************************************************************
+        public List<dtoTour> GetToursByCarIdDB(int _pCarId)
+        {
+            MSSqlQuery.GetDtoToursByCarId _query = new MSSqlQuery.GetDtoToursByCarId();
+            _query.pCarId = _pCarId;
+            var _qres = _query.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            return _qres;
+        }
+        #endregion
+
+
+        //***********************************************************************************
+        // Used to inport objects from a bin file to a database.
+        //***********************************************************************************
+        
+        
+        public List<TourModel> CreateTourModelListFile()
+        {
+            LoadListFromMem();
+            int irec =0;
+            List<TourModel> _ltourmodel = new List<TourModel>();
+            foreach(var odtotour in memListTour)
+            {
+                if (odtotour != null)
+                {
+                    irec++;
+                    TourModel _otourmodel = new TourModel();
+                    _otourmodel.id = irec;
+                    if (odtotour.idcar != null)
+                    {
+                        _otourmodel.idcar = odtotour.idcar;
+                    }
+                    else
+                    {
+                        _otourmodel.idcar = 999999;
+                    }
+
+                    if (odtotour.idcustomer != null)
+                    {
+                        _otourmodel.idcustomer = odtotour.idcustomer;
+
+
+                    }
+                    else
+                    {
+                        _otourmodel.idcar = 999999;
+                    }
+
+                    if (odtotour.idpin != null)
+                    {
+                        _otourmodel.idpin = odtotour.idpin;
+                    }
+                    else
+                    {
+                        _otourmodel.idpin = 999999;
+                    }
+
+                    if (odtotour.isdel != null)
+                    {
+
+                        _otourmodel.isdel = odtotour.isdel;
+                    }
+                    else
+                    {
+                        odtotour.isdel = false;
+                        _otourmodel.isdel = odtotour.isdel;
+                    }
+
+
+                    if (odtotour.tcustomer != null)
+                    {
+                        _otourmodel.tcustomer = odtotour.tcustomer;
+                    }
+                    else
+                    {
+                        odtotour.tcustomer = "999999";
+                        _otourmodel.tcustomer = odtotour.tcustomer;
+                    }
+
+                    if (odtotour.taddress != null)
+                    {
+
+                        _otourmodel.taddress = odtotour.taddress;
+                    }
+                    else
+                    {
+                        odtotour.taddress = "999999";
+                        _otourmodel.taddress = odtotour.taddress;
+                    }
+
+                    if (odtotour.tcontact != null)
+                    {
+
+                        _otourmodel.tcontact = odtotour.tcontact;
+                    }
+                    else
+                    {
+                        odtotour.tcontact = "999999";
+                        _otourmodel.tcontact = odtotour.tcontact;
+                    }
+
+                    if (odtotour.tdatetime != null)
+                    {
+
+                        _otourmodel.tyear = odtotour.tdatetime.Year;
+                        _otourmodel.tmonth = odtotour.tdatetime.Month;
+                        _otourmodel.tday = odtotour.tdatetime.Day;
+                        _otourmodel.thour = odtotour.tdatetime.Hour;
+                        _otourmodel.tmin = odtotour.tdatetime.Minute;
+
+                    }
+                    else
+                    {
+                        _otourmodel.tyear = DateTime.Now.Year;
+                        _otourmodel.tmonth = DateTime.Now.Month;
+                        _otourmodel.tday = DateTime.Now.Day;
+                        _otourmodel.thour = DateTime.Now.Hour;
+                        _otourmodel.tmin = DateTime.Now.Minute;
+                    }
+
+                    if (odtotour.tnote != null)
+                    {
+                        _otourmodel.tnote = odtotour.tnote;
+
+                    }
+                    else
+                    {
+                        _otourmodel.tnote = "999999";
+                    }
+
+
+                    if (odtotour.tphone != null)
+                    {
+                        _otourmodel.tphone = odtotour.tphone;
+                    }
+                    else
+                    {
+                        _otourmodel.tphone = "999999";
+                    }
+
+                    if (odtotour.carsize != null)
+                    {
+                        _otourmodel.carsize = odtotour.carsize;
+
+                    }
+                    else
+                    {
+                        _otourmodel.carsize = 1;
+                    }
+                    if (odtotour.car1 != null)
+                    {
+                        _otourmodel.car1 = odtotour.car1;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car1 = false;
+                    }
+
+
+                    if (odtotour.car2 != null)
+                    {
+                        _otourmodel.car2 = odtotour.car2;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car2 = false;
+                    }
+                    if (odtotour.car3 != null)
+                    {
+                        _otourmodel.car3 = odtotour.car3;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car3 = false;
+                    }
+                    if (odtotour.car3 != null)
+                    {
+                        _otourmodel.car3 = odtotour.car3;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car3 = false;
+                    }
+                    if (odtotour.car4 != null)
+                    {
+                        _otourmodel.car4 = odtotour.car4;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car4 = false;
+                    }
+                    if (odtotour.car5 != null)
+                    {
+                        _otourmodel.car5 = odtotour.car5;
+
+                    }
+                    else
+                    {
+                        _otourmodel.car5 = false;
+                    }
+                    _ltourmodel.Add(_otourmodel);
+                }
+            }
+            return _ltourmodel;
+        }
+        
+        
+        public string SaveTourModelToFile(List<TourModel> _ptourmodellist)
+        {
+            using (FileStream fst = new FileStream(GetAppConfigSetting() + "list_tourmodel.bin", FileMode.Create))
+            {
+                
+                BinaryFormatter bff = new BinaryFormatter();
+                bff.Serialize(fst, _ptourmodellist);
+                fst.Close();
+                string rvalue = " list_tourmodel uppfærður";
+                return rvalue;
+            }
+        }
 
 
 
@@ -175,23 +505,20 @@ namespace sendill_client
                        BinaryFormatter bin = new BinaryFormatter();
                        memListPinStatusLog = (List<dtoPinStatus>)bin.Deserialize(stream);
                    }
-                   return memListPinStatusLog.ToList(); ;
+                   return memListPinStatusLog.ToList();
        }
         
         
         
         
         
-        public IEnumerable<dtoCustomer> GetAllCustomers()
+        public IEnumerable<CustomerModel> GetAllCustomers()
        {
                if (memListCustomer.Count == 0)
                {
-                   using (Stream stream = File.Open(GetAppConfigSetting()+"list_customers.bin", FileMode.Open))
-                   {
-                       BinaryFormatter bin = new BinaryFormatter();
-                       memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
-                   }
-                   return memListCustomer.ToList(); ;
+                   SQLManager sm = new SQLManager();
+                   memListCustomer = sm.GetAllTours();
+                   return memListCustomer.ToList(); 
                }
                else
                {
@@ -200,25 +527,41 @@ namespace sendill_client
                
            }
 
-        public dtoCustomer GetCustomerById(int id)
+        public CustomerModel GetCustomerById(int id)
         {
             if (memListCustomer.Count==0)
             {
-                   using (Stream stream = File.Open(GetAppConfigSetting()+"list_customers.bin", FileMode.Open))
-                   {
-                       BinaryFormatter bin = new BinaryFormatter();
-                       memListCustomer = (List<dtoCustomer>)bin.Deserialize(stream);
-                       
-                   }
-                   return memListCustomer.Find(p => p.id == id);
+                SQLManager sm = new SQLManager();
+                memListCustomer = sm.GetAllTours();
+                return memListCustomer.Find(p => p.id == id.ToString());
             }
             else
             {
-                return memListCustomer.Find(p => p.id == id);
+                return memListCustomer.Find(p => p.id == id.ToString());
             }
         }
 
         // Get Tour functions.
+        public IEnumerable<dtoTour> GetToursPar_Car_CustId(int pcarid,string pcust)
+        {
+            IEnumerable<dtoTour> _select;
+            if (memListTour.Count == 0)
+            {
+                using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    memListTour = (List<dtoTour>)bin.Deserialize(stream);
+                }
+            }
+            _select = memListTour
+                .Where(x => x != null)
+                .Where(x => x.idcar != null)
+                .Where(x => x.tcustomer != null)
+                .Where(x => x.idcar == pcarid)
+                .Where(x => x.tcustomer == pcust);
+
+            return _select;
+        }
 
 
         
@@ -227,23 +570,18 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
-                _select = from fl in memListTour
-                          where fl.idcar == pid
-                          select fl;
-                return _select;
             }
-            else
-            {
-                _select = from fl in memListTour
-                          where fl.idcar == pid
-                          select fl;
+                _select = memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.idcar != null)
+                    .Where(x => x.idcar == pid);
+
                 return _select;
-            }
         }
 
         public IEnumerable<dtoTour> GetToursPar_CarId_Date(int pid, DateTime? dfrom, DateTime? dto)
@@ -256,19 +594,15 @@ namespace sendill_client
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
-                _select = from fl in memListTour
-                              where fl.idcar == pid && fl.tdatetime >= dfrom && fl.tdatetime <= dto
-                              select fl;
-                return _select;
             }
-            else
-            {
-                _select = from fl in memListTour
-                          where fl.idcar == pid && fl.tdatetime >= dfrom && fl.tdatetime <= dto
-                          select fl;
-
+                _select=memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.idcar != null)
+                    .Where(x => x.tdatetime != null)
+                    .Where(x => x.tdatetime>= dfrom)
+                    .Where(x => x.tdatetime <= dto)
+                    .Where(x => x.idcar == pid);
                 return _select;
-            }
         }
 
         public IEnumerable<dtoTour> GetTourPar_Date(DateTime? dfrom, DateTime? dto)
@@ -276,92 +610,127 @@ namespace sendill_client
             IEnumerable<dtoTour> _select;
             if (memListTour.Count == 0)
             {
-                using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
+                using (Stream stream = File.Open(@"C:\Sendill\DataFiles\list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
+            }
+
+
                 if (dfrom == dto)
                 {
-                    _select = from fl in memListTour
-                              where fl.tdatetime == dfrom && fl.tdatetime == dto
-                              select fl;
+                    _select = memListTour
+                        .Where(x => x != null)
+                        .Where(x => x.tdatetime != null)
+                        .Where(x => x.tdatetime == dfrom)
+                        .Where(x => x.tdatetime == dto);
+
                     return _select;
                 }
                 else
                 {
-                    _select = from fl in memListTour
-                              where fl.tdatetime >= dfrom && fl.tdatetime <= dto
-                              select fl;
+                    _select = memListTour
+                        .Where(x => x != null)
+                        .Where(x => x.tdatetime != null)
+                        .Where(x => x.tdatetime >= dfrom)
+                        .Where(x => x.tdatetime <= dto);
+
                     return _select;
                 }
-            }
-            else
-            {
-                if (dfrom == dto)
-                {
-                    _select = from fl in memListTour
-                              where fl.tdatetime == dfrom && fl.tdatetime == dto
-                              select fl;
-                    return _select;
-                }
-                else
-                {
-                    _select = from fl in memListTour
-                              where fl.tdatetime >= dfrom && fl.tdatetime <= dto
-                              select fl;
-                    return _select;
-                }
-            }
+            
         }
 
-        public IEnumerable<dtoTour> GetToursPar_CustId(int pCustId)
+        public IEnumerable<dtoTour> GetToursPar_CustId(string pCustId)
         {
             IEnumerable<dtoTour> _select;
-            if (memListTour.Count == 0)
+            if (memListTour.Count() == 0)
             {
                 using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
-                _select = from fl in memListTour
-                          where fl.idcustomer == pCustId
-                          orderby fl.tdatetime descending
-                          select fl;
-                return _select;
             }
-            else
-            {
-                _select = from fl in memListTour
-                          where fl.idcustomer == pCustId
-                          select fl;
+                _select = memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.tcustomer != null)
+                    .Where(x => x.tcustomer == pCustId);
                 return _select;
-            }
         }
+            //List<TourModel> mtour = new List<TourModel>();
+            //    foreach (var otour in memListTour)
+            //    {
+            //       var tm = new TourModel();
+            //       tm.id = otour.id;
+            //       tm.idcustomer = otour.idcustomer;
+            //       tm.idcar = otour.idcar;
+            //       tm.tdatetime = otour.tdatetime;
+            //       tm.time = otour.time;
+            //       tm.tcustomer = otour.tcustomer;
+            //       tm.taddress = otour.taddress;
+            //       tm.tcontact = otour.tcontact;
+            //       tm.tphone = otour.tphone;
+            //       tm.tnote = otour.tnote;
+            //       tm.isdel = otour.isdel;
+            //       tm.carsize = otour.carsize;
+            //       tm.car1 = otour.car1;
+            //       tm.car2 = otour.car2;
+            //       tm.car3 = otour.car3;
+            //       tm.car4 = otour.car4;
+            //       tm.car5 = otour.car5;
+            //       mtour.Add(tm);
+            //    }
 
-        public IEnumerable<dtoTour> GetToursPar_CustId_Date(int pCustId, DateTime? dfrom, DateTime? dto)
+        public IEnumerable<dtoTour> GetToursPar_Default()
         {
             IEnumerable<dtoTour> _select;
-            if (memListTour.Count == 0)
+            if (memListTour.Count() == 0)
             {
                 using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
-                _select = from fl in memListTour
-                          where fl.idcustomer == pCustId
-                          select fl;
+                _select = memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.tdatetime != null)
+                    .Where(x => x.tdatetime >= DateTime.Now.AddDays(-7))
+                    .Where(x => x.tdatetime <= DateTime.Now)
+                    .OrderByDescending(x => x.tdatetime);
                 return _select;
             }
             else
             {
-                _select = from fl in memListTour
-                          where fl.idcustomer == pCustId
-                          select fl;
+            _select = memListTour
+                .Where(x => x != null)
+                .Where(x => x.tdatetime != null)
+                .Where(x => x.tdatetime >= DateTime.Now.AddDays(-7))
+                .Where(x => x.tdatetime <= DateTime.Now)
+                .OrderByDescending(x => x.tdatetime);
                 return _select;
             }
+        }
+
+        public IEnumerable<dtoTour> GetToursPar_CustId_Date(string pCust, DateTime? dfrom, DateTime? dto)
+        {
+            IEnumerable<dtoTour> _select;
+            if (memListTour.Count() == 0)
+            {
+                using (Stream stream = File.Open(GetAppConfigSetting() + "list_tours.bin", FileMode.Open))
+                {
+                    BinaryFormatter bin = new BinaryFormatter();
+                    memListTour = (List<dtoTour>)bin.Deserialize(stream);
+                }
+            }
+                _select = memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.tcustomer != null)
+                    .Where(x => x.tdatetime != null)
+                    .Where(x => x.tdatetime>= dfrom)
+                    .Where(x => x.tdatetime <= dto)
+                    .Where(x => x.tcustomer == pCust);
+                return _select;
         }
         
         public IEnumerable<dtoTour> GetTourPar_Year_Month(int dyear, int dmonth)
@@ -381,7 +750,7 @@ namespace sendill_client
         public dtoCars GetSingleCarPar_Id(int pid)
         {
                 dtoCars _rec;
-                if (memListCar.Count == 0)
+                if (memListCar.ToList().Count() == 0)
                 {
                     using (Stream stream = File.Open(GetAppConfigSetting()+"list_carall.bin", FileMode.Open))
                     {
@@ -402,59 +771,28 @@ namespace sendill_client
         public IEnumerable<dtoTour> GetAllToursFromFile()
         {
             IEnumerable<dtoTour> _select;
-            if (memListTour.Count == 0)
+            int icount = memListTour.Count();
+            if (icount == 0)
             {
                 using (Stream stream = File.Open(GetAppConfigSetting()+"list_tours.bin", FileMode.Open))
                 {
                     BinaryFormatter bin = new BinaryFormatter();
                     memListTour = (List<dtoTour>)bin.Deserialize(stream);
                 }
-                _select = from fl in memListTour
-                          orderby fl.tdatetime descending
-                          select fl;
-
+                _select = memListTour
+                    .Where(x => x != null)
+                    .Where(x => x.tdatetime != null);
                 return _select;
 
             }
             else
             {
-                _select = from fl in memListTour
-                          orderby fl.tdatetime descending
-                          select fl;
+                _select = memListTour
+                .Where(x => x != null)
+                .Where(x => x.tdatetime != null);
                 return _select;
             }
         }
-
-        //public string LoadToursFromDatabaseToFile()
-        //{
-        //    TourRepository reptour = new TourRepository();
-        //    var lt = GetAllToursFromFile();
-        //    foreach(dtoTour ot in lt)
-        //    {
-        //        tbl_tours t = new tbl_tours();
-        //        t.car1=ot.car1;
-        //        t.car2 = ot.car2;
-        //        t.car3 = ot.car3;
-        //        t.car4 = ot.car4;
-        //        t.car5 = ot.car5;
-        //        t.carsize = ot.carsize;
-        //        t.id_cars =(short?)ot.idcar;
-        //        t.id_customers = (short?)ot.idcustomer;
-        //        t.id_owner = t.id_owner;
-        //        t.isdel = ot.isdel;
-        //        t.taddress = ot.taddress;
-        //        t.tcontact = ot.tcontact;
-        //        t.tcustomer = ot.tcustomer;
-        //        t.tdatetime = ot.tdatetime;
-        //        t.tnote = ot.tnote;
-        //        t.tphione = ot.tphone;
-        //        reptour.Insert(t);
-        //        reptour.Save();
-        //    }
-        //    return"Tour taflan uppfæarð.";
-
-            
-        //}
 
         public string CreateMemFileFromDatabase(int fileid)
         {
@@ -588,6 +926,23 @@ namespace sendill_client
                     bff.Serialize(fst, memListPin);
                     fst.Close();
                     string rvalue = " memListPin2 uppfærður";
+                    return rvalue;
+                }
+                return "Listi tómur";
+            }
+        }
+
+        public string SavePin3StatusToFile(List<dtoPin> memListPin)
+        {
+            using (FileStream fst = new FileStream(GetAppConfigSetting() + "list_pin3.bin", FileMode.Create))
+            {
+
+                if (memListPin.Count > 0)
+                {
+                    BinaryFormatter bff = new BinaryFormatter();
+                    bff.Serialize(fst, memListPin);
+                    fst.Close();
+                    string rvalue = " memListPin3 uppfærður";
                     return rvalue;
                 }
                 return "Listi tómur";

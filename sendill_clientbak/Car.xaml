@@ -1,0 +1,17 @@
+﻿<Window xmlns:my="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"  x:Class="sendill_client.Car"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tex="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+        Title="Bílar og bílstjórar" Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="260*" />
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Stretch" Name="stackPanel1" VerticalAlignment="Stretch" Background="#FF224591" Orientation="Horizontal" Grid.Row="0" >
+            <Image VerticalAlignment="Top" HorizontalAlignment="Left" Width="34" Height="34" Margin="8" Source="/sendill_client;component/Images/SettingsDarkBlue.png" />
+            <TextBlock Text="Bílar og bílstjórar" TextAlignment="Left" VerticalAlignment="Center" Width="176" FontSize="22" FontFamily="Segoe UI" Foreground="White" />
+        </StackPanel>
+        <my:DataGrid Name="gridCarMain" Grid.Row="1"/>
+    </Grid>
+</Window>

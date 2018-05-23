@@ -1,0 +1,12 @@
+﻿<Window x:Class="sendill_client.winTests"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="winTests" Height="300" Width="300">
+    <Grid>
+        <Button Content="Staða á stæðum loggur." Height="40" HorizontalAlignment="Left" Margin="12,12,0,0" Name="comPinLogOpen" VerticalAlignment="Top" Width="254" Click="comPinLogOpen_Click" />
+        <Button Content="Bílar í skrá." Height="35" HorizontalAlignment="Left" Margin="14,55,0,0" Name="button1" VerticalAlignment="Top" Width="250" Click="button1_Click" />
+        <Button Content="Sýna skilaboð." Height="37" HorizontalAlignment="Left" Margin="14,96,0,0" Name="comEndurrada" VerticalAlignment="Top" Width="250" Click="comEndurrada_Click" />
+        <Button Content="Skrá túr" Height="37" HorizontalAlignment="Left" Margin="14,139,0,0" Name="button2" VerticalAlignment="Top" Width="250" Click="button2_Click" />
+        <Button Content="Senda sms" Height="37" HorizontalAlignment="Left" Margin="14,183,0,0" Name="comSendaSms" VerticalAlignment="Top" Width="250" Click="comSendaSms_Click" />        
+    </Grid>
+</Window>

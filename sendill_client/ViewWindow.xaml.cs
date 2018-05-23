@@ -93,12 +93,13 @@ namespace sendill_client
         {
             //ServiceManager sm = new ServiceManager();
             //sm.UpdateMemLisArray(5);
+            DataTemplate dt_temp = new DataTemplate(); 
 
             DBManager dm = new DBManager();
 
-
-            var d_width = 1024;
-            var d_height = 768;
+            ConfigFile conf = new ConfigFile();
+            var d_width = conf.GetViewScreenWidth();
+            var d_height = conf.GetViewScreenHeight();
 
             int i_width = Convert.ToInt32(d_width / 5);
             int i_height = Convert.ToInt32(d_height);
@@ -112,7 +113,9 @@ namespace sendill_client
             arrUserControl[0] = uc1;
             arrUserControl[0].lboxPin.Height = i_height - 40;
             arrUserControl[0].PinHeader.Text = "Stöðin";
-            
+            var s_ref = conf.GetListViewtTemlate("1");
+            dt_temp = arrUserControl[0].FindResource(s_ref) as DataTemplate;
+            arrUserControl[0].lboxPin.ItemTemplate = dt_temp;
             Grid.SetColumn(arrUserControl[0], 0);
             Grid.SetRow(arrUserControl[0], 0);
             gridMain.Children.Add(arrUserControl[0]);
@@ -125,7 +128,10 @@ namespace sendill_client
             arrUserControl[1] = uc2;
             arrUserControl[1].lboxPin.Height = i_height - 40;
             arrUserControl[1].PinHeader.Text = "Miðbæjarsvæði";
-            arrUserControl[1].lboxPin.ItemsSource = dm.LoadPin2FromFile();
+            s_ref = conf.GetListViewtTemlate("2");
+            dt_temp = arrUserControl[1].FindResource(s_ref) as DataTemplate;
+            arrUserControl[1].lboxPin.ItemTemplate = dt_temp;
+           // arrUserControl[1].lboxPin.ItemTemplate = dt_temp_20;
             Grid.SetColumn(arrUserControl[1], 1);
             Grid.SetRow(arrUserControl[1], 0);
             gridMain.Children.Add(arrUserControl[1]);
@@ -138,7 +144,10 @@ namespace sendill_client
             arrUserControl[2] = uc3;
             arrUserControl[2].lboxPin.Height = i_height - 40;
             arrUserControl[2].PinHeader.Text = "Breiðholt - Ikea";
-            //arrUserControl[2].lboxPin.ItemsSource = sm.arrMemListDtoPin[2];
+            s_ref = conf.GetListViewtTemlate("3");
+            dt_temp = arrUserControl[2].FindResource(s_ref) as DataTemplate;
+            arrUserControl[2].lboxPin.ItemTemplate = dt_temp;
+            //arrUserControl[2].lboxPin.ItemTemplate = dt_temp_20;
             Grid.SetColumn(arrUserControl[2], 2);
             Grid.SetRow(arrUserControl[2], 0);
             gridMain.Children.Add(arrUserControl[2]);
@@ -151,7 +160,10 @@ namespace sendill_client
             arrUserControl[3] = uc4;
             arrUserControl[3].lboxPin.Height = i_height - 40;
             arrUserControl[3].PinHeader.Text = "Árbær - Bauhaus.";
-            //arrUserControl[3].lboxPin.ItemsSource = sm.arrMemListDtoPin[3];
+            s_ref = conf.GetListViewtTemlate("4");
+            dt_temp = arrUserControl[3].FindResource(s_ref) as DataTemplate;
+            arrUserControl[3].lboxPin.ItemTemplate = dt_temp;
+            //arrUserControl[3].lboxPin.ItemTemplate = dt_temp_20;
             Grid.SetColumn(arrUserControl[3], 3);
             Grid.SetRow(arrUserControl[3], 0);
             gridMain.Children.Add(arrUserControl[3]);
@@ -164,7 +176,10 @@ namespace sendill_client
             arrUserControl[4] = uc5;
             arrUserControl[4].lboxPin.Height = i_height - 40;
             arrUserControl[4].PinHeader.Text = "Renna.";
-            //arrUserControl[4].lboxPin.ItemsSource = sm.arrMemListDtoPin[4];
+            s_ref = conf.GetListViewtTemlate("5");
+            dt_temp = arrUserControl[4].FindResource(s_ref) as DataTemplate;
+            arrUserControl[4].lboxPin.ItemTemplate = dt_temp;
+            //arrUserControl[4].lboxPin.ItemTemplate = dt_temp_20;
             Grid.SetColumn(arrUserControl[4], 4);
             Grid.SetRow(arrUserControl[4], 0);
             gridMain.Children.Add(arrUserControl[4]);
@@ -176,8 +191,9 @@ namespace sendill_client
             //ServiceManager sm = new ServiceManager();
             //sm.UpdateMemLisArray(6);
 
-            var d_width = 1024;
-            var d_height = 768;
+            ConfigFile conf = new ConfigFile();
+            var d_width = conf.GetViewScreenWidth();
+            var d_height = conf.GetViewScreenHeight();
 
             int i_width = Convert.ToInt32(d_width / 5);
             int i_height = Convert.ToInt32(d_height);
@@ -260,9 +276,9 @@ namespace sendill_client
 
         private void CreateLayout()
         {
-            var d_height = System.Windows.SystemParameters.PrimaryScreenHeight;
-            var d_width = System.Windows.SystemParameters.PrimaryScreenWidth;
-            MessageBox.Show("Hæð er : " + d_height.ToString() + " og breidd er : " + d_width.ToString());
+            ConfigFile conf = new ConfigFile();
+            var d_width = conf.GetViewScreenWidth();
+            var d_height = conf.GetViewScreenHeight();
             this.Height = d_height;
             this.Width = d_width;
             gridMain.Width = d_width;
@@ -304,10 +320,13 @@ namespace sendill_client
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             CreateLayout();
+            MessageBox.Show("Hæð er : " + this.Height.ToString() + " og breidd er : " + this.Width.ToString());
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            //this.WindowState = WindowState.Maximized;
+
         }
 
         private void UpdateLists()

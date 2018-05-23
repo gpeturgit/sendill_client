@@ -24,7 +24,7 @@ namespace sendill_client
             InitializeComponent();
             //LoadToursToList();
             //LoadCarsToList();
-            //LoadLogFromMem();
+            LoadLogFromMem();
         }
 
 
@@ -83,12 +83,24 @@ namespace sendill_client
             //SQLManager sm = new SQLManager();
             //var listLog = sm.DapperLogGetAll();
             //dgMain.ItemsSource = listLog;
+            DBManager dm = new DBManager();
+            var res = dm.GetAllToursFromFile();
+            dgMain.ItemsSource = null;
+            dgMain.ItemsSource = res.ToList();
         }
 
         private void comNext_Click(object sender, RoutedEventArgs e)
         {
             DBManager dm = new DBManager();
-            dgMain.ItemsSource=dm.GetPinStatus();
+            MSSqlCommand.LoadAllTours _dbcommend = new MSSqlCommand.LoadAllTours();
+            _dbcommend.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+            //var res = dm.CreateTourModelListFile();
+            //dm.SaveTourModelToFile(res);
+
+            //dgMain.ItemsSource = dm.CreateTourModelListFile();
+
+            //dgMain.ItemsSource = null;
+            //dgMain.ItemsSource = dm.GetTourListFromDB();
         }
 
 

@@ -23,7 +23,10 @@ namespace sendill_client
     {
         List<dtoTour> ltour = new List<dtoTour>();
         List<dtoTour> tmpTour = new List<dtoTour>();
+        List<dtoTour> rc_tour = new List<dtoTour>();
+        List<CustomerModel> lcust = new List<CustomerModel>();
         public bool globl_new_tour;
+        public bool global_update_tour;
         public int global_car_id;
         public int global_pin_id;
         public bool p_filtercarid;
@@ -40,25 +43,31 @@ namespace sendill_client
             System.Windows.Data.CollectionViewSource dtoTourViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("dtoTourViewSource")));
 
 
-            var window2 = Application.Current.Windows
-            .Cast<Window>()
-            .FirstOrDefault(window => window is MainWindow) as MainWindow;
-            ltour = window2.memListTour;
-            var mtour = window2.memListCar;
-            DBManager dm = new DBManager();
+            //var window2 = Application.Current.Windows
+            //.Cast<Window>()
+            //.FirstOrDefault(window => window is MainWindow) as MainWindow;
+            //ltour = window2.memListTour;
+            //var mtour = window2.memListCar;
+
             //idcustomerComboBox.ItemsSource = dm.GetAllCustomers();
             //idcustomerComboBox.DisplayMemberPath = "name";
             //idcustomerComboBox.SelectedValuePath = "id";
 
-
+            DBManager dm = new DBManager();
+            //ltour = dm.GetAllToursFromFile().ToList();
+            ltour = dm.GetToursFromDB();
             comboCarType.ItemsSource = CreateCarGroups();
             comboCarType.DisplayMemberPath = "name";
             comboCarType.SelectedValuePath = "type";
             if (p_filtercarid == true ) 
             {
                 List<dtoTour> nl = new List<dtoTour>();
-                nl.Add(ltour.Find(p => p.id == DtoTour.id));
-                dtoTourViewSource.Source = nl;
+                rc_tour.Add(ltour.Find(p => p.id == DtoTour.id));
+
+                //var _item = dm.GetToursByCarIdDB(DtoTour.id);
+                //dtoTourViewSource.Source = _item;
+
+                dtoTourViewSource.Source = rc_tour;
 
                 this.DataContext = dtoTourViewSource;
                 txtTourHeader.Text = "Skoða túr.";
@@ -70,8 +79,40 @@ namespace sendill_client
                 tmpTour.Add(DtoTour);
                 dtoTourViewSource.Source = tmpTour;
                 this.DataContext = dtoTourViewSource;
+                txtTourHeader.Text = "Skrá nýjan túr.";
                 carToolbarComRecNew.IsEnabled = false;
                 idcarTextBox1.IsEnabled = false;
+            }
+            else if (global_update_tour==true)
+            {
+                //*******************************************************************
+                // UV1 - Get single tour from database.
+                // UV1_1 - Delete get tour from lits_tour.bin file.
+                // UV1_2 - Add get tour from database. 
+                //*******************************************************************
+
+                List<dtoTour> nl = new List<dtoTour>();
+
+                //***UV1_1***********************************************************
+                rc_tour.Add(ltour.Find(p => p.id == DtoTour.id));
+                dtoTourViewSource.Source = rc_tour;
+
+                //***UV1_2***********************************************************
+
+                //MSSqlQuery. _que = new MSSqlCommand.GetSingleTour();
+                //_com.id_tour = DtoTour.id;
+                //_com.Execute(SqlServerBaseConn.SendillSqlServerConnection());
+                //var _item = dm.GetToursByCarIdDB(DtoTour.id);
+                //dtoTourViewSource.Source = _item;
+                //***UV1_2 end ******************************************************
+
+                this.DataContext = dtoTourViewSource;
+                txtTourHeader.Text = "Uppfæra túr.";
+                stackPanel2.IsEnabled = true;
+                idcarTextBox1.IsEnabled = true;
+                carsizeTextBox.IsEnabled = true;
+                carToolbarComRecSave.IsEnabled = true;
+                butTourCancel.Visibility = Visibility.Hidden;
             }
             else
             {
@@ -85,7 +126,7 @@ namespace sendill_client
             // Load data by setting the CollectionViewSource.Source property:
             dtoCustomerViewSource.Source = dm.GetAllCustomers();
             idcustomerComboBox.ItemsSource = dtoCustomerViewSource.View;
-            idcustomerComboBox.DisplayMemberPath = "name";
+            idcustomerComboBox.DisplayMemberPath = "customer";
             idcustomerComboBox.SelectedValuePath = "id";
             
         }
@@ -180,7 +221,7 @@ namespace sendill_client
 
         private void carToolbarComRecSave_Click(object sender, RoutedEventArgs e)
         {
-         
+            Debug.WriteLine(tmpTour.Count.ToString());
             DtoTour = tmpTour.FirstOrDefault();
             //var idel = isdelCheckBox.IsChecked.Value;
             if (globl_new_tour == true)
@@ -192,14 +233,33 @@ namespace sendill_client
                 window2.memListTour = ltour;
                 DBManager dm = new DBManager();
                 var rmsg = dm.SaveToursToFile(DtoTour);
+                //*******************************************************************
+                // UV1 - Insert tour to tbl_tours table in SqlServer.
+                // Add tour to tbl_tours table in SqlServer Database. 
+                //*******************************************************************
+                MSSqlCommand.InsertTour ms_com = new MSSqlCommand.InsertTour();
+                ms_com.out_tour = DtoTour;
+                var conn = SqlServerBaseConn.SendillSqlServerConnection();
+                ms_com.Execute(conn);
+                
                 tmpTour.Remove(DtoTour);
+
             }
             else
             {
-                DBManager dm = new DBManager();
-                var rmsg = dm.SaveToursToFile(DtoTour);
-                winTurar wt = new winTurar();
-                wt.Show();
+                //DBManager dm = new DBManager();
+                //var rmsg = dm.SaveToursToFile(DtoTour);
+                //*******************************************************************
+                // UV1 - Update tbl_tours table in SqlServer.
+                // Add tour to tbl_tours table in SqlServer Database. 
+                //*******************************************************************
+             
+                MSSqlCommand.UpdateTour ms_com = new MSSqlCommand.UpdateTour();
+                ms_com.out_tour = rc_tour.FirstOrDefault();
+                var conn = SqlServerBaseConn.SendillSqlServerConnection();
+                ms_com.Execute(conn);
+                //winTurar wt = new winTurar();
+                //wt.Show();
             }
 
 

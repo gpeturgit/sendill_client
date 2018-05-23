@@ -41,7 +41,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <DataTemplate x:Key="CarOnPin" x:Name="dtCarOnPin">
+        <!--<DataTemplate x:Key="CarOnPin" x:Name="dtCarOnPin">
             <StackPanel Orientation="Horizontal">
                 <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="35" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Padding="4,0,0,4"/>
                 
@@ -54,6 +54,296 @@
                 </Button>
                 
                 <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="50" FontSize="14" VerticalAlignment="Center" FontWeight="Normal" Padding="8,0,0,4" />
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="CarOnPin20" x:Name="dtCarOnPin20">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="60" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Margin="-6,2,2,0" Padding="0,0,0,0"/>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="-4,6,2,0" Height="34" VerticalAlignment="Center"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="54" FontSize="26" VerticalAlignment="Center" Margin="-2,2,2,0" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="0,2,2,0" Height="25"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="66" FontSize="26" VerticalAlignment="Center" FontWeight="Normal" Margin="0,2,2,0"/>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    --><!--CoffeeGreen_32_32.png--><!--
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>-->
+        
+        <!--23.01.2017 - Pétur Sigurðsson-->
+        <!--Data template without a car picture-->
+        
+        <DataTemplate x:Key="CarOnPin11" x:Name="dtCarOnPin11">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lblIdcar" Content="{Binding Path=idcar}"  Width="40" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Padding="0,0,0,4"/>
+
+                <!--<Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="34"/>
+                </Button>-->
+                <Label Content="{Binding Path=pcarcode}" Width="55" FontSize="18" VerticalAlignment="Center" FontWeight="Bold" Padding="4,0,0,4" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="60" FontSize="18" VerticalAlignment="Center" FontWeight="Normal" Padding="8,0,0,4" />
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <!--<Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />-->
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <!--<Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />-->
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <!--<Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />-->
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CarOnPin12" x:Name="dtCarOnPin12">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="46" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Margin="0,2,2,0" Padding="0,0,0,0"/>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2,6,0,2" Height="36" VerticalAlignment="Center"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="55" FontSize="22" VerticalAlignment="Center" Margin="-2,2,2,0" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="0,2,2,0" Height="25"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="66" FontSize="22" VerticalAlignment="Center" FontWeight="Normal" Margin="0,2,2,0"/>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        
+        
+
+        <DataTemplate x:Key="CarOnPin1" x:Name="dtCarOnPin1">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lblIdcar" Content="{Binding Path=idcar}"  Width="40" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Padding="0,0,0,4"/>
+
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2" Height="34"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="55" FontSize="18" VerticalAlignment="Center" FontWeight="Bold" Padding="4,0,0,4" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="2,2,2,8" Height="24"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="60" FontSize="18" VerticalAlignment="Center" FontWeight="Normal" Padding="8,0,0,4" />
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="CarOnPin2" x:Name="dtCarOnPin2">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="46" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Margin="0,2,2,0" Padding="0,0,0,0"/>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2,6,0,2" Height="36" VerticalAlignment="Center"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="55" FontSize="22" VerticalAlignment="Center" Margin="-2,2,2,0" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="0,2,2,0" Height="25"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="66" FontSize="22" VerticalAlignment="Center" FontWeight="Normal" Margin="0,2,2,0"/>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="CarOnPin3" x:Name="dtCarOnPin3">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="46" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Margin="0,2,2,0" Padding="0,0,0,0"/>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="2,8,0,2" Height="36" VerticalAlignment="Center"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="56" FontSize="23" VerticalAlignment="Center" Margin="-2,2,2,0" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="0,2,2,0" Height="25"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="66" FontSize="23" VerticalAlignment="Center" FontWeight="Normal" Margin="0,2,2,0"/>
+            </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinCheck2424.png" />
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=pbreak}" Value="false">
+                    <Setter TargetName="InCoffeebreak" Property="Source" Value="/sendill_client;component/Images/CarOnPinUncheck.png" />
+
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="1">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckRed32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFEF1111"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="2">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/TruckYellow32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FFDF8C12"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=carsize}" Value="3">
+                    <Setter TargetName="CarSize" Property="Source" Value="/sendill_client;component/Images/Truckgren32.png" />
+                    <Setter TargetName="lblIdcar" Property="Foreground" Value="#FF096107"></Setter>
+                    <!--CoffeeGreen_32_32.png-->
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate x:Key="CarOnPin4" x:Name="dtCarOnPin4">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Name="lblIdcar" Content="{Binding Path=idcar}"  Width="52" FontSize="28" FontWeight="Bold" VerticalAlignment="Center" Foreground="#FFEF1111" Margin="-2,2,2,0" Padding="0,0,0,0"/>
+                <Button x:Name="btnCarOnPin" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}">
+                    <Image Name="CarSize" Source="/sendill_client;component/Images/Truckgren32.png" MinHeight="0" Margin="-2,7,2,0" Height="38" VerticalAlignment="Center"/>
+                </Button>
+                <Label Content="{Binding Path=pcarcode}" Width="60" FontSize="24" VerticalAlignment="Center" Margin="-2,2,2,0" />
+                <Button x:Name="btnCoffeebreak" CommandParameter="{Binding idcar}" Style="{StaticResource BorderlessButton}" IsEnabled="True">
+                    <Image Name="InCoffeebreak" Source="/sendill_client;component/Images/CarOnPinCheck2424.png" MinHeight="0" Margin="-4,2,2,0" Height="25"/>
+                </Button>
+
+                <TextBlock Text="{Binding Path=dtonpin, StringFormat={}{0:HH:mm}}"  Width="66" FontSize="24" VerticalAlignment="Center" FontWeight="Normal" Margin="0,2,2,0"/>
             </StackPanel>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=pbreak}" Value="true">
@@ -86,15 +376,16 @@
     <Grid>
         <Border Grid.Column="1" BorderThickness="2" BorderBrush="#FF224591">
             <StackPanel Name="spanCol1">
-                <TextBox Name="PinHeader" Text="Stöðin" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="#FF224591" Height="40">
-                    <TextBox.Background>
+                <TextBox Name="PinHeader" Text="Stöðin" Margin="0" Padding="10,5,1,1" FontSize="20" Foreground="WhiteSmoke" Height="40" Background="#FF224591">
+                    <!--<TextBox.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF465A7D" Offset="0" />
                             <GradientStop Color="White" Offset="1" />
                         </LinearGradientBrush>
-                    </TextBox.Background>
+                    </TextBox.Background>-->
                 </TextBox>
-                <ListBox Name="lboxPin" Background="#FFD0D8E4" VerticalContentAlignment="Stretch" Height="700" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" />
+                <!--<ListBox Name="lboxPin" Background="#FFD0D8E4" VerticalContentAlignment="Stretch" Height="700" ItemsSource="{Binding}" ItemTemplate="{StaticResource CarOnPin}" />-->
+                <ListBox Name="lboxPin" Background="#FFD0D8E4" VerticalContentAlignment="Stretch" Height="700" ItemsSource="{Binding}" />
             </StackPanel>
         </Border>
     </Grid>

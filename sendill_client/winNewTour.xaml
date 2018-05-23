@@ -53,9 +53,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--**************************************************************************************************************-->
+        <!--*****************************************************************************************************************************-->
+        <!--Name : Borderless button endar. -->
+        <!--*****************************************************************************************************************************-->
         <CollectionViewSource x:Key="dtoTourViewSource" d:DesignSource="{d:DesignInstance my:dtoTour, CreateList=True}" />
-        <CollectionViewSource x:Key="dtoCustomerViewSource" d:DesignSource="{d:DesignInstance {x:Type my:dtoCustomer}, CreateList=True}"/>
+        <CollectionViewSource x:Key="dtoCustomerViewSource" d:DesignSource="{d:DesignInstance {x:Type my:CustomerModel}, CreateList=True}"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -212,7 +214,7 @@
             <!--R8C3 Content Is Deleted-->
             <Label Content="Fastur viðskiptavinur :" Grid.Column="2" Grid.Row="5" HorizontalAlignment="Left" Margin="3,4,0,3" VerticalAlignment="Center" Visibility="Hidden" Height="26" Width="114" Grid.ColumnSpan="2" />
             <TextBox Grid.Column="3" Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="52,3,0,7" Name="idcustomerTextBox" Text="{Binding Path=idcustomer, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" VerticalAlignment="Center" Width="71" Visibility="Hidden" />
-            <Button Grid.Column="3" Grid.Row="11" Content="Hætta við" Click="Button_Click" Margin="2,2,2,2"/>
+            <Button x:Name="butTourCancel" Grid.Column="3" Grid.Row="11" Content="Hætta við" Click="Button_Click" Margin="2,2,2,2"/>
             <ComboBox x:Name="idcustomerComboBox" Grid.Column="3" HorizontalAlignment="Right" Height="22" Grid.Row="6" VerticalAlignment="Center" Width="200" Margin="0,5,45,5" SelectedValue="{Binding idcustomer}"/>
 
             <Label Content="Viðskiptavinalisti:" Grid.Column="2" HorizontalAlignment="Left" Margin="3,3,0,0" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="112" Grid.ColumnSpan="2"/>
@@ -238,8 +240,6 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
             </Grid>
-
-
         </Grid>
     </Grid>
 </Window>
